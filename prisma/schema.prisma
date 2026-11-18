@@ -102,6 +102,7 @@ model Person {
   callLogs              CallLog[]
   approvals             ApprovalQueue[]
   assignments           ShiftAssignment[]
+  eligibilities         PersonEligibility[]
 
   @@index([region, status])
   @@index([phone])
@@ -130,6 +131,7 @@ model Shift {
   callLogs              CallLog[]
   approvals             ApprovalQueue[]
   assignments           ShiftAssignment[]
+  eligibilities         PersonEligibility[]
 
   @@index([status, shiftDate])
   @@index([priority, status])
@@ -220,4 +222,27 @@ model ActiveLineLease {
   releasedAt            DateTime?
 
   @@index([releasedAt, expiresAt])
+}
+
+model EligibilityCode {
+  id                    String              @id @default(uuid())
+  code                  String              @unique // e.g., "ST", "OFA1", "OFA2"
+  label                 String              // e.g., "Steel Toe Footwear", "Occupational First Aid Level 1"
+  createdAt             DateTime            @default(now())
+
+  personEligibilities   PersonEligibility[]
+}
+
+model PersonEligibility {
+  id                    String          @id @default(uuid())
+  personId              String
+  eligibilityCodeId     String
+  verifiedAt            DateTime        @default(now())
+  expiresAt             DateTime?
+
+  person                Person          @relation(fields: [personId], references: [id], onDelete: Cascade)
+  eligibility           EligibilityCode @relation(fields: [eligibilityCodeId], references: [id], onDelete: Cascade)
+
+  @@unique([personId, eligibilityCodeId])
+  @@index([personId])
 }

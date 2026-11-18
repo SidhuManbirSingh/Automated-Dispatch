@@ -131,3 +131,27 @@ CREATE TABLE IF NOT EXISTS ActiveLineLease (
   releasedAt DATETIME(3) NULL,
   INDEX idx_lease_expiry (releasedAt, expiresAt)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS EligibilityCode (
+  id VARCHAR(36) PRIMARY KEY,
+  code VARCHAR(32) NOT NULL UNIQUE,
+  label VARCHAR(128) NOT NULL,
+  createdAt DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS PersonEligibility (
+  id VARCHAR(36) PRIMARY KEY,
+  personId VARCHAR(36) NOT NULL,
+  eligibilityCodeId VARCHAR(36) NOT NULL,
+  verifiedAt DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  expiresAt DATETIME(3) NULL,
+  FOREIGN KEY (personId) REFERENCES Person(id) ON DELETE CASCADE,
+  FOREIGN KEY (eligibilityCodeId) REFERENCES EligibilityCode(id) ON DELETE CASCADE,
+  UNIQUE KEY unq_person_eligibility (personId, eligibilityCodeId),
+  INDEX idx_person_eligibility_person (personId)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT IGNORE INTO EligibilityCode (id, code, label) VALUES
+  (UUID(), 'ST', 'Steel Toe Footwear'),
+  (UUID(), 'OFA1', 'Occupational First Aid Level 1'),
+  (UUID(), 'OFA2', 'Occupational First Aid Level 2');
