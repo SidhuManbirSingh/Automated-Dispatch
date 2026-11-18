@@ -1,0 +1,223 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// -----------------------------------------------------------------------------
+// ENUMS
+// -----------------------------------------------------------------------------
+
+enum PersonStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  DNC_DO_NOT_CALL
+}
+
+enum ShiftStatus {
+  OPEN
+  DISPATCH_IN_PROGRESS
+  PENDING_DISPATCHER_APPROVAL
+  ASSIGNED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum CallDirection {
+  OUTBOUND
+  INBOUND
+}
+
+enum CallStatus {
+  SCHEDULED
+  INITIATED
+  RINGING
+  IN_PROGRESS
+  COMPLETED
+  FAILED
+  NO_ANSWER
+  VOICEMAIL
+  BUSY
+}
+
+enum CallOutcome {
+  TENTATIVE_ACCEPT
+  DECLINE
+  CALLBACK_REQUESTED
+  VOICEMAIL_LEFT
+  NO_ANSWER
+  DNC_REQUEST
+  HOSTILE_ABUSIVE
+  INCONCLUSIVE
+  ERROR
+}
+
+enum ApprovalStatus {
+  PENDING
+  APPROVED
+  DECLINED
+  EXPIRED
+  CANCELLED_BY_SYSTEM
+}
+
+enum AssignmentStatus {
+  TENTATIVE
+  CONFIRMED
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+// -----------------------------------------------------------------------------
+// MODELS
+// -----------------------------------------------------------------------------
+
+model Person {
+  id                    String        @id @default(uuid())
+  externalId            String        @unique
+  firstName             String
+  lastName              String
+  phone                 String        @unique
+  email                 String        @unique
+  region                String
+  equipmentTypes        Json
+  status                PersonStatus  @default(ACTIVE)
+  dncFlag               Boolean       @default(false)
+  dncReason             String?
+  dncTimestamp          DateTime?
+  preferredContactStart String?
+  preferredContactEnd   String?
+  timezone              String        @default("America/Vancouver")
+  reliabilityScore      Float         @default(1.0)
+  totalShiftsCompleted  Int           @default(0)
+  notes                 String?
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+
+  callLogs              CallLog[]
+  approvals             ApprovalQueue[]
+  assignments           ShiftAssignment[]
+
+  @@index([region, status])
+  @@index([phone])
+}
+
+model Shift {
+  id                    String        @id @default(uuid())
+  externalId            String        @unique
+  shiftDate             DateTime
+  startTime             DateTime
+  endTime               DateTime
+  durationHours         Float
+  pickupLocation        String
+  dropoffLocation       String
+  equipmentType         String
+  payRateHourly         Decimal       @db.Decimal(10, 2)
+  currency              String        @default("CAD")
+  specialInstructions   String?
+  priority              Int           @default(1)
+  status                ShiftStatus   @default(OPEN)
+  requiredCertifications Json
+  version               Int           @default(1)
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+
+  callLogs              CallLog[]
+  approvals             ApprovalQueue[]
+  assignments           ShiftAssignment[]
+
+  @@index([status, shiftDate])
+  @@index([priority, status])
+}
+
+model CallLog {
+  id                    String        @id @default(uuid())
+  shiftId               String
+  personId              String
+  retellCallId          String        @unique
+  twilioCallSid         String?       @unique
+  direction             CallDirection @default(OUTBOUND)
+  status                CallStatus    @default(INITIATED)
+  outcome               CallOutcome?
+  attemptNumber         Int           @default(1)
+  maxAttempts           Int           @default(3)
+  startedAt             DateTime?
+  endedAt               DateTime?
+  durationSeconds       Int           @default(0)
+  recordingUrl          String?
+  transcript            String?       @db.Text
+  sentimentScore        Float?
+  summary               String?       @db.Text
+  personFeedbackNotes   String?       @db.Text
+  costUsd               Decimal?      @db.Decimal(6, 4)
+  createdAt             DateTime      @default(now())
+
+  shift                 Shift         @relation(fields: [shiftId], references: [id], onDelete: Cascade)
+  person                Person        @relation(fields: [personId], references: [id], onDelete: Cascade)
+  approval              ApprovalQueue?
+
+  @@index([shiftId, status])
+  @@index([personId, createdAt])
+}
+
+model ApprovalQueue {
+  id                    String         @id @default(uuid())
+  callLogId             String         @unique
+  shiftId               String
+  personId              String
+  status                ApprovalStatus @default(PENDING)
+  teamsMessageId        String?
+  teamsCardPayload      Json?
+  dispatcherId          String?
+  dispatcherName        String?
+  dispatcherNotes       String?
+  actionTimestamp       DateTime?
+  expiresAt             DateTime
+  calendarEventId       String?
+  emailMessageId        String?
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+
+  callLog               CallLog        @relation(fields: [callLogId], references: [id], onDelete: Cascade)
+  shift                 Shift          @relation(fields: [shiftId], references: [id], onDelete: Cascade)
+  person                Person         @relation(fields: [personId], references: [id], onDelete: Cascade)
+
+  @@index([status, expiresAt])
+}
+
+model ShiftAssignment {
+  id                    String           @id @default(uuid())
+  shiftId               String
+  personId              String
+  approvalQueueId       String           @unique
+  status                AssignmentStatus @default(CONFIRMED)
+  confirmedAt           DateTime         @default(now())
+  outlookCalendarId     String?
+  icsUid                String?
+  createdAt             DateTime         @default(now())
+  updatedAt             DateTime         @updatedAt
+
+  shift                 Shift            @relation(fields: [shiftId], references: [id], onDelete: Restrict)
+  person                Person           @relation(fields: [personId], references: [id], onDelete: Restrict)
+
+  @@unique([shiftId, personId])
+  @@index([personId, status])
+}
+
+model ActiveLineLease {
+  id                    String        @id @default(uuid())
+  callId                String        @unique
+  shiftId               String
+  personId              String
+  channelIndex          Int           // 1 through 5
+  acquiredAt            DateTime      @default(now())
+  expiresAt             DateTime
+  releasedAt            DateTime?
+
+  @@index([releasedAt, expiresAt])
+}
