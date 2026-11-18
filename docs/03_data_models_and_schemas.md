@@ -233,7 +233,7 @@ model ActiveLineLease {
   callId                String        @unique
   shiftId               String
   personId              String
-  channelIndex          Int           // 1 through 7
+  channelIndex          Int           // 1 through 5
   acquiredAt            DateTime      @default(now())
   expiresAt             DateTime      // Absolute TTL (e.g. 6 mins)
   releasedAt            DateTime?
@@ -320,16 +320,16 @@ erDiagram
 
 ### 4. Retell Call-Completion Webhook Payload Specification
 
-When an outbound call completes, Retell AI posts a signed JSON payload to `https://api.dispatch.logistics-corp.com/webhook/retell-call-complete`.
+When an outbound call completes, Retell AI posts a signed JSON payload to `https://api.dispatch.guardteck.com/webhook/retell-call-complete`.
 
 ```json
 {
   "event": "call_analyzed",
   "call_id": "call_9841f3e72089a42cb901",
-  "agent_id": "agent_apex_logistics_v1",
+  "agent_id": "agent_guardteck_security_v1",
   "call_type": "phone_call",
-  "from_number": "+12145550101",
-  "to_number": "+12145550198",
+  "from_number": "+18885550101",
+  "to_number": "+16045550198",
   "call_status": "registered",
   "start_timestamp": 1730680800000,
   "end_timestamp": 1730680902000,
@@ -343,12 +343,12 @@ When an outbound call completes, Retell AI posts a signed JSON payload to `https
     "person_name": "Marcus Vance",
     "person_first_name": "Marcus",
     "shift_date": "Wednesday, November 5th",
-    "start_time": "6:00 AM Central",
-    "end_time": "2:30 PM Central",
+    "start_time": "6:00 AM Pacific",
+    "end_time": "2:00 PM Pacific",
     "shift_duration_hours": 8,
-    "pickup_location": "DFW South Yard, Dock 42",
-    "dropoff_location": "Austin Fulfillment Hub",
-    "equipment_type": "53-foot Dry Van, Drop and Hook",
+    "pickup_location": "Vancouver Harbour Terminal, Gate B",
+    "dropoff_location": "Burnaby Corporate Campus",
+    "equipment_type": "Patrol Vehicle",
     "pay_rate": "$32.50 per hour",
     "dispatch_desk_phone": "+18885550199"
   },
@@ -365,12 +365,12 @@ When an outbound call completes, Retell AI posts a signed JSON payload to `https
     },
     {
       "role": "agent",
-      "content": "Hi Marcus, this is Alex with Apex Logistics automated dispatch. We have an 8-hour shift tomorrow starting at 6:00 AM out of DFW South Yard delivering to Austin Hub at $32.50 per hour. Are you open to taking this run?",
+      "content": "Hi Marcus, this is Guardteck Dispatch Bot with Guardteck Security automated dispatch. We have an 8-hour shift tomorrow starting at 6:00 AM Pacific at Vancouver Harbour Terminal delivering to Burnaby Corporate Campus at $32.50 per hour. Are you open to taking this shift?",
       "words": []
     },
     {
       "role": "user",
-      "content": "Yeah, put me down for it. I can run that tomorrow morning.",
+      "content": "Yeah, put me down for it. I can cover that tomorrow morning.",
       "words": []
     },
     {
@@ -380,7 +380,7 @@ When an outbound call completes, Retell AI posts a signed JSON payload to `https
     }
   ],
   "call_analysis": {
-    "call_summary": "Agent Alex contacted Marcus Vance regarding shift SH-2024-8841 (DFW to Austin, 8 hrs at $32.50/hr). Person tentatively accepted the route. Agent confirmed human-in-the-loop dispatch review and concluded call.",
+    "call_summary": "Guardteck Dispatch Bot contacted Marcus Vance regarding shift SH-2024-8841 (Vancouver Harbour Terminal to Burnaby Corporate Campus, 8 hrs at $32.50/hr). Person tentatively accepted the shift. Agent confirmed human-in-the-loop dispatch review and concluded call.",
     "user_sentiment": "Positive",
     "call_successful": true,
     "in_voicemail": false,
@@ -558,48 +558,48 @@ Sent via `@microsoft/microsoft-graph-client` upon human dispatcher approval:
 
 ```json
 {
-  "subject": "ASSIGNED ROUTE: Shift SH-2024-8841 (DFW to Austin)",
+  "subject": "ASSIGNED SHIFT: Shift SH-2024-8841 (Vancouver Harbour Terminal)",
   "body": {
     "contentType": "HTML",
-    "content": "<html><body><h2>Apex Logistics Shift Confirmation</h2><p>Dear Marcus,</p><p>Your shift assignment has been <strong>APPROVED</strong> by dispatch.</p><table border='1' cellpadding='8' style='border-collapse:collapse;'><tr><td><strong>Shift ID</strong></td><td>SH-2024-8841</td></tr><tr><td><strong>Date</strong></td><td>Wednesday, November 5th, 2024</td></tr><tr><td><strong>Reporting Time</strong></td><td>06:00 AM Central Time</td></tr><tr><td><strong>Pickup Dock</strong></td><td>DFW South Yard, Dock 42</td></tr><tr><td><strong>Destination</strong></td><td>Austin Fulfillment Hub</td></tr><tr><td><strong>Equipment</strong></td><td>53' Dry Van (Drop and Hook)</td></tr><tr><td><strong>Rate</strong></td><td>$32.50 / hour</td></tr></table><p><strong>Instructions:</strong> Steel-toe boots and high-visibility vest required. Pre-trip inspection sheet must be submitted via mobile portal before gate departure.</p><p>Dispatch Line: (888) 555-0199</p></body></html>"
+    "content": "<html><body><h2>Guardteck Security Shift Confirmation</h2><p>Dear Marcus,</p><p>Your shift assignment has been <strong>APPROVED</strong> by dispatch.</p><table border='1' cellpadding='8' style='border-collapse:collapse;'><tr><td><strong>Shift ID</strong></td><td>SH-2024-8841</td></tr><tr><td><strong>Date</strong></td><td>Wednesday, November 5th, 2024</td></tr><tr><td><strong>Reporting Time</strong></td><td>06:00 AM Pacific Time</td></tr><tr><td><strong>Site Location</strong></td><td>Vancouver Harbour Terminal, Gate B</td></tr><tr><td><strong>Secondary Site</strong></td><td>Burnaby Corporate Campus</td></tr><tr><td><strong>Equipment</strong></td><td>Patrol Vehicle</td></tr><tr><td><strong>Rate</strong></td><td>$32.50 / hour</td></tr></table><p><strong>Instructions:</strong> Security license and high-visibility vest required. Pre-shift check-in must be submitted via mobile portal before post start.</p><p>Dispatch Line: (888) 555-0199</p></body></html>"
   },
   "start": {
     "dateTime": "2024-11-05T06:00:00",
-    "timeZone": "Central Standard Time"
+    "timeZone": "Pacific Standard Time"
   },
   "end": {
-    "dateTime": "2024-11-05T14:30:00",
-    "timeZone": "Central Standard Time"
+    "dateTime": "2024-11-05T14:00:00",
+    "timeZone": "Pacific Standard Time"
   },
   "location": {
-    "displayName": "DFW South Yard, Dock 42",
+    "displayName": "Vancouver Harbour Terminal, Gate B",
     "address": {
-      "street": "1400 Logistics Pkwy",
-      "city": "Fort Worth",
-      "state": "TX",
-      "postalCode": "76155",
-      "countryOrRegion": "USA"
+      "street": "100 Port Access Rd",
+      "city": "Vancouver",
+      "state": "BC",
+      "postalCode": "V6C 3T4",
+      "countryOrRegion": "Canada"
     }
   },
   "attendees": [
     {
       "emailAddress": {
-        "address": "marcus.vance@apexlogistics.com",
+        "address": "marcus.vance@guardteck.com",
         "name": "Marcus Vance"
       },
       "type": "required"
     },
     {
       "emailAddress": {
-        "address": "dispatch@apexlogistics.com",
-        "name": "Central Dispatch Operations"
+        "address": "dispatch@guardteck.com",
+        "name": "Guardteck Central Dispatch"
       },
       "type": "optional"
     }
   ],
   "isReminderOn": true,
   "reminderMinutesBeforeStart": 120,
-  "categories": ["Dispatch Confirmed", "Logistics Shift"],
+  "categories": ["Dispatch Confirmed", "Security Shift"],
   "responseRequested": true
 }
 ```
@@ -608,15 +608,15 @@ Sent via `@microsoft/microsoft-graph-client` upon human dispatcher approval:
 ```json
 {
   "message": {
-    "subject": "CONFIRMED: Your Route Sheet & Calendar Invite for Shift SH-2024-8841",
+    "subject": "CONFIRMED: Your Shift Brief & Calendar Invite for Shift SH-2024-8841",
     "body": {
       "contentType": "HTML",
-      "content": "<p>Marcus, your tentative acceptance for tomorrow's run has been officially approved by Dispatch. Please review the attached calendar invite and arrive at DFW South Yard by 05:45 AM.</p>"
+      "content": "<p>Marcus, your tentative acceptance for tomorrow's shift has been officially approved by Guardteck Security Dispatch. Please review the attached calendar invite and arrive at Vancouver Harbour Terminal, Gate B by 05:45 AM.</p>"
     },
     "toRecipients": [
       {
         "emailAddress": {
-          "address": "marcus.vance@apexlogistics.com"
+          "address": "marcus.vance@guardteck.com"
         }
       }
     ],

@@ -12,8 +12,8 @@ To ensure carrier compliance, minimize latency, and guarantee pristine audio fid
 ```yaml
 telephony_trunk_profile:
   carrier: Twilio Elastic SIP Trunking
-  sip_termination_uri: "automated-dispatch.pstn.twilio.com"
-  region: us-east-1 (Virginia) # Matches Retell AI core processing cluster
+  sip_termination_uri: "guardteck-dispatch.pstn.us2.twilio.com"
+  region: "us-west-2 (Oregon / Umatilla NA-West Edge - Optimized for BC, Canada)"
   codec_priority:
     primary: "PCMU (G.711 u-law, 8kHz)"
     fallback: "PCMA (G.711 a-law, 8kHz)"
@@ -24,27 +24,25 @@ telephony_trunk_profile:
   concurrency_and_rate_limits:
     cps_allocated: 1.0 # Calls-per-second baseline
     inter_call_pacing_ms: 1200 # Enforced by Node.js token bucket
-    max_simultaneous_channels: 7 # Hard pool ceiling
+    max_simultaneous_channels: 5 # Hard pool ceiling
   dtmf_mode: "RFC 2833 / Out-of-band SIP INFO"
   timeout_settings:
     ring_timeout_seconds: 30 # Disconnects if no answer within 30s (6 rings)
     max_call_duration_seconds: 300 # 5-minute absolute hard cap
 ```
 
-#### 1.2 Local Number Routing & Dynamic CLI (Caller ID Matching)
-People are up to 65% more likely to answer calls coming from familiar local area codes. The system implements dynamic Caller Line Identification (CLI) spoofing using an approved 7-number Twilio pool:
+#### 1.2 5-Line Toll-Free Number Pool & BC Canada Routing
+To consolidate carrier costs across British Columbia operations and avoid per-city local DID inventory overhead, all outbound calls originate from a standardized 5-line North American Toll-Free Twilio pool routed through the NA-West (`us-west-2`) SIP edge:
 
-| Line Index | Local Region Served | Area Code | Twilio E.164 Number | Primary Route / Hub |
+| Line Index | Primary BC Coverage Area | Area Code | Twilio E.164 Number | Primary Hub |
 | :--- | :--- | :--- | :--- | :--- |
-| **Line 01** | Dallas-Fort Worth Metroplex | 214 / 469 | `+12145550101` | DFW Regional Hub |
-| **Line 02** | Greater Houston / Gulf Coast | 713 / 832 | `+17135550102` | Houston Port Distribution Center |
-| **Line 03** | Central Texas (Austin / San Antonio) | 512 / 210 | `+15125550103` | I-35 Logistics Corridor |
-| **Line 04** | Midwest Gateway (Chicago / Gary) | 312 / 872 | `+13125550104` | Midwest Rail Intermodal |
-| **Line 05** | Southeast Hub (Atlanta / Savannah) | 404 / 470 | `+14045550105` | Southeast Crossroads Hub |
-| **Line 06** | Northeast Express (NJ / Eastern PA) | 908 / 201 | `+19085550106` | Lehigh Valley / Newark Yard |
-| **Line 07** | National Overflow / Backup | 888 (Toll-Free) | `+18885550107` | General Dispatch Operations |
+| **Line 01** | Metro Vancouver / Burnaby | 888 (Toll-Free) | `+18885550101` | Vancouver Operations Center |
+| **Line 02** | Surrey / Fraser Valley | 888 (Toll-Free) | `+18885550102` | Fraser Valley Regional Hub |
+| **Line 03** | Victoria / Vancouver Island | 888 (Toll-Free) | `+18885550103` | Island Security Operations |
+| **Line 04** | Kelowna / BC Interior | 888 (Toll-Free) | `+18885550104` | Interior Dispatch Desk |
+| **Line 05** | BC Province-Wide Overflow | 888 (Toll-Free) | `+18885550105` | General Guardteck Dispatch Operations |
 
-*Routing Algorithm*: Given `Person.region`, the system matches the corresponding local line. If all lines for a given region are active, it selects the next geographically adjacent pool number or falls back to Line 07.
+*Routing Algorithm*: Given `Person.region`, the semaphore selects an idle line from the 5-line Toll-Free pool, preferring the regional assignment when free and falling back to Line 05 or any idle toll-free channel during surge windows.
 
 #### 1.3 Answering Machine Detection (AMD) Configuration
 - **Twilio AMD Mode**: `Enable=true`, `MachineDetection="DetectMessageEnd"`
@@ -53,7 +51,7 @@ People are up to 65% more likely to answer calls coming from familiar local area
 - **Voicemail Action**: When `machine_detected: true`, Retell triggers a deterministic audio payload drop and hangs up.
 
 **Voicemail Audio Drop Script**:
-> *"Hi Marcus, this is the Automated Dispatch desk at Apex Logistics calling regarding open shifts for tomorrow. We have an 8-hour dry van run available starting at 6:00 AM out of the DFW Hub. Please open your mobile portal or call dispatch at 888-555-0199 to claim this route. Thank you."*
+> *"Hi Marcus, this is the Guardteck Dispatch Bot at Guardteck Security calling regarding open shifts for tomorrow. We have an 8-hour shift available starting at 6:00 AM. Please check your portal or call dispatch at 888-555-0199 to review this shift. Thank you."*
 
 ---
 
@@ -62,7 +60,7 @@ People are up to 65% more likely to answer calls coming from familiar local area
 #### 2.1 Complete Production System Prompt
 ```markdown
 [ROLE & IDENTITY]
-You are "Alex", an automated outbound scheduling assistant for Apex Logistics Dispatch.
+You are "Guardteck Dispatch Bot", an automated outbound scheduling assistant for Guardteck Security.
 You are calling a person to check their tentative interest in upcoming open shifts.
 Your demeanor is warm, concise, respectful, and strictly business-oriented. You speak at a clear, natural pace.
 
@@ -79,9 +77,9 @@ Whenever a person agrees, accepts, or expresses interest, you MUST use the exact
 "Thank you! I have logged your tentative interest and submitted this to our human dispatch team for final review and approval. You will receive an official confirmation via email and calendar invite once approved."
 
 [BEHAVIORAL GUARDRAILS]
-1. ZERO SCHEDULE FINALIZATION: Under no circumstances confirm a booking.
+1. ZERO SCHEDULE FINALIZATION: Under no circumstances confirm a booking; take a note of the person's choice.
 2. PAY RATE INTEGRITY: Quote ONLY the exact pay rate provided in the injected variable {pay_rate}. Never negotiate, promise bonuses, or offer overtime multipliers.
-3. KNOWLEDGE RESTRICTION: Only answer questions using the provided Knowledge Base facts (detention pay, cancellation terms, PPE, etc.). If a person asks about something not in the knowledge base, state: "I don't have that specific detail on file, but I will make a note for the dispatcher to clarify that with you."
+3. KNOWLEDGE RESTRICTION: Only answer questions using the provided Knowledge Base facts - will be provided later on. If a person asks about something not in the knowledge base, state: "I don't have that specific detail on file, but I will make a note for the human dispatcher to clarify that with you."
 4. NO COMPETITOR / OTHER PERSON DISCLOSURE: Never disclose who else is being called, rates for other persons, or internal dispatch notes.
 5. CONCISENESS & TIMEOUT: Keep turns under 25 words whenever possible. People are busy; do not engage in prolonged banter.
 6. DO NOT CALL (DNC) COMPLIANCE: If the person states: "Stop calling me", "Take me off your list", or expresses strong hostility, immediately apologize, confirm compliance: "Understood. I am updating our system immediately to remove your number from our automated call list. We apologize for the disturbance. Have a good day." and terminate the call gracefully.
@@ -90,7 +88,7 @@ Whenever a person agrees, accepts, or expresses interest, you MUST use the exact
 [CONVERSATION FLOW]
 Phase 1: Greeting & Verification
 "Hi, is this {person_name}?"
-- If Yes: "Hi {person_first_name}, this is Alex with Apex Logistics automated dispatch. I'm calling about an available shift for {shift_date}. Do you have about thirty seconds?"
+- If Yes: "Hi {person_first_name}, this is Guardteck Dispatch Bot with Guardteck Security automated dispatch. I'm calling about an available shift for {shift_date}. Do you have about thirty seconds?"
 - If No: "Sorry for the confusion. Is {person_name} available?" (If not, say: "Thank you, I will try back later." and hang up).
 
 Phase 2: Shift Presentation
@@ -181,23 +179,23 @@ export interface RetellDynamicVariables {
 #### 3.1 Retell API Invocation Payload
 ```json
 {
-  "from_number": "+12145550101",
-  "to_number": "+12145550198",
-  "override_agent_id": "agent_apex_logistics_v1",
+  "from_number": "+18885550101",
+  "to_number": "+16045550198",
+  "override_agent_id": "agent_guardteck_security_v1",
   "retell_llm_dynamic_variables": {
     "shift_id": "SH-2024-8841",
     "person_id": "PER-1092",
     "person_name": "Marcus Vance",
     "person_first_name": "Marcus",
     "shift_date": "Wednesday, November 5th",
-    "start_time": "6:00 AM Central",
-    "end_time": "2:30 PM Central",
+    "start_time": "6:00 AM Pacific",
+    "end_time": "2:00 PM Pacific",
     "shift_duration_hours": 8,
-    "pickup_location": "DFW South Yard, Dock 42",
-    "dropoff_location": "Austin Fulfillment Hub",
-    "equipment_type": "53-foot Dry Van, Drop and Hook",
+    "pickup_location": "Vancouver Harbour Terminal, Gate B",
+    "dropoff_location": "Burnaby Corporate Campus",
+    "equipment_type": "Patrol Vehicle",
     "pay_rate": "$32.50 per hour",
-    "special_instructions": "Hi-vis vest required at gate",
+    "special_instructions": "Security license and hi-vis vest required at gate",
     "attempt_number": 1,
     "dispatch_desk_phone": "+18885550199"
   }
@@ -276,18 +274,18 @@ Upon call completion, Retell AI's extraction pipeline categorizes the dialogue i
 ### 6. Production Audio Transcript Walkthrough
 
 **Duration**: 1 minute, 42 seconds  
-**Characters**: Alex (AI Voice Agent), Marcus (Person)
+**Characters**: Guardteck Dispatch Bot (AI Voice Agent), Marcus (Person)
 
 > **[00:00 - 00:04] Ringing tone... Answered.**  
 > **Marcus**: Hello?  
-> **Alex**: Hi, is this Marcus?  
+> **Guardteck Dispatch Bot**: Hi, is this Marcus?  
 > **Marcus**: Yeah, speaking. Who's this?  
-> **Alex**: Hi Marcus, this is Alex with Apex Logistics automated dispatch. I'm calling about an available 8-hour shift for tomorrow morning, Wednesday. Do you have thirty seconds?  
-> **Marcus**: Yeah, I'm just finishing up my pre-trip. What do you have?  
-> **Alex**: We have a 53-foot dry van drop-and-hook route starting at 6:00 AM tomorrow from our DFW South Yard, delivering to the Austin Fulfillment Hub. The pay rate is $32.50 per hour. Are you tentatively open to taking this run?  
-> **Marcus**: Austin is good. Is that live unload or drop and hook down in Austin?  
-> **Alex**: This route is designated as drop and hook at both origin and destination facilities. It's 100% no-touch freight.  
-> **Marcus**: Awesome. Yeah, put me down for it. I can run that tomorrow morning.  
-> **Alex**: Excellent! Thank you, Marcus. I have logged your tentative interest and submitted this to our human dispatch team for final review and approval. You will receive an official confirmation via email and calendar invite once approved. Have a great day and take care!  
-> **Marcus**: Sounds good, thanks Alex. Bye.  
+> **Guardteck Dispatch Bot**: Hi Marcus, this is Guardteck Dispatch Bot with Guardteck Security automated dispatch. I'm calling about an available 8-hour shift for tomorrow morning, Wednesday. Do you have thirty seconds?  
+> **Marcus**: Yeah, I'm free right now. What do you have?  
+> **Guardteck Dispatch Bot**: We have an 8-hour shift starting at 6:00 AM Pacific tomorrow at Vancouver Harbour Terminal, Gate B. The pay rate is $32.50 per hour. Are you tentatively open to taking this shift?  
+> **Marcus**: Vancouver Harbour is good. Is parking included on site?  
+> **Guardteck Dispatch Bot**: Yes, site parking and equipment details are confirmed in the dispatch route brief.  
+> **Marcus**: Awesome. Yeah, put me down for it. I can cover that tomorrow morning.  
+> **Guardteck Dispatch Bot**: Excellent! Thank you, Marcus. I have logged your tentative interest and submitted this to our human dispatch team for final review and approval. You will receive an official confirmation via email and calendar invite once approved. Have a great day and take care!  
+> **Marcus**: Sounds good, thanks! Bye.  
 > **[Call Disconnected - 01:42]**

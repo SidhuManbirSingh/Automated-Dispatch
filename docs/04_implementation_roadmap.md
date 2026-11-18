@@ -10,9 +10,9 @@
 | :--- | :--- | :--- | :--- | :--- |
 | **Phase 1** | **Architectural Blueprint & Scaffolding** | Specifications, MySQL schemas, project tooling, health probes | Reference specs, Prisma schema, Fastify foundation, config schemas | **In Progress** |
 | **Phase 2** | **Local Sandbox & Persistence** | MySQL 8.0, Prisma migrations, mock data, public ingress | Containerized DB, seed data (25 persons, 50 shifts), n8n workflow | Planned |
-| **Phase 3** | **Voice Agent & Telephony** | Retell AI, Twilio SIP, conversational guardrails | Prompt engineering, local CLI caller ID, AMD detection | Planned |
+| **Phase 3** | **Voice Agent & Telephony** | Retell AI, Twilio SIP (`us-west-2` BC Canada), guardrails | Prompt engineering, 5-line toll-free pool, AMD detection | Planned |
 | **Phase 4** | **HITL & Microsoft 365** | Webhooks, Teams Adaptive Cards, Graph API | Dispatcher review queue, 1-click booking, Outlook calendar sync | Planned |
-| **Phase 5** | **Concurrency & Scale** | 7-line pool, 1 CPS pacing, race cancellation | Semaphore pool, cost guard ($25/day cap), mid-burst cancellation | Planned |
+| **Phase 5** | **Concurrency & Scale** | 5-line pool, 1 CPS pacing, race cancellation | Semaphore pool, cost guard ($25/day cap), mid-burst cancellation | Planned |
 | **Phase 6** | **Production Hardening** | Observability, load testing, dispatcher UAT | Structured logging, metrics, operator runbook, production cutover | Planned |
 
 ---
@@ -20,12 +20,12 @@
 ### Phase 1: Architectural Blueprint & Local Scaffolding
 
 #### Objectives
-Establish the complete foundational contracts, database schemas, telephony parameters, and developer workspace tooling.
+Establish the complete foundational contracts, database schemas, telephony parameters, and developer workspace tooling for Guardteck Security.
 
 #### Detailed Engineering Deliverables
-1. **Architectural Specifications (`reference/`)**:
-   - `01_system_architecture.md`: Data flow, 7-line concurrency, fallback matrix, cost model.
-   - `02_telephony_voice_spec.md`: Retell agent prompts, behavioral guardrails, AMD script, dynamic variables, RAG KB schema.
+1. **Architectural Specifications (`docs/`)**:
+   - `01_system_architecture.md`: Data flow, 5-line toll-free concurrency, fallback matrix, cost model.
+   - `02_telephony_voice_spec.md`: Guardteck Dispatch Bot prompts, behavioral guardrails, AMD script, dynamic variables, RAG KB schema.
    - `03_data_models_and_schemas.md`: Prisma ORM definitions, Retell webhook JSON, Teams Adaptive Card v1.5, MS Graph payloads.
    - `04_implementation_roadmap.md`: Phased engineering work breakdown structure.
 2. **Repository Tooling Scaffolding**:
@@ -66,8 +66,8 @@ Stand up a fully reproducible local testing sandbox with simulated seed data and
    - Initialize Prisma with MySQL provider and apply schema definitions.
    - Execute initial migration to establish database tables.
 2. **Realistic Seed Data Generation (`prisma/seed.ts`)**:
-   - Seed 25 mock persons across DFW, Houston, and Austin with valid phone formatting, equipment certifications, and reliability scores.
-   - Seed 50 open logistics shifts spanning upcoming 7 calendar days with varying pay rates, equipment needs, and priority tiers.
+   - Seed 25 mock persons across Vancouver, Surrey, Burnaby, Victoria, and Kelowna (BC, Canada) with valid phone formatting, security certifications, and reliability scores.
+   - Seed 50 open security shifts spanning upcoming 7 calendar days with varying pay rates, site needs, and priority tiers.
 3. **n8n Orchestration Environment**:
    - Spin up self-hosted n8n container bound to port 5678.
    - Configure MySQL credentials within n8n.
@@ -89,13 +89,13 @@ Configure the Retell AI voice agent, connect the Twilio SIP trunk, and validate 
 
 #### Detailed Engineering Steps
 1. **Twilio SIP Trunking Setup**:
-   - Provision test Twilio local number with E.164 compliance.
-   - Bind number to Retell AI SIP trunking endpoint.
+   - Provision 5 Twilio toll-free numbers with E.164 compliance routed via NA-West (`us-west-2` Oregon edge for BC, Canada).
+   - Bind numbers to Retell AI SIP trunking endpoint.
    - Enable Answering Machine Detection (AMD) with DetectMessageEnd.
 2. **Retell AI Agent Provisioning**:
-   - Create Retell Agent via REST API with Deepgram Nova-2 (STT) and Cartesia Sonic (TTS).
-   - Ingest production system prompt and behavioral guardrails defined in the voice specification.
-   - Mount the logistics FAQ Knowledge Base corpus.
+   - Create Guardteck Dispatch Bot Retell Agent via REST API with Deepgram Nova-2 (STT) and Cartesia Sonic (TTS).
+   - Ingest production system prompt and behavioral guardrails defined in `02_telephony_voice_spec.md`.
+   - Mount the Guardteck Security FAQ Knowledge Base corpus.
 3. **Live Personal Phone Pilot Calls**:
    - Trigger manual test call to engineer's mobile device.
    - Test Case 3A (Happy Path): Person asks about detention pay, accepts tentatively; Agent logs preference without booking, states HITL closing script.
@@ -137,12 +137,12 @@ Connect the end-to-end event bridge: Retell webhook ingestion to Teams Adaptive 
 ### Phase 5: Concurrency Scaling & Surge Load Testing
 
 #### Objectives
-Implement the 7-line concurrent execution pool, leaky-bucket CPS rate limiter, and mid-burst race condition cancellation.
+Implement the 5-line concurrent toll-free execution pool, leaky-bucket CPS rate limiter, and mid-burst race condition cancellation.
 
 #### Detailed Engineering Steps
-1. **7-Line Semaphore & Lease Management**:
-   - Implement LinePoolManager with atomic MySQL lease acquisition.
-   - Enforce maximum 7 simultaneous in-progress or ringing calls.
+1. **5-Line Semaphore & Lease Management**:
+   - Implement LinePoolManager with atomic MySQL lease acquisition across 5 toll-free trunks.
+   - Enforce maximum 5 simultaneous in-progress or ringing calls.
    - Build automated TTL reaper releasing abandoned leases after 6 minutes.
 2. **Leaky-Bucket Rate Limiter**:
    - Enforce 1,200ms inter-call dispatch pacing to guarantee carrier compliance with Twilio 1 CPS.
@@ -154,7 +154,7 @@ Implement the 7-line concurrent execution pool, leaky-bucket CPS rate limiter, a
    - If cumulative daily API spend reaches 22.50 USD (90% of 25.00 USD ceiling), halt automated outbound dialing and send high-priority alert.
 
 #### Acceptance Criteria
-- Burst test of 20 queued calls processes strictly 7 at a time without exceeding 1.0 CPS.
+- Burst test of 20 queued calls processes strictly 5 at a time without exceeding 1.0 CPS.
 - Mid-burst acceptance immediately revokes remaining ringing calls under 1,500 milliseconds.
 - Zero Twilio rate-limit errors during stress testing.
 
