@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guardteck Dispatch Console | Guardteck Security Automated Scheduling</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --dp-color-ground: #fcfcfd;
+      --dp-color-ink: #16191f;
+      --dp-color-ink-secondary: #454c58;
+      --dp-color-ground-muted: #f3f4f6;
+      --dp-color-rule: #dde0e6;
+      --dp-color-accent: #074ce0;
+      --dp-color-accent-hover: #053bb3;
+      --dp-color-field: #16191f;
+      --dp-color-on-field: #fcfcfd;
+      --dp-color-on-field-secondary: #d0d4dd;
+      --dp-color-panel: #ffffff;
+      --dp-color-on-accent: #ffffff;
+
+      --dp-typography-display: "Host Grotesk", sans-serif;
+      --dp-typography-reading: "Instrument Sans", sans-serif;
+
+      /* 1.2X scaled typography */
+      --dp-typography-body: 19.2px;
+      --dp-typography-interface: 18px;
+      --dp-typography-small: 16.8px;
+      --dp-typography-metadata: 15.6px;
+      --dp-typography-label: 14.4px;
+      --dp-typography-body-leading: 1.6;
+
+      --dp-spacing-grid-gap: 28.8px;
+      --dp-radius-panel: 14px;
+      --dp-radius-button: 8px;
+      --dp-border-hairline: 1px solid var(--dp-color-rule);
+      --dp-motion-interaction: 160ms;
+      --dp-motion-easing: ease-out;
+      --dp-shadow-panel: 0 2px 10px rgba(22, 25, 31, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--dp-color-ground);
+      color: var(--dp-color-ink);
+      font-family: var(--dp-typography-reading);
+      font-size: var(--dp-typography-body);
+      line-height: var(--dp-typography-body-leading);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
+      outline: 2px solid var(--dp-color-accent);
+      outline-offset: 2px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        transition: none !important;
+        transform: none !important;
+      }
+    }
+
+    header {
+      padding: 20px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--dp-color-panel);
+      border-bottom: var(--dp-border-hairline);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      background: var(--dp-color-accent);
+      border-radius: var(--dp-radius-button);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--dp-color-on-accent);
+      font-family: var(--dp-typography-display);
+      font-weight: 700;
+      font-size: 24px;
+    }
+
+    .brand-title {
+      font-family: var(--dp-typography-display);
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--dp-color-ink);
+    }
+
+    .brand-tag {
+      font-size: var(--dp-typography-label);
+      color: var(--dp-color-ink-secondary);
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .status-ribbon {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: var(--dp-radius-button);
+      font-size: var(--dp-typography-small);
+      font-weight: 600;
+      border: var(--dp-border-hairline);
+      background: var(--dp-color-ground-muted);
+      color: var(--dp-color-ink);
+    }
+
+    .badge-accent {
+      background: var(--dp-color-accent);
+      color: var(--dp-color-on-accent);
+      border-color: var(--dp-color-accent);
+    }
+
+    .badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #00d084;
+    }
+
+    main {
+      flex: 1;
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 48px 32px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 56px;
+    }
+
+    /* Hero 1.45:1 Split Layout */
+    .hero-split {
+      display: grid;
+      grid-template-columns: 1.45fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .hero-statement h1 {
+      font-family: var(--dp-typography-display);
+      font-size: 56px;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      font-weight: 700;
+      color: var(--dp-color-ink);
+      margin-bottom: 20px;
+    }
+
+    .hero-statement p {
+      font-size: var(--dp-typography-body);
+      color: var(--dp-color-ink-secondary);
+      max-width: 680px;
+      margin-bottom: 32px;
+      line-height: var(--dp-typography-body-leading);
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* Buttons */
+    .btn {
+      font-family: var(--dp-typography-reading);
+      font-size: var(--dp-typography-interface);
+      font-weight: 600;
+      padding: 14px 28px;
+      border-radius: var(--dp-radius-button);
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      transition: background-color var(--dp-motion-interaction) var(--dp-motion-easing),
+                  transform var(--dp-motion-interaction) var(--dp-motion-easing),
+                  border-color var(--dp-motion-interaction) var(--dp-motion-easing);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn-primary {
+      background-color: var(--dp-color-accent);
+      color: var(--dp-color-on-accent);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--dp-color-accent-hover);
+    }
+
+    .btn-secondary {
+      background-color: var(--dp-color-panel);
+      color: var(--dp-color-ink);
+      border: var(--dp-border-hairline);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--dp-color-ground-muted);
+      border-color: #c7cbd4;
+    }
+
+    .btn-sm {
+      padding: 10px 18px;
+      font-size: var(--dp-typography-small);
+    }
+
+    /* Product Diagram */
+    .hero-diagram {
+      background: var(--dp-color-panel);
+      border: var(--dp-border-hairline);
+      border-radius: var(--dp-radius-panel);
+      padding: 32px;
+      box-shadow: var(--dp-shadow-panel);
+    }
+
+    .diagram-title {
+      font-family: var(--dp-typography-display);
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--dp-color-ink);
+      margin-bottom: 8px;
+    }
+
+    .diagram-sub {
+      font-size: var(--dp-typography-small);
+      color: var(--dp-color-ink-secondary);
+      margin-bottom: 24px;
+    }
+
+    .diagram-flow {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .diagram-node {
+      background: var(--dp-color-ground-muted);
+      border: var(--dp-border-hairline);
+      border-radius: var(--dp-radius-button);
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: var(--dp-typography-small);
+    }
+
+    .diagram-node strong {
+      color: var(--dp-color-ink);
+    }
+
+    .diagram-badge {
+      font-size: var(--dp-typography-label);
+      font-weight: 600;
+      background: var(--dp-color-accent);
+      color: var(--dp-color-on-accent);
+      padding: 4px 10px;
+      border-radius: 4px;
+    }
+
+    .rate-bar-container {
+      margin-top: 18px;
+      background: var(--dp-color-ground-muted);
+      height: 10px;
+      border-radius: 6px;
+      overflow: hidden;
+      border: var(--dp-border-hairline);
+    }
+
+    .rate-bar-fill {
+      height: 100%;
+      background: var(--dp-color-accent);
+      width: 0%;
+      border-radius: 6px;
+      transition: width var(--dp-motion-interaction) var(--dp-motion-easing);
+    }
+
+    /* Ruled Strip Below Hero */
+    .facts-strip {
+      border-top: var(--dp-border-hairline);
+      border-bottom: var(--dp-border-hairline);
+      padding: 32px 24px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--dp-spacing-grid-gap);
+      background: var(--dp-color-panel);
+    }
+
+    .fact-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .fact-number {
+      font-family: var(--dp-typography-display);
+      font-size: 44px;
+      font-weight: 800;
+      color: var(--dp-color-ink);
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+
+    .fact-label {
+      font-size: var(--dp-typography-metadata);
+      font-weight: 700;
+      color: var(--dp-color-accent);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .fact-sub {
+      font-size: var(--dp-typography-small);
+      color: var(--dp-color-ink-secondary);
+      line-height: 1.4;
+    }
+
+    /* Dark Passage 1: 5-Line Toll-Free Telephony Pool */
+    .dark-passage {
+      background: var(--dp-color-field);
+      color: var(--dp-color-on-field);
+      border-radius: var(--dp-radius-panel);
+      padding: 44px 48px;
+    }
+
+    .dark-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 32px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      padding-bottom: 20px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .dark-title h2 {
+      font-family: var(--dp-typography-display);
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--dp-color-on-field);
+    }
+
+    .dark-title p {
+      font-size: var(--dp-typography-small);
+      color: var(--dp-color-on-field-secondary);
+      margin-top: 6px;
+    }
+
+    .lines-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 20px;
+    }
+
+    .line-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--dp-radius-button);
+      padding: 22px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      text-align: center;
+      transition: all var(--dp-motion-interaction) var(--dp-motion-easing);
+    }
+
+    .line-card.active {
+      background: rgba(7, 76, 224, 0.22);
+      border-color: var(--dp-color-accent);
+      box-shadow: 0 0 16px rgba(7, 76, 224, 0.35);
+    }
+
+    .line-num {
+      font-family: var(--dp-typography-display);
+      font-size: 30px;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1;
+    }
+
+    .line-region {
+      font-size: var(--dp-typography-label);
+      font-weight: 700;
+      color: var(--dp-color-on-field-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .line-status-pill {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: var(--dp-typography-label);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .line-status-pill.idle {
+      background: rgba(255, 255, 255, 0.08);
+      color: rgba(255, 255, 255, 0.65);
+    }
+
+    .line-status-pill.in-progress {
+      background: #00d084;
+      color: #0b2e1a;
+    }
+
+    .line-detail {
+      font-size: var(--dp-typography-metadata);
+      color: var(--dp-color-on-field-secondary);
+      line-height: 1.3;
+      min-height: 32px;
+    }
+
+    /* Human-in-the-Loop Approval Queue Section */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 24px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .section-title {
+      font-family: var(--dp-typography-display);
+      font-size: 34px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--dp-color-ink);
+    }
+
+    .section-subtitle {
+      font-size: var(--dp-typography-small);
+      color: var(--dp-color-ink-secondary);
+      margin-top: 4px;
+    }
+
+    .approvals-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .approval-card {
+      background: var(--dp-color-panel);
+      border: var(--dp-border-hairline);
+      border-radius: var(--dp-radius-panel);
+      padding: 28px 32px;
+      box-shadow: var(--dp-shadow-panel);
+      display: grid;
+      grid-template-columns: 1.2fr 1fr auto;
+      gap: 32px;
+      align-items: center;
+      transition: all var(--dp-motion-interaction) var(--dp-motion-easing);
+    }
+
+    .approval-card.approved {
+      border-left: 6px solid #00d084;
+    }
+
+    .approval-card.declined {
+      border-left: 6px solid #d32f2f;
+    }
+
+    .person-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .person-name {
+      font-family: var(--dp-typography-display);
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--dp-color-ink);
+    }
+
+    .person-score {
+      font-size: var(--dp-typography-metadata);
+      color: var(--dp-color-accent);
+      font-weight: 700;
+      background: var(--dp-color-ground-muted);
+      padding: 4px 10px;
+      border-radius: 4px;
+      border: var(--dp-border-hairline);
+    }
+
+    .route-spec {
+      font-size: var(--dp-typography-small);
+      color: var(--dp-color-ink-secondary);
+      line-height: 1.5;
+    }
+
+    .route-spec strong {
+      color: var(--dp-color-ink);
+    }
+
+    .ai-summary-box {
+      background: var(--dp-color-ground-muted);
+      border: var(--dp-border-hairline);
+      border-radius: var(--dp-radius-button);
+      padding: 18px 22px;
+      font-size: var(--dp-typography-small);
+      color: var(--dp-color-ink);
+      line-height: 1.5;
+    }
+
+    .transcript-toggle {
+      background: none;
+      border: none;
+      color: var(--dp-color-accent);
+      font-size: var(--dp-typography-small);
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: underline;
+      margin-top: 10px;
+      display: inline-block;
+    }
+
+    .transcript-box {
+      display: none;
+      margin-top: 12px;
+      background: var(--dp-color-field);
+      color: var(--dp-color-on-field);
+      font-family: monospace;
+      font-size: 14px;
+      padding: 16px;
+      border-radius: var(--dp-radius-button);
+      white-space: pre-wrap;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .approval-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-width: 190px;
+    }
+
+    /* Shifts and Persons Tables */
+    .table-container {
+      background: var(--dp-color-panel);
+      border: var(--dp-border-hairline);
+      border-radius: var(--dp-radius-panel);
+      overflow-x: auto;
+      box-shadow: var(--dp-shadow-panel);
+    }
+
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .custom-table th {
+      background: var(--dp-color-ground-muted);
+      padding: 18px 24px;
+      font-size: var(--dp-typography-label);
+      font-weight: 700;
+      color: var(--dp-color-ink-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: var(--dp-border-hairline);
+    }
+
+    .custom-table td {
+      padding: 20px 24px;
+      border-bottom: var(--dp-border-hairline);
+      font-size: var(--dp-typography-small);
+      color: var(--dp-color-ink);
+    }
+
+    .custom-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .custom-table tr:hover {
+      background-color: var(--dp-color-ground-muted);
+    }
+
+    /* Dark Passage 2: Scenario Lab */
+    .lab-container {
+      background: var(--dp-color-field);
+      color: var(--dp-color-on-field);
+      border-radius: var(--dp-radius-panel);
+      padding: 44px 48px;
+    }
+
+    .lab-scenarios {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin: 24px 0;
+    }
+
+    .console-output {
+      background: #0d1017;
+      color: #4ade80;
+      font-family: monospace;
+      font-size: 14.4px;
+      padding: 24px;
+      border-radius: var(--dp-radius-button);
+      max-height: 280px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      line-height: 1.6;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    footer {
+      background: var(--dp-color-field);
+      color: var(--dp-color-on-field-secondary);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 40px 48px;
+      margin-top: 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: var(--dp-typography-small);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 28px;
+    }
+
+    .footer-links a {
+      color: var(--dp-color-on-field);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 1050px) {
+      .hero-split {
+        grid-template-columns: 1fr;
+      }
+      .lines-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .facts-strip {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .approval-card {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      header {
+        padding: 16px 20px;
+        flex-direction: column;
+        gap: 14px;
+      }
+      main {
+        padding: 24px 16px;
+      }
+      .lines-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .facts-strip {
+        grid-template-columns: 1fr;
+      }
+      footer {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .lines-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="brand">
+      <div class="brand-mark">G</div>
+      <div>
+        <div class="brand-title">Guardteck Dispatch Console</div>
+        <div class="brand-tag">Guardteck Security &bull; Human-in-the-Loop Telephony</div>
+      </div>
+    </div>
+    <div class="status-ribbon">
+      <div class="badge badge-accent">
+        <span class="badge-dot"></span>
+        <span id="headerLinesBadge">5-Line Toll-Free Pool: 0 Active</span>
+      </div>
+      <div class="badge" id="headerSpendBadge">
+        Spend: $14.20 / $25.00
+      </div>
+      <div class="badge" id="headerDbBadge">
+        Simulation Store
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero 1.45:1 Split Layout -->
+    <section class="hero-split">
+      <div class="hero-statement">
+        <h1>Autonomous Guardteck dispatching governed by human authorization.</h1>
+        <p>
+          Guardteck Dispatch Bot checks open security shift availability across a 5-line Toll-Free PSTN pool routed through Twilio NA-West (us-west-2 for BC, Canada). Zero shifts are finalized without explicit dispatcher authorization.
+        </p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" onclick="triggerImmediateSurge()">
+            Trigger Outbound Surge
+          </button>
+          <a href="#approvalsSection" class="btn btn-secondary">
+            Review Pending Queue (<span id="heroPendingCount">1</span>)
+          </a>
+          <a href="#simulatorLab" class="btn btn-secondary">
+            Scenario Test Lab
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-diagram">
+        <div class="diagram-title">System Concurrency and Pacing</div>
+        <div class="diagram-sub">Twilio NA-West (us-west-2 BC Canada Edge) and Retell Voice Core</div>
+
+        <div class="diagram-flow">
+          <div class="diagram-node">
+            <span>PSTN Carrier Pool</span>
+            <span class="diagram-badge">5 Toll-Free Trunks</span>
+          </div>
+          <div class="diagram-node">
+            <span>Carrier Dispatch Pacing</span>
+            <strong>1 CPS (1,200ms delay)</strong>
+          </div>
+          <div class="diagram-node">
+            <span>Human-in-the-Loop Rule</span>
+            <strong>Zero AI Final Booking</strong>
+          </div>
+        </div>
+
+        <div class="rate-bar-container">
+          <div class="rate-bar-fill" id="concurrencyBar" style="width: 0%;"></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 15.6px;">
+          <span>Channel Allocation</span>
+          <strong id="linesRatio">0 / 5 Lines Active</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ruled Facts Strip -->
+    <section class="facts-strip">
+      <div class="fact-item">
+        <div class="fact-number">40,000</div>
+        <div class="fact-label">Hours Managed</div>
+        <div class="fact-sub">Guardteck BC shift portfolio capacity</div>
+      </div>
+      <div class="fact-item">
+        <div class="fact-number">5 Lines</div>
+        <div class="fact-label">Toll-Free Pool</div>
+        <div class="fact-sub">Simultaneous 888 lines routed via us-west-2</div>
+      </div>
+      <div class="fact-item">
+        <div class="fact-number">100%</div>
+        <div class="fact-label">Human Authorized</div>
+        <div class="fact-sub">Zero unconfirmed shift assignments</div>
+      </div>
+      <div class="fact-item">
+        <div class="fact-number">$0.18</div>
+        <div class="fact-label">Average Cost</div>
+        <div class="fact-sub">Ceiling enforced under $25.00 daily limit</div>
+      </div>
+    </section>
+
+    <!-- Dark Passage 1: 5-Line Toll-Free Telephony Pool -->
+    <section class="dark-passage" id="telephonyPoolSection">
+      <div class="dark-header">
+        <div class="dark-title">
+          <h2>5-Line Outbound Toll-Free Telephony Pool</h2>
+          <p>Real-time channel leases across BC Canada (us-west-2 SIP edge) and automated race cancellation.</p>
+        </div>
+        <button class="btn btn-secondary" style="background: rgba(255,255,255,0.1); color: #ffffff; border-color: rgba(255,255,255,0.2);" onclick="refreshLines()">
+          Refresh Lines
+        </button>
+      </div>
+
+      <div class="lines-grid" id="linesContainer">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+    <!-- Human Dispatcher Approval Queue -->
+    <section id="approvalsSection">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Human Dispatcher Approval Queue</h2>
+          <p class="section-subtitle">Teams Adaptive Cards awaiting Guardteck dispatcher verification.</p>
+        </div>
+        <span class="badge" id="approvalCountBadge">
+          1 Pending Action
+        </span>
+      </div>
+
+      <div class="approvals-list" id="approvalsContainer">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+    <!-- Open Security Shifts -->
+    <section>
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Open Security Shifts</h2>
+          <p class="section-subtitle">Guardteck Security BC sites scheduled for candidate outreach.</p>
+        </div>
+        <span class="badge">Target: 80 hrs/day</span>
+      </div>
+
+      <div class="table-container">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Shift ID</th>
+              <th>Date and Hours</th>
+              <th>Site Location</th>
+              <th>Role / Equipment</th>
+              <th>Pay Rate</th>
+              <th>Priority</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="shiftsTableBody">
+            <!-- Rendered dynamically -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Persons Directory -->
+    <section>
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Persons Directory</h2>
+          <p class="section-subtitle">Guardteck Security personnel roster and Do-Not-Call compliance.</p>
+        </div>
+        <span class="badge">CASL / TCPA Guard Active</span>
+      </div>
+
+      <div class="table-container">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Candidate Name</th>
+              <th>Region (BC)</th>
+              <th>Phone</th>
+              <th>Reliability</th>
+              <th>Completed Shifts</th>
+              <th>Compliance</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="personsTableBody">
+            <!-- Rendered dynamically -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Dark Passage 2: Scenario Lab -->
+    <section class="lab-container" id="simulatorLab">
+      <div class="dark-title">
+        <h2>Automated Dispatch Scenario Lab</h2>
+        <p style="color: var(--dp-color-on-field-secondary); font-size: 16.8px; margin-top: 6px;">
+          Execute test cases from the engineering roadmap to verify Guardteck Dispatch Bot guardrails and mid-burst race cancellations.
+        </p>
+      </div>
+
+      <div class="lab-scenarios">
+        <button class="btn btn-primary" onclick="runScenario('3A_HAPPY_PATH')">
+          Test 3A: Happy Path Tentative Accept
+        </button>
+        <button class="btn btn-secondary" style="background: rgba(255,255,255,0.1); color: #ffffff; border-color: rgba(255,255,255,0.2);" onclick="runScenario('3B_DECLINE')">
+          Test 3B: Person Declines Shift
+        </button>
+        <button class="btn btn-secondary" style="background: rgba(255,255,255,0.1); color: #ffffff; border-color: rgba(255,255,255,0.2);" onclick="runScenario('3C_GUARDRAIL_STRESS')">
+          Test 3C: Guardrail Prompt Injection Stress
+        </button>
+        <button class="btn btn-secondary" style="background: rgba(255,255,255,0.1); color: #ffffff; border-color: rgba(255,255,255,0.2);" onclick="runScenario('3D_VOICEMAIL_AMD')">
+          Test 3D: Twilio AMD Voicemail Drop
+        </button>
+        <button class="btn btn-secondary" style="background: rgba(255,255,255,0.1); color: #ffffff; border-color: rgba(255,255,255,0.2);" onclick="runScenario('5_BURST_CANCELLATION')">
+          Test 5: 3-Line Rush Burst and Cancellation
+        </button>
+      </div>
+
+      <div class="console-output" id="consoleOutput">[SIMULATOR READY] Select any scenario above to observe live state transitions, call transcripts, and dispatcher cards.</div>
+    </section>
+  </main>
+
+  <!-- Dark Footer -->
+  <footer>
+    <div>
+      <strong>Guardteck Security Dispatch Desk</strong> &mdash; Autonomous Telephony and Human-in-the-Loop Architecture.
+      <br>MySQL 8.0 &bull; Retell AI (Guardteck Dispatch Bot) &bull; Twilio SIP (us-west-2 Toll-Free) &bull; Microsoft 365 Graph
+    </div>
+    <div class="footer-links">
+      <a href="/health/readiness" target="_blank">Health and Readiness</a>
+      <a href="/api/v1/dashboard/stats" target="_blank">Stats API</a>
+      <a href="/api/v1/dispatch/lines" target="_blank">Lines API</a>
+      <a href="/api/v1/dashboard/approvals" target="_blank">Approvals API</a>
+    </div>
+  </footer>
+
+  <script>
+    let activeApprovals = [];
+    let activeShifts = [];
+    let activePersons = [];
+    let activeLines = [];
+
+    async function loadDashboard() {
+      try {
+        const statsRes = await fetch('/api/v1/dashboard/stats');
+        if (statsRes.ok) {
+          const stats = await statsRes.json();
+          updateStatsUI(stats);
+        }
+
+        const linesRes = await fetch('/api/v1/dispatch/lines');
+        if (linesRes.ok) {
+          const linesData = await linesRes.json();
+          activeLines = linesData.lines || [];
+          renderLinesUI(activeLines);
+        }
+
+        const apprRes = await fetch('/api/v1/dashboard/approvals');
+        if (apprRes.ok) {
+          activeApprovals = await apprRes.json();
+          renderApprovalsUI(activeApprovals);
+        }
+
+        const shiftsRes = await fetch('/api/v1/dashboard/shifts');
+        if (shiftsRes.ok) {
+          activeShifts = await shiftsRes.json();
+          renderShiftsUI(activeShifts);
+        }
+
+        const personsRes = await fetch('/api/v1/dashboard/persons');
+        if (personsRes.ok) {
+          activePersons = await personsRes.json();
+          renderPersonsUI(activePersons);
+        }
+      } catch (err) {
+        console.error('Failed to load dashboard data', err);
+        logToConsole('[ERROR LOADING DASHBOARD] ' + err.message);
+      }
+    }
+
+    function updateStatsUI(stats) {
+      if (!stats) return;
+      const maxLines = stats.maxLines || 5;
+      const activeCount = stats.activeOutboundLines || 0;
+
+      const headerLines = document.getElementById('headerLinesBadge');
+      if (headerLines) headerLines.textContent = maxLines + '-Line Toll-Free Pool: ' + activeCount + ' Active';
+
+      const headerSpend = document.getElementById('headerSpendBadge');
+      if (headerSpend && stats.spend) {
+        const cost = Number(stats.spend.totalCostUsd || 0).toFixed(2);
+        const ceiling = Number(stats.spend.ceilingUsd || 25).toFixed(2);
+        headerSpend.textContent = 'Spend: $' + cost + ' / $' + ceiling;
+      }
+
+      const headerDb = document.getElementById('headerDbBadge');
+      if (headerDb) {
+        headerDb.textContent = stats.databaseMode === 'MYSQL_ONLINE' ? 'MySQL 8 Online' : 'Simulation Store';
+      }
+
+      const heroPending = document.getElementById('heroPendingCount');
+      if (heroPending) heroPending.textContent = stats.pendingApprovals ?? 0;
+
+      const apprCount = document.getElementById('approvalCountBadge');
+      if (apprCount) apprCount.textContent = (stats.pendingApprovals ?? 0) + ' Pending Action';
+
+      const pct = Math.min(100, (activeCount / maxLines) * 100);
+      const bar = document.getElementById('concurrencyBar');
+      if (bar) bar.style.width = pct + '%';
+
+      const ratio = document.getElementById('linesRatio');
+      if (ratio) ratio.textContent = activeCount + ' / ' + maxLines + ' Lines Active';
+    }
+
+    function renderLinesUI(lines) {
+      const container = document.getElementById('linesContainer');
+      if (!container) return;
+      container.innerHTML = '';
+
+      (lines || []).forEach(line => {
+        const isActive = line.status !== 'IDLE';
+        const card = document.createElement('div');
+        card.className = 'line-card' + (isActive ? ' active' : '');
+        card.innerHTML = `
+          <div class="line-num">${line.channelIndex < 10 ? '0' + line.channelIndex : line.channelIndex}</div>
+          <div class="line-region">${line.regionServed || 'BC'} &bull; TOLL-FREE</div>
+          <div>
+            <span class="line-status-pill ${isActive ? 'in-progress' : 'idle'}">
+              ${line.status}
+            </span>
+          </div>
+          <div class="line-detail">
+            ${isActive ? '<strong>' + (line.personName || 'Active Call') + '</strong>' : (line.allocatedPhoneNumber || '')}
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function renderApprovalsUI(approvals) {
+      const container = document.getElementById('approvalsContainer');
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (!approvals || approvals.length === 0) {
+        container.innerHTML = '<div style="background: var(--dp-color-ground-muted); padding: 24px; border-radius: var(--dp-radius-button); text-align: center; color: var(--dp-color-ink-secondary);">Zero pending approvals. All shifts assigned or in progress.</div>';
+        return;
+      }
+
+      approvals.forEach(appr => {
+        const isPending = appr.status === 'PENDING';
+        const card = document.createElement('div');
+        card.className = 'approval-card ' + (appr.status ? appr.status.toLowerCase() : 'pending');
+
+        const personName = appr.person ? appr.person.firstName + ' ' + appr.person.lastName : 'Candidate';
+        const shiftId = appr.shift ? appr.shift.externalId : (appr.shiftId || 'SH-2024');
+        const totalPay = appr.shift ? (Number(appr.shift.payRateHourly) * Number(appr.shift.durationHours)).toFixed(2) : '260.00';
+
+        card.innerHTML = `
+          <div>
+            <div class="person-header">
+              <span class="person-name">${personName}</span>
+              <span class="person-score">${appr.person ? (appr.person.reliabilityScore * 100).toFixed(0) + '%' : '98%'} Reliability</span>
+            </div>
+            <div class="route-spec">
+              <strong>Shift:</strong> ${shiftId} &bull; ${appr.shift ? appr.shift.pickupLocation : 'Vancouver Harbour Terminal'} to ${appr.shift ? appr.shift.dropoffLocation : 'Burnaby Corporate Campus'}<br>
+              <strong>Rate:</strong> $${appr.shift ? appr.shift.payRateHourly : '32.50'}/hr (Est. Total: $${totalPay}) &bull; ${appr.shift ? appr.shift.durationHours : '8'} Hours
+            </div>
+            <button class="transcript-toggle" onclick="toggleTranscript('${appr.id}')">
+              View Call Transcript
+            </button>
+            <div class="transcript-box" id="transcript_${appr.id}">
+${appr.callLog && appr.callLog.transcript ? appr.callLog.transcript : 'Transcript ready in MS Teams feed.'}
+            </div>
+          </div>
+
+          <div class="ai-summary-box">
+            <strong>Guardteck Dispatch Bot Summary:</strong><br>
+            ${appr.callLog && appr.callLog.summary ? appr.callLog.summary : 'Candidate tentatively accepted shift. Asserted HITL rule and concluded call.'}
+            <div style="margin-top: 6px; font-size: 14px; color: var(--dp-color-ink-secondary);">
+              Status: <strong>${appr.status}</strong> &bull; Window closes: ${appr.expiresAt ? new Date(appr.expiresAt).toLocaleTimeString() : 'N/A'}
+            </div>
+          </div>
+
+          <div class="approval-actions">
+            ${isPending ? `
+              <button class="btn btn-primary btn-sm" onclick="submitApproval('${appr.id}', 'APPROVE', '${appr.shiftId}', '${appr.personId}')">
+                Approve and Book
+              </button>
+              <button class="btn btn-secondary btn-sm" onclick="submitApproval('${appr.id}', 'DECLINE', '${appr.shiftId}', '${appr.personId}')">
+                Decline
+              </button>
+            ` : `
+              <div style="font-weight: 700; color: ${appr.status === 'APPROVED' ? '#00875a' : '#d32f2f'};">
+                ${appr.status === 'APPROVED' ? 'Approved and Booked' : 'Declined'}
+              </div>
+              <div style="font-size: 14px; color: var(--dp-color-ink-secondary);">
+                By ${appr.dispatcherName || 'Dispatcher Sarah Jenkins'}
+              </div>
+            `}
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function renderShiftsUI(shifts) {
+      const tbody = document.getElementById('shiftsTableBody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      (shifts || []).forEach(shift => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${shift.externalId}</strong></td>
+          <td>${new Date(shift.shiftDate).toLocaleDateString()} (${shift.durationHours} hrs)</td>
+          <td>${shift.pickupLocation} &bull; ${shift.dropoffLocation}</td>
+          <td>${shift.equipmentType}</td>
+          <td><strong>$${Number(shift.payRateHourly).toFixed(2)}</strong>/hr</td>
+          <td>
+            <span class="badge" style="font-size: 14px; padding: 4px 10px;">
+              ${shift.priority === 3 ? 'Critical' : shift.priority === 2 ? 'Urgent' : 'Normal'}
+            </span>
+          </td>
+          <td>
+            <span class="badge ${shift.status === 'ASSIGNED' ? 'badge-accent' : ''}" style="font-size: 14px; padding: 4px 10px;">
+              ${shift.status}
+            </span>
+          </td>
+          <td>
+            ${shift.status === 'OPEN' ? `
+              <button class="btn btn-primary btn-sm" onclick="triggerShiftDispatch('${shift.id}')">
+                Dispatch Calls
+              </button>
+            ` : `
+              <span style="font-size: 14.4px; color: var(--dp-color-ink-secondary);">${shift.status === 'ASSIGNED' ? 'Assigned' : 'In Review'}</span>
+            `}
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderPersonsUI(persons) {
+      const tbody = document.getElementById('personsTableBody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      (persons || []).forEach(person => {
+        const isDnc = person.dncFlag;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${person.externalId}</td>
+          <td><strong>${person.firstName} ${person.lastName}</strong></td>
+          <td>${person.region}</td>
+          <td>${person.phone}</td>
+          <td>${(person.reliabilityScore * 100).toFixed(0)}%</td>
+          <td>${person.totalShiftsCompleted} shifts</td>
+          <td>
+            <span class="badge" style="background: ${isDnc ? '#ffebe6' : '#e3fcef'}; color: ${isDnc ? '#de350b' : '#006644'}; font-size: 14px; padding: 4px 10px; border: none;">
+              ${isDnc ? 'Do Not Call' : 'Active'}
+            </span>
+          </td>
+          <td>
+            <button class="btn btn-secondary btn-sm" onclick="toggleDnc('${person.id}')">
+              ${isDnc ? 'Unblock Phone' : 'Set DNC'}
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function toggleTranscript(id) {
+      const el = document.getElementById('transcript_' + id);
+      if (el) {
+        el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+      }
+    }
+
+    async function submitApproval(approvalQueueId, action, shiftId, personId) {
+      try {
+        logToConsole('[APPROVAL] Dispatcher submitting ' + action + ' for approval ' + approvalQueueId + '...');
+        const res = await fetch('/api/v1/approvals/action', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action,
+            approvalQueueId,
+            shiftId,
+            personId,
+            dispatcherId: 'dispatcher@guardteck.com',
+            dispatcherName: 'Dispatcher Sarah Jenkins',
+            notes: 'Approved via Guardteck Dispatch Console',
+          }),
+        });
+
+        const result = await res.json();
+        logToConsole('[APPROVAL ACTION RESULT] ' + action + ':\n' + JSON.stringify(result, null, 2));
+        await loadDashboard();
+      } catch (err) {
+        logToConsole('[APPROVAL ERROR] ' + err.message);
+      }
+    }
+
+    async function triggerShiftDispatch(shiftId) {
+      try {
+        logToConsole('[DISPATCH SURGE] Initiating toll-free call out for shift: ' + shiftId + '...');
+        const res = await fetch('/api/v1/dispatch/trigger', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ shiftId, maxCandidates: 2 }),
+        });
+        const result = await res.json();
+        logToConsole('[DISPATCH SURGE RESULT]\n' + JSON.stringify(result, null, 2));
+        await loadDashboard();
+      } catch (err) {
+        logToConsole('[DISPATCH ERROR] ' + err.message);
+      }
+    }
+
+    async function triggerImmediateSurge() {
+      const openShift = activeShifts.find(s => s.status === 'OPEN');
+      if (openShift) {
+        await triggerShiftDispatch(openShift.id);
+      } else {
+        logToConsole('[SURGE NOTICE] No open shifts currently unassigned. Running Test 3A to inject a tentative candidate...');
+        await runScenario('3A_HAPPY_PATH');
+      }
+    }
+
+    async function toggleDnc(personId) {
+      try {
+        logToConsole('[DNC TOGGLE] Updating Do-Not-Call compliance status for person: ' + personId + '...');
+        const res = await fetch('/api/v1/dashboard/persons/' + personId + '/toggle-dnc', { method: 'POST' });
+        const data = await res.json();
+        logToConsole('[DNC STATUS UPDATED]\n' + JSON.stringify(data, null, 2));
+        await loadDashboard();
+      } catch (err) {
+        logToConsole('[DNC TOGGLE ERROR] ' + err.message);
+      }
+    }
+
+    async function runScenario(scenario) {
+      logToConsole('[SIMULATOR] Launching roadmap test case: ' + scenario + '...');
+      try {
+        const res = await fetch('/api/v1/simulator/run', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ scenario }),
+        });
+        const data = await res.json();
+        logToConsole('[SIMULATOR RESULT - ' + scenario + ']\n' + JSON.stringify(data, null, 2));
+        await loadDashboard();
+      } catch (err) {
+        logToConsole('[SIMULATOR ERROR] ' + err.message);
+      }
+    }
+
+    function refreshLines() {
+      loadDashboard();
+      logToConsole('[TELEPHONY POOL] Lines re-scanned and synchronized with 5-line Toll-Free pool.');
+    }
+
+    function logToConsole(msg) {
+      const el = document.getElementById('consoleOutput');
+      if (!el) return;
+      const time = new Date().toLocaleTimeString();
+      el.textContent = '[' + time + '] ' + msg + '\n\n' + el.textContent;
+    }
+
+    // Initialize and poll every 8 seconds
+    loadDashboard();
+    setInterval(loadDashboard, 8000);
+  </script>
+</body>
+</html>
