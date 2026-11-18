@@ -3,43 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Guardteck Dispatch Console | Guardteck Security Automated Scheduling</title>
+  <title>GUARDTECK DISPATCH CONSOLE</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --dp-color-ground: #fcfcfd;
-      --dp-color-ink: #16191f;
-      --dp-color-ink-secondary: #454c58;
-      --dp-color-ground-muted: #f3f4f6;
-      --dp-color-rule: #dde0e6;
-      --dp-color-accent: #074ce0;
-      --dp-color-accent-hover: #053bb3;
-      --dp-color-field: #16191f;
-      --dp-color-on-field: #fcfcfd;
-      --dp-color-on-field-secondary: #d0d4dd;
-      --dp-color-panel: #ffffff;
-      --dp-color-on-accent: #ffffff;
-
-      --dp-typography-display: "Host Grotesk", sans-serif;
-      --dp-typography-reading: "Instrument Sans", sans-serif;
-
-      /* 1.2X scaled typography */
-      --dp-typography-body: 19.2px;
-      --dp-typography-interface: 18px;
-      --dp-typography-small: 16.8px;
-      --dp-typography-metadata: 15.6px;
-      --dp-typography-label: 14.4px;
-      --dp-typography-body-leading: 1.6;
-
-      --dp-spacing-grid-gap: 28.8px;
-      --dp-radius-panel: 14px;
-      --dp-radius-button: 8px;
-      --dp-border-hairline: 1px solid var(--dp-color-rule);
-      --dp-motion-interaction: 160ms;
-      --dp-motion-easing: ease-out;
-      --dp-shadow-panel: 0 2px 10px rgba(22, 25, 31, 0.05);
+      --bg-ground: #ffffff;
+      --bg-surface: #f7f6f6;
+      --text-primary: #201f20;
+      --text-secondary: #494949;
+      --text-muted: #606060;
+      --bg-inverse: #141314;
+      --text-inverse: #fcfcfd;
+      --brand-blue: #006ba1;
+      --brand-blue-hover: #005582;
+      --brand-blue-text: #ffffff;
+      --action-orange: #f37820;
+      --action-orange-hover: #df6915;
+      --action-orange-text: #201f20;
+      --status-busy-bg: #fef2f2;
+      --status-busy-text: #991b1b;
+      --status-busy-border: #fecaca;
+      --status-idle-bg: #ecfdf5;
+      --status-idle-text: #065f46;
+      --status-idle-border: #a7f3d0;
+      --status-blue-bg: #eff6ff;
+      --status-blue-text: #005582;
+      --status-blue-border: #bfdbfe;
+      --border-hairline: #e0e0df;
+      --radius-surface: 16px;
+      --radius-control: 12px;
+      --shadow-card: 0 1px 3px rgba(20, 19, 20, 0.05);
+      --shadow-modal: 0 20px 45px rgba(20, 19, 20, 0.22);
+      --transition-ui: 150ms ease-out;
     }
 
     * {
@@ -48,20 +45,31 @@
       padding: 0;
     }
 
-    body {
-      background-color: var(--dp-color-ground);
-      color: var(--dp-color-ink);
-      font-family: var(--dp-typography-reading);
-      font-size: var(--dp-typography-body);
-      line-height: var(--dp-typography-body-leading);
+    html, body {
+      background-color: var(--bg-ground);
+      color: var(--text-primary);
+      font-family: "Host Grotesk", sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
       -webkit-font-smoothing: antialiased;
     }
 
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tabular {
+      font-variant-numeric: tabular-nums;
+    }
+
+    button, input, select {
+      font-family: inherit;
+    }
+
     button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
-      outline: 2px solid var(--dp-color-accent);
+      outline: 2px solid var(--brand-blue);
       outline-offset: 2px;
     }
 
@@ -72,1147 +80,1511 @@
       }
     }
 
-    header {
-      padding: 20px 48px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: var(--dp-color-panel);
-      border-bottom: var(--dp-border-hairline);
+    .hidden {
+      display: none !important;
+    }
+
+    /* Layout Container */
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+
+    /* Header Navigation */
+    .app-header {
+      background: var(--bg-ground);
+      border-bottom: 1px solid var(--border-hairline);
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 40;
     }
 
-    .brand {
+    .header-inner {
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 16px;
+      min-height: 72px;
+      padding-top: 12px;
+      padding-bottom: 12px;
+      flex-wrap: wrap;
     }
 
-    .brand-mark {
-      width: 42px;
-      height: 42px;
-      background: var(--dp-color-accent);
-      border-radius: var(--dp-radius-button);
-      display: flex;
+    .brand-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-primary);
+      text-align: left;
+      padding: 4px 0;
+    }
+
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--brand-blue);
+      color: var(--brand-blue-text);
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      color: var(--dp-color-on-accent);
-      font-family: var(--dp-typography-display);
-      font-weight: 700;
-      font-size: 24px;
+      flex-shrink: 0;
     }
 
     .brand-title {
-      font-family: var(--dp-typography-display);
-      font-size: 26px;
+      font-size: 18px;
       font-weight: 700;
       letter-spacing: -0.02em;
-      color: var(--dp-color-ink);
+      color: var(--text-primary);
     }
 
-    .brand-tag {
-      font-size: var(--dp-typography-label);
-      color: var(--dp-color-ink-secondary);
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-      font-weight: 600;
-    }
-
-    .status-ribbon {
+    .nav-group {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
       flex-wrap: wrap;
     }
 
-    .badge {
+    .nav-btn {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 8px 16px;
-      border-radius: var(--dp-radius-button);
-      font-size: var(--dp-typography-small);
+      padding: 9px 16px;
+      border-radius: var(--radius-control);
+      font-size: 15px;
       font-weight: 600;
-      border: var(--dp-border-hairline);
-      background: var(--dp-color-ground-muted);
-      color: var(--dp-color-ink);
+      cursor: pointer;
+      border: 1px solid var(--border-hairline);
+      background: var(--bg-ground);
+      color: var(--text-primary);
+      transition: background-color var(--transition-ui), border-color var(--transition-ui);
     }
 
-    .badge-accent {
-      background: var(--dp-color-accent);
-      color: var(--dp-color-on-accent);
-      border-color: var(--dp-color-accent);
+    .nav-btn:hover {
+      background: var(--bg-surface);
     }
 
-    .badge-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #00d084;
+    .nav-btn.active {
+      background: var(--brand-blue);
+      color: var(--brand-blue-text);
+      border-color: var(--brand-blue);
     }
 
-    main {
+    .nav-btn.queue-alert {
+      background: var(--action-orange);
+      color: var(--action-orange-text);
+      border-color: var(--action-orange);
+      font-weight: 700;
+    }
+
+    .nav-btn.queue-alert:hover {
+      background: var(--action-orange-hover);
+      border-color: var(--action-orange-hover);
+    }
+
+    .nav-btn.queue-alert.active {
+      box-shadow: inset 0 0 0 2px var(--text-primary);
+    }
+
+    .queue-count-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 24px;
+      height: 22px;
+      padding: 0 7px;
+      border-radius: 999px;
+      background: rgba(32, 31, 32, 0.14);
+      color: var(--action-orange-text);
+      font-size: 13px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .session-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .user-chip {
+      display: inline-flex;
+      flex-direction: column;
+      padding: 6px 12px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-control);
+      line-height: 1.25;
+    }
+
+    .user-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .user-email {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Main Content Area */
+    .app-main {
       flex: 1;
-      max-width: 1440px;
-      margin: 0 auto;
-      padding: 48px 32px;
-      width: 100%;
+      padding-top: 28px;
+      padding-bottom: 48px;
+    }
+
+    .page-view {
       display: flex;
       flex-direction: column;
-      gap: 56px;
-    }
-
-    /* Hero 1.45:1 Split Layout */
-    .hero-split {
-      display: grid;
-      grid-template-columns: 1.45fr 1fr;
-      gap: 48px;
-      align-items: center;
-    }
-
-    .hero-statement h1 {
-      font-family: var(--dp-typography-display);
-      font-size: 56px;
-      line-height: 1.15;
-      letter-spacing: -0.03em;
-      font-weight: 700;
-      color: var(--dp-color-ink);
-      margin-bottom: 20px;
-    }
-
-    .hero-statement p {
-      font-size: var(--dp-typography-body);
-      color: var(--dp-color-ink-secondary);
-      max-width: 680px;
-      margin-bottom: 32px;
-      line-height: var(--dp-typography-body-leading);
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
+      gap: 24px;
     }
 
     /* Buttons */
     .btn {
-      font-family: var(--dp-typography-reading);
-      font-size: var(--dp-typography-interface);
-      font-weight: 600;
-      padding: 14px 28px;
-      border-radius: var(--dp-radius-button);
-      border: 1px solid transparent;
-      cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 10px;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: var(--radius-control);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
       text-decoration: none;
-      transition: background-color var(--dp-motion-interaction) var(--dp-motion-easing),
-                  transform var(--dp-motion-interaction) var(--dp-motion-easing),
-                  border-color var(--dp-motion-interaction) var(--dp-motion-easing);
-    }
-
-    .btn:hover {
-      transform: translateY(-1px);
+      transition: background-color var(--transition-ui), border-color var(--transition-ui), transform var(--transition-ui);
     }
 
     .btn:active {
-      transform: translateY(0);
-    }
-
-    .btn-primary {
-      background-color: var(--dp-color-accent);
-      color: var(--dp-color-on-accent);
-    }
-
-    .btn-primary:hover {
-      background-color: var(--dp-color-accent-hover);
-    }
-
-    .btn-secondary {
-      background-color: var(--dp-color-panel);
-      color: var(--dp-color-ink);
-      border: var(--dp-border-hairline);
-    }
-
-    .btn-secondary:hover {
-      background-color: var(--dp-color-ground-muted);
-      border-color: #c7cbd4;
+      transform: scale(0.99);
     }
 
     .btn-sm {
-      padding: 10px 18px;
-      font-size: var(--dp-typography-small);
+      padding: 7px 12px;
+      font-size: 14px;
+      border-radius: 10px;
     }
 
-    /* Product Diagram */
-    .hero-diagram {
-      background: var(--dp-color-panel);
-      border: var(--dp-border-hairline);
-      border-radius: var(--dp-radius-panel);
+    .btn-brand {
+      background: var(--brand-blue);
+      color: var(--brand-blue-text);
+    }
+
+    .btn-brand:hover {
+      background: var(--brand-blue-hover);
+    }
+
+    .btn-orange {
+      background: var(--action-orange);
+      color: var(--action-orange-text);
+      font-weight: 700;
+    }
+
+    .btn-orange:hover {
+      background: var(--action-orange-hover);
+    }
+
+    .btn-outline {
+      background: var(--bg-ground);
+      color: var(--text-primary);
+      border-color: var(--border-hairline);
+    }
+
+    .btn-outline:hover {
+      background: var(--bg-surface);
+      border-color: #c8c8c6;
+    }
+
+    .btn-danger-outline {
+      background: var(--bg-ground);
+      color: #991b1b;
+      border-color: #fecaca;
+    }
+
+    .btn-danger-outline:hover {
+      background: #fef2f2;
+      border-color: #fca5a5;
+    }
+
+    /* Login Page (/login) */
+    .login-shell {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 24px;
+      background: var(--bg-ground);
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 440px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-surface);
       padding: 32px;
-      box-shadow: var(--dp-shadow-panel);
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
     }
 
-    .diagram-title {
-      font-family: var(--dp-typography-display);
+    .login-head {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .login-title {
       font-size: 24px;
       font-weight: 700;
-      color: var(--dp-color-ink);
-      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
     }
 
-    .diagram-sub {
-      font-size: var(--dp-typography-small);
-      color: var(--dp-color-ink-secondary);
-      margin-bottom: 24px;
+    .sso-btn {
+      width: 100%;
+      padding: 13px 18px;
+      font-size: 16px;
+      justify-content: center;
     }
 
-    .diagram-flow {
+    .sso-panel {
+      background: var(--bg-ground);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-control);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .divider::before, .divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--border-hairline);
+    }
+
+    .test-login-box {
+      background: var(--bg-ground);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-control);
+      padding: 18px;
       display: flex;
       flex-direction: column;
       gap: 14px;
     }
 
-    .diagram-node {
-      background: var(--dp-color-ground-muted);
-      border: var(--dp-border-hairline);
-      border-radius: var(--dp-radius-button);
-      padding: 14px 18px;
+    .test-login-head {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      font-size: var(--dp-typography-small);
+      justify-content: space-between;
+      gap: 8px;
     }
 
-    .diagram-node strong {
-      color: var(--dp-color-ink);
-    }
-
-    .diagram-badge {
-      font-size: var(--dp-typography-label);
+    .test-badge {
+      font-size: 12px;
       font-weight: 600;
-      background: var(--dp-color-accent);
-      color: var(--dp-color-on-accent);
-      padding: 4px 10px;
-      border-radius: 4px;
-    }
-
-    .rate-bar-container {
-      margin-top: 18px;
-      background: var(--dp-color-ground-muted);
-      height: 10px;
+      padding: 3px 8px;
       border-radius: 6px;
-      overflow: hidden;
-      border: var(--dp-border-hairline);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-hairline);
+      color: var(--text-secondary);
     }
 
-    .rate-bar-fill {
-      height: 100%;
-      background: var(--dp-color-accent);
-      width: 0%;
-      border-radius: 6px;
-      transition: width var(--dp-motion-interaction) var(--dp-motion-easing);
-    }
-
-    /* Ruled Strip Below Hero */
-    .facts-strip {
-      border-top: var(--dp-border-hairline);
-      border-bottom: var(--dp-border-hairline);
-      padding: 32px 24px;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: var(--dp-spacing-grid-gap);
-      background: var(--dp-color-panel);
-    }
-
-    .fact-item {
+    .field-group {
       display: flex;
       flex-direction: column;
       gap: 6px;
     }
 
-    .fact-number {
-      font-family: var(--dp-typography-display);
-      font-size: 44px;
-      font-weight: 800;
-      color: var(--dp-color-ink);
-      line-height: 1;
-      letter-spacing: -0.03em;
-    }
-
-    .fact-label {
-      font-size: var(--dp-typography-metadata);
-      font-weight: 700;
-      color: var(--dp-color-accent);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .fact-sub {
-      font-size: var(--dp-typography-small);
-      color: var(--dp-color-ink-secondary);
-      line-height: 1.4;
-    }
-
-    /* Dark Passage 1: 5-Line Toll-Free Telephony Pool */
-    .dark-passage {
-      background: var(--dp-color-field);
-      color: var(--dp-color-on-field);
-      border-radius: var(--dp-radius-panel);
-      padding: 44px 48px;
-    }
-
-    .dark-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      margin-bottom: 32px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-      padding-bottom: 20px;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    .dark-title h2 {
-      font-family: var(--dp-typography-display);
-      font-size: 36px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      color: var(--dp-color-on-field);
-    }
-
-    .dark-title p {
-      font-size: var(--dp-typography-small);
-      color: var(--dp-color-on-field-secondary);
-      margin-top: 6px;
-    }
-
-    .lines-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 20px;
-    }
-
-    .line-card {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: var(--dp-radius-button);
-      padding: 22px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      text-align: center;
-      transition: all var(--dp-motion-interaction) var(--dp-motion-easing);
-    }
-
-    .line-card.active {
-      background: rgba(7, 76, 224, 0.22);
-      border-color: var(--dp-color-accent);
-      box-shadow: 0 0 16px rgba(7, 76, 224, 0.35);
-    }
-
-    .line-num {
-      font-family: var(--dp-typography-display);
-      font-size: 30px;
-      font-weight: 800;
-      color: #ffffff;
-      line-height: 1;
-    }
-
-    .line-region {
-      font-size: var(--dp-typography-label);
-      font-weight: 700;
-      color: var(--dp-color-on-field-secondary);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
-
-    .line-status-pill {
-      display: inline-block;
-      padding: 4px 10px;
-      border-radius: 4px;
-      font-size: var(--dp-typography-label);
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-
-    .line-status-pill.idle {
-      background: rgba(255, 255, 255, 0.08);
-      color: rgba(255, 255, 255, 0.65);
-    }
-
-    .line-status-pill.in-progress {
-      background: #00d084;
-      color: #0b2e1a;
-    }
-
-    .line-detail {
-      font-size: var(--dp-typography-metadata);
-      color: var(--dp-color-on-field-secondary);
-      line-height: 1.3;
-      min-height: 32px;
-    }
-
-    /* Human-in-the-Loop Approval Queue Section */
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      margin-bottom: 24px;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    .section-title {
-      font-family: var(--dp-typography-display);
-      font-size: 34px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      color: var(--dp-color-ink);
-    }
-
-    .section-subtitle {
-      font-size: var(--dp-typography-small);
-      color: var(--dp-color-ink-secondary);
-      margin-top: 4px;
-    }
-
-    .approvals-list {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .approval-card {
-      background: var(--dp-color-panel);
-      border: var(--dp-border-hairline);
-      border-radius: var(--dp-radius-panel);
-      padding: 28px 32px;
-      box-shadow: var(--dp-shadow-panel);
-      display: grid;
-      grid-template-columns: 1.2fr 1fr auto;
-      gap: 32px;
-      align-items: center;
-      transition: all var(--dp-motion-interaction) var(--dp-motion-easing);
-    }
-
-    .approval-card.approved {
-      border-left: 6px solid #00d084;
-    }
-
-    .approval-card.declined {
-      border-left: 6px solid #d32f2f;
-    }
-
-    .person-header {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 10px;
-      flex-wrap: wrap;
-    }
-
-    .person-name {
-      font-family: var(--dp-typography-display);
-      font-size: 26px;
-      font-weight: 700;
-      color: var(--dp-color-ink);
-    }
-
-    .person-score {
-      font-size: var(--dp-typography-metadata);
-      color: var(--dp-color-accent);
-      font-weight: 700;
-      background: var(--dp-color-ground-muted);
-      padding: 4px 10px;
-      border-radius: 4px;
-      border: var(--dp-border-hairline);
-    }
-
-    .route-spec {
-      font-size: var(--dp-typography-small);
-      color: var(--dp-color-ink-secondary);
-      line-height: 1.5;
-    }
-
-    .route-spec strong {
-      color: var(--dp-color-ink);
-    }
-
-    .ai-summary-box {
-      background: var(--dp-color-ground-muted);
-      border: var(--dp-border-hairline);
-      border-radius: var(--dp-radius-button);
-      padding: 18px 22px;
-      font-size: var(--dp-typography-small);
-      color: var(--dp-color-ink);
-      line-height: 1.5;
-    }
-
-    .transcript-toggle {
-      background: none;
-      border: none;
-      color: var(--dp-color-accent);
-      font-size: var(--dp-typography-small);
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: underline;
-      margin-top: 10px;
-      display: inline-block;
-    }
-
-    .transcript-box {
-      display: none;
-      margin-top: 12px;
-      background: var(--dp-color-field);
-      color: var(--dp-color-on-field);
-      font-family: monospace;
+    .field-label {
       font-size: 14px;
-      padding: 16px;
-      border-radius: var(--dp-radius-button);
-      white-space: pre-wrap;
-      max-height: 200px;
-      overflow-y: auto;
+      font-weight: 600;
+      color: var(--text-primary);
     }
 
-    .approval-actions {
+    .field-input, .field-select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: var(--radius-control);
+      border: 1px solid var(--border-hairline);
+      background: var(--bg-ground);
+      color: var(--text-primary);
+      font-size: 15px;
+    }
+
+    .form-error {
+      font-size: 14px;
+      color: #991b1b;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 10px;
+      padding: 8px 12px;
+    }
+
+    /* Quick Branch Bar */
+    .page-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .page-title {
+      font-size: 32px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      color: var(--text-primary);
+    }
+
+    .branch-bar {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .branch-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-surface);
+      padding: 20px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      cursor: pointer;
+      text-align: left;
+      box-shadow: var(--shadow-card);
+      transition: border-color var(--transition-ui), background-color var(--transition-ui);
+    }
+
+    .branch-card:hover {
+      border-color: var(--brand-blue);
+      background: #f2f2f1;
+    }
+
+    .branch-card.priority {
+      border-color: #f6b27f;
+    }
+
+    .branch-card.priority:hover {
+      border-color: var(--action-orange);
+    }
+
+    .branch-meta {
       display: flex;
       flex-direction: column;
+      gap: 4px;
+    }
+
+    .branch-label {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .branch-sub {
+      font-size: 14px;
+      color: var(--text-secondary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Surfaces & Tables */
+    .surface-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-surface);
+      padding: 20px 24px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       gap: 12px;
-      min-width: 190px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
     }
 
-    /* Shifts and Persons Tables */
-    .table-container {
-      background: var(--dp-color-panel);
-      border: var(--dp-border-hairline);
-      border-radius: var(--dp-radius-panel);
+    .section-heading {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+    }
+
+    .table-wrap {
+      background: var(--bg-ground);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-control);
       overflow-x: auto;
-      box-shadow: var(--dp-shadow-panel);
     }
 
-    .custom-table {
+    table {
       width: 100%;
       border-collapse: collapse;
       text-align: left;
+      font-variant-numeric: tabular-nums;
     }
 
-    .custom-table th {
-      background: var(--dp-color-ground-muted);
-      padding: 18px 24px;
-      font-size: var(--dp-typography-label);
-      font-weight: 700;
-      color: var(--dp-color-ink-secondary);
+    th {
+      background: var(--bg-surface);
+      padding: 12px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      border-bottom: var(--dp-border-hairline);
+      letter-spacing: 0.04em;
+      border-bottom: 1px solid var(--border-hairline);
+      white-space: nowrap;
     }
 
-    .custom-table td {
-      padding: 20px 24px;
-      border-bottom: var(--dp-border-hairline);
-      font-size: var(--dp-typography-small);
-      color: var(--dp-color-ink);
+    td {
+      padding: 14px 16px;
+      font-size: 15px;
+      color: var(--text-primary);
+      border-bottom: 1px solid var(--border-hairline);
+      vertical-align: middle;
     }
 
-    .custom-table tr:last-child td {
+    tr:last-child td {
       border-bottom: none;
     }
 
-    .custom-table tr:hover {
-      background-color: var(--dp-color-ground-muted);
+    tbody tr:hover {
+      background: #fafafa;
     }
 
-    /* Dark Passage 2: Scenario Lab */
-    .lab-container {
-      background: var(--dp-color-field);
-      color: var(--dp-color-on-field);
-      border-radius: var(--dp-radius-panel);
-      padding: 44px 48px;
+    /* Pills & Badges */
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      border: 1px solid transparent;
     }
 
-    .lab-scenarios {
+    .pill-busy {
+      background: var(--status-busy-bg);
+      color: var(--status-busy-text);
+      border-color: var(--status-busy-border);
+    }
+
+    .pill-idle {
+      background: var(--status-idle-bg);
+      color: var(--status-idle-text);
+      border-color: var(--status-idle-border);
+    }
+
+    .pill-blue {
+      background: var(--status-blue-bg);
+      color: var(--status-blue-text);
+      border-color: var(--status-blue-border);
+    }
+
+    .pill-neutral {
+      background: var(--bg-surface);
+      color: var(--text-secondary);
+      border-color: var(--border-hairline);
+    }
+
+    .pill-orange {
+      background: #fff7ed;
+      color: #9a3412;
+      border-color: #fed7aa;
+    }
+
+    .badge-row {
       display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .comp-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 7px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      background: var(--status-idle-bg);
+      color: var(--status-idle-text);
+      border: 1px solid var(--status-idle-border);
+      white-space: nowrap;
+    }
+
+    .comp-badge.inactive {
+      background: var(--status-busy-bg);
+      color: var(--status-busy-text);
+      border-color: var(--status-busy-border);
+    }
+
+    /* Approval Queue (/queue) */
+    .queue-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .queue-card {
+      background: var(--bg-ground);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-surface);
+      padding: 22px 24px;
+      box-shadow: var(--shadow-card);
+      display: grid;
+      grid-template-columns: 1.1fr 1.2fr auto;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .guard-title-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .guard-name {
+      font-size: 19px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .shift-spec {
+      font-size: 15px;
+      color: var(--text-secondary);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .pay-highlight {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--brand-blue);
+      font-variant-numeric: tabular-nums;
+      margin-top: 4px;
+    }
+
+    .summary-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-control);
+      padding: 14px 16px;
+      font-size: 15px;
+      color: var(--text-primary);
+    }
+
+    .summary-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .queue-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-width: 156px;
+    }
+
+    /* Filter Bar (/records & /queue) */
+    .filter-bar {
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+      flex-wrap: wrap;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-surface);
+      padding: 16px 20px;
+    }
+
+    .filter-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 210px;
+      flex: 1;
+    }
+
+    .filter-pills {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .toast-banner {
+      background: var(--status-blue-bg);
+      color: var(--status-blue-text);
+      border: 1px solid var(--status-blue-border);
+      border-radius: var(--radius-control);
+      padding: 12px 16px;
+      font-size: 15px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    /* Transcript Modal Drawer */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(20, 19, 20, 0.52);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 100;
+    }
+
+    .modal-dialog {
+      width: 100%;
+      max-width: 680px;
+      background: var(--bg-ground);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-surface);
+      box-shadow: var(--shadow-modal);
+      display: flex;
+      flex-direction: column;
+      max-height: 85vh;
+      overflow: hidden;
+    }
+
+    .modal-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border-hairline);
+      background: var(--bg-surface);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .modal-body {
+      padding: 20px 24px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .modal-meta {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-control);
+      padding: 12px 14px;
+      font-size: 14px;
+    }
+
+    .transcript-pre {
+      background: var(--bg-inverse);
+      color: var(--text-inverse);
+      border-radius: var(--radius-control);
+      padding: 16px 18px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 14px;
+      line-height: 1.65;
+      white-space: pre-wrap;
+    }
+
+    /* Minimal Footer */
+    .app-footer {
+      border-top: 1px solid var(--border-hairline);
+      background: var(--bg-ground);
+      padding: 20px 0;
+      margin-top: auto;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       gap: 16px;
       flex-wrap: wrap;
-      margin: 24px 0;
-    }
-
-    .console-output {
-      background: #0d1017;
-      color: #4ade80;
-      font-family: monospace;
-      font-size: 14.4px;
-      padding: 24px;
-      border-radius: var(--dp-radius-button);
-      max-height: 280px;
-      overflow-y: auto;
-      white-space: pre-wrap;
-      line-height: 1.6;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    footer {
-      background: var(--dp-color-field);
-      color: var(--dp-color-on-field-secondary);
-      border-top: 1px solid rgba(255, 255, 255, 0.15);
-      padding: 40px 48px;
-      margin-top: 60px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: var(--dp-typography-small);
+      font-size: 14px;
+      color: var(--text-secondary);
     }
 
     .footer-links {
       display: flex;
-      gap: 28px;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
     }
 
-    .footer-links a {
-      color: var(--dp-color-on-field);
-      text-decoration: none;
+    .footer-link {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-secondary);
+      font-size: 14px;
       font-weight: 500;
+      padding: 2px 0;
     }
 
-    .footer-links a:hover {
+    .footer-link:hover {
+      color: var(--brand-blue);
       text-decoration: underline;
     }
 
-    @media (max-width: 1050px) {
-      .hero-split {
+    @media (max-width: 900px) {
+      .queue-card {
         grid-template-columns: 1fr;
       }
-      .lines-grid {
-        grid-template-columns: repeat(3, 1fr);
+      .queue-actions {
+        flex-direction: row;
+        flex-wrap: wrap;
       }
-      .facts-strip {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      .approval-card {
+      .branch-bar {
         grid-template-columns: 1fr;
       }
     }
 
-    @media (max-width: 760px) {
-      header {
-        padding: 16px 20px;
-        flex-direction: column;
-        gap: 14px;
+    @media (max-width: 640px) {
+      .container {
+        padding-left: 16px;
+        padding-right: 16px;
       }
-      main {
-        padding: 24px 16px;
+      .page-title {
+        font-size: 24px;
       }
-      .lines-grid {
-        grid-template-columns: repeat(2, 1fr);
+      .surface-card {
+        padding: 16px;
       }
-      .facts-strip {
+      .modal-meta {
         grid-template-columns: 1fr;
       }
-      footer {
-        flex-direction: column;
-        gap: 20px;
-        text-align: center;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .lines-grid {
-        grid-template-columns: 1fr;
+      th, td {
+        padding: 10px 12px;
+        font-size: 14px;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Header -->
-  <header>
-    <div class="brand">
-      <div class="brand-mark">G</div>
-      <div>
-        <div class="brand-title">Guardteck Dispatch Console</div>
-        <div class="brand-tag">Guardteck Security &bull; Human-in-the-Loop Telephony</div>
-      </div>
-    </div>
-    <div class="status-ribbon">
-      <div class="badge badge-accent">
-        <span class="badge-dot"></span>
-        <span id="headerLinesBadge">5-Line Toll-Free Pool: 0 Active</span>
-      </div>
-      <div class="badge" id="headerSpendBadge">
-        Spend: $14.20 / $25.00
-      </div>
-      <div class="badge" id="headerDbBadge">
-        Simulation Store
+  <!-- Global Console Header (Authenticated Only) -->
+  <header id="appHeader" class="app-header hidden">
+    <div class="container header-inner">
+      <button type="button" class="brand-btn" onclick="navigateTo('/')">
+        <span class="brand-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </span>
+        <span class="brand-title">GUARDTECK DISPATCH CONSOLE</span>
+      </button>
+
+      <nav class="nav-group" aria-label="Primary Navigation">
+        <button type="button" id="navConsole" class="nav-btn" onclick="navigateTo('/')">Console</button>
+        <button type="button" id="navRecords" class="nav-btn" onclick="navigateTo('/records')">Call Records &amp; Directory</button>
+        <button type="button" id="navQueue" class="nav-btn queue-alert" onclick="navigateTo('/queue')">
+          <span>Approval Queue</span>
+          <span class="queue-count-pill" id="headerQueueBadge">0</span>
+        </button>
+      </nav>
+
+      <div class="session-box">
+        <div class="user-chip">
+          <span class="user-name" id="sessionUserName"></span>
+          <span class="user-email" id="sessionUserEmail"></span>
+        </div>
+        <button type="button" class="btn btn-outline btn-sm" onclick="signOut()">Sign Out</button>
       </div>
     </div>
   </header>
 
-  <main>
-    <!-- Hero 1.45:1 Split Layout -->
-    <section class="hero-split">
-      <div class="hero-statement">
-        <h1>Autonomous Guardteck dispatching governed by human authorization.</h1>
-        <p>
-          Guardteck Dispatch Bot checks open security shift availability across a 5-line Toll-Free PSTN pool routed through Twilio NA-West (us-west-2 for BC, Canada). Zero shifts are finalized without explicit dispatcher authorization.
-        </p>
-        <div class="hero-actions">
-          <button class="btn btn-primary" onclick="triggerImmediateSurge()">
-            Trigger Outbound Surge
-          </button>
-          <a href="#approvalsSection" class="btn btn-secondary">
-            Review Pending Queue (<span id="heroPendingCount">1</span>)
-          </a>
-          <a href="#simulatorLab" class="btn btn-secondary">
-            Scenario Test Lab
-          </a>
+  <!-- View 0: Login Page (/login) -->
+  <section id="viewLogin" class="login-shell hidden" aria-label="Authentication">
+    <div class="login-card">
+      <div class="login-head">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span class="brand-icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </span>
+          <h1 class="login-title">GUARDTECK DISPATCH CONSOLE</h1>
         </div>
       </div>
 
-      <div class="hero-diagram">
-        <div class="diagram-title">System Concurrency and Pacing</div>
-        <div class="diagram-sub">Twilio NA-West (us-west-2 BC Canada Edge) and Retell Voice Core</div>
+      <!-- Microsoft Entra ID SSO -->
+      <button type="button" class="btn btn-brand sso-btn" onclick="toggleMsSsoPanel()">
+        <svg width="18" height="18" viewBox="0 0 21 21" aria-hidden="true">
+          <rect x="1" y="1" width="9" height="9" fill="#f25022"/>
+          <rect x="11" y="1" width="9" height="9" fill="#7fba00"/>
+          <rect x="1" y="11" width="9" height="9" fill="#00a4ef"/>
+          <rect x="11" y="11" width="9" height="9" fill="#ffb900"/>
+        </svg>
+        <span>Sign in with Microsoft</span>
+      </button>
 
-        <div class="diagram-flow">
-          <div class="diagram-node">
-            <span>PSTN Carrier Pool</span>
-            <span class="diagram-badge">5 Toll-Free Trunks</span>
+      <form id="msSsoForm" class="sso-panel hidden" onsubmit="handleMsSsoSubmit(event)">
+        <div class="field-group">
+          <label for="msDisplayName" class="field-label">Microsoft Display Name</label>
+          <input id="msDisplayName" type="text" class="field-input" placeholder="e.g. Jordan Taylor" required>
+        </div>
+        <div class="field-group">
+          <label for="msWorkEmail" class="field-label">Microsoft Work Email</label>
+          <input id="msWorkEmail" type="email" class="field-input" placeholder="name@guardteck.com" required>
+        </div>
+        <div id="msError" class="form-error hidden"></div>
+        <div style="display:flex;gap:8px;">
+          <button type="submit" class="btn btn-brand btn-sm" style="flex:1;">Continue</button>
+          <button type="button" class="btn btn-outline btn-sm" onclick="toggleMsSsoPanel()">Cancel</button>
+        </div>
+      </form>
+
+      <div class="divider">or</div>
+
+      <!-- Test Login Form -->
+      <form id="testLoginForm" class="test-login-box" onsubmit="handleTestLogin(event)">
+        <div class="test-login-head">
+          <span style="font-size:15px;font-weight:600;">Local Test Login</span>
+          <span class="test-badge">For testing only</span>
+        </div>
+        <div style="font-size:13px;color:var(--text-secondary);">
+          Username: <strong>admin</strong> &bull; Password: <strong>admin</strong>
+        </div>
+        <div class="field-group">
+          <label for="testUsername" class="field-label">Username</label>
+          <input id="testUsername" type="text" class="field-input" autocomplete="username" value="admin" required>
+        </div>
+        <div class="field-group">
+          <label for="testPassword" class="field-label">Password</label>
+          <input id="testPassword" type="password" class="field-input" autocomplete="current-password" value="admin" required>
+        </div>
+        <div id="testLoginError" class="form-error hidden"></div>
+        <button type="submit" class="btn btn-outline" style="width:100%;">Sign In (Test)</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Main Workspace Container (Authenticated Pages) -->
+  <main id="appMain" class="app-main container hidden">
+    <div id="statusToast" class="toast-banner hidden" role="status" aria-live="polite">
+      <span id="statusToastText"></span>
+      <button type="button" class="btn btn-outline btn-sm" onclick="hideToast()">Dismiss</button>
+    </div>
+
+    <!-- View 1: Main Dispatch Console (/) -->
+    <div id="viewConsole" class="page-view hidden">
+      <div class="page-title-row">
+        <h1 class="page-title">Dispatch Console</h1>
+        <button type="button" class="btn btn-outline btn-sm" onclick="refreshAllData()">Refresh Data</button>
+      </div>
+
+      <!-- Quick Branch Navigation Bar -->
+      <div class="branch-bar">
+        <button type="button" class="branch-card priority" onclick="navigateTo('/queue')">
+          <div class="branch-meta">
+            <span class="branch-label">Approval Queue</span>
+            <span class="branch-sub" id="branchQueueCount">0 pending shift reviews</span>
           </div>
-          <div class="diagram-node">
-            <span>Carrier Dispatch Pacing</span>
-            <strong>1 CPS (1,200ms delay)</strong>
+          <span class="btn btn-orange btn-sm">Open Queue</span>
+        </button>
+
+        <button type="button" class="branch-card" onclick="navigateTo('/records')">
+          <div class="branch-meta">
+            <span class="branch-label">Call Records &amp; Outreach Directory</span>
+            <span class="branch-sub" id="branchRecordsCount">0 outbound records logged</span>
           </div>
-          <div class="diagram-node">
-            <span>Human-in-the-Loop Rule</span>
-            <strong>Zero AI Final Booking</strong>
-          </div>
-        </div>
-
-        <div class="rate-bar-container">
-          <div class="rate-bar-fill" id="concurrencyBar" style="width: 0%;"></div>
-        </div>
-        <div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 15.6px;">
-          <span>Channel Allocation</span>
-          <strong id="linesRatio">0 / 5 Lines Active</strong>
-        </div>
-      </div>
-    </section>
-
-    <!-- Ruled Facts Strip -->
-    <section class="facts-strip">
-      <div class="fact-item">
-        <div class="fact-number">40,000</div>
-        <div class="fact-label">Hours Managed</div>
-        <div class="fact-sub">Guardteck BC shift portfolio capacity</div>
-      </div>
-      <div class="fact-item">
-        <div class="fact-number">5 Lines</div>
-        <div class="fact-label">Toll-Free Pool</div>
-        <div class="fact-sub">Simultaneous 888 lines routed via us-west-2</div>
-      </div>
-      <div class="fact-item">
-        <div class="fact-number">100%</div>
-        <div class="fact-label">Human Authorized</div>
-        <div class="fact-sub">Zero unconfirmed shift assignments</div>
-      </div>
-      <div class="fact-item">
-        <div class="fact-number">$0.18</div>
-        <div class="fact-label">Average Cost</div>
-        <div class="fact-sub">Ceiling enforced under $25.00 daily limit</div>
-      </div>
-    </section>
-
-    <!-- Dark Passage 1: 5-Line Toll-Free Telephony Pool -->
-    <section class="dark-passage" id="telephonyPoolSection">
-      <div class="dark-header">
-        <div class="dark-title">
-          <h2>5-Line Outbound Toll-Free Telephony Pool</h2>
-          <p>Real-time channel leases across BC Canada (us-west-2 SIP edge) and automated race cancellation.</p>
-        </div>
-        <button class="btn btn-secondary" style="background: rgba(255,255,255,0.1); color: #ffffff; border-color: rgba(255,255,255,0.2);" onclick="refreshLines()">
-          Refresh Lines
+          <span class="btn btn-brand btn-sm">View Directory</span>
         </button>
       </div>
 
-      <div class="lines-grid" id="linesContainer">
-        <!-- Rendered dynamically -->
-      </div>
-    </section>
-
-    <!-- Human Dispatcher Approval Queue -->
-    <section id="approvalsSection">
-      <div class="section-header">
-        <div>
-          <h2 class="section-title">Human Dispatcher Approval Queue</h2>
-          <p class="section-subtitle">Teams Adaptive Cards awaiting Guardteck dispatcher verification.</p>
+      <!-- Outbound Line Status Table -->
+      <section class="surface-card">
+        <div class="section-head">
+          <h2 class="section-heading">Outbound Line Status</h2>
+          <span class="pill pill-neutral tabular" id="activeLinesSummary">0 Busy / 5 Total</span>
         </div>
-        <span class="badge" id="approvalCountBadge">
-          1 Pending Action
-        </span>
-      </div>
-
-      <div class="approvals-list" id="approvalsContainer">
-        <!-- Rendered dynamically -->
-      </div>
-    </section>
-
-    <!-- Open Security Shifts -->
-    <section>
-      <div class="section-header">
-        <div>
-          <h2 class="section-title">Open Security Shifts</h2>
-          <p class="section-subtitle">Guardteck Security BC sites scheduled for candidate outreach.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Line</th>
+                <th>State</th>
+                <th>Active Job ID</th>
+                <th>Employee ID</th>
+                <th>Duration</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="linesTableBody">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
         </div>
-        <span class="badge">Target: 80 hrs/day</span>
-      </div>
+      </section>
 
-      <div class="table-container">
-        <table class="custom-table">
-          <thead>
-            <tr>
-              <th>Shift ID</th>
-              <th>Date and Hours</th>
-              <th>Site Location</th>
-              <th>Role / Equipment</th>
-              <th>Pay Rate</th>
-              <th>Priority</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="shiftsTableBody">
-            <!-- Rendered dynamically -->
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- Persons Directory -->
-    <section>
-      <div class="section-header">
-        <div>
-          <h2 class="section-title">Persons Directory</h2>
-          <p class="section-subtitle">Guardteck Security personnel roster and Do-Not-Call compliance.</p>
+      <!-- Open Shifts Table -->
+      <section class="surface-card">
+        <div class="section-head">
+          <h2 class="section-heading">Open Shifts</h2>
+          <span class="pill pill-neutral tabular" id="openShiftsBadge">0 Open</span>
         </div>
-        <span class="badge">CASL / TCPA Guard Active</span>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Job ID</th>
+                <th>Site / Client Location</th>
+                <th>Date &amp; Time Window</th>
+                <th>Pay Rate</th>
+                <th>Coverage Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="shiftsTableBody">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- View 2: Approval Queue Page (/queue) -->
+    <div id="viewQueue" class="page-view hidden">
+      <div class="page-title-row">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+          <button type="button" class="btn btn-outline btn-sm" onclick="navigateTo('/')">Back to Console</button>
+          <h1 class="page-title">Approval Queue</h1>
+        </div>
+        <div class="filter-pills">
+          <button type="button" id="queueFilterPending" class="btn btn-brand btn-sm" onclick="setQueueFilter('PENDING')">Pending</button>
+          <button type="button" id="queueFilterAll" class="btn btn-outline btn-sm" onclick="setQueueFilter('ALL')">All Items</button>
+        </div>
       </div>
 
-      <div class="table-container">
-        <table class="custom-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Candidate Name</th>
-              <th>Region (BC)</th>
-              <th>Phone</th>
-              <th>Reliability</th>
-              <th>Completed Shifts</th>
-              <th>Compliance</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="personsTableBody">
-            <!-- Rendered dynamically -->
-          </tbody>
-        </table>
+      <div id="queueList" class="queue-list">
+        <!-- Populated dynamically -->
       </div>
-    </section>
+    </div>
 
-    <!-- Dark Passage 2: Scenario Lab -->
-    <section class="lab-container" id="simulatorLab">
-      <div class="dark-title">
-        <h2>Automated Dispatch Scenario Lab</h2>
-        <p style="color: var(--dp-color-on-field-secondary); font-size: 16.8px; margin-top: 6px;">
-          Execute test cases from the engineering roadmap to verify Guardteck Dispatch Bot guardrails and mid-burst race cancellations.
-        </p>
+    <!-- View 3: Call Records & Outreach Directory Page (/records) -->
+    <div id="viewRecords" class="page-view hidden">
+      <div class="page-title-row">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+          <button type="button" class="btn btn-outline btn-sm" onclick="navigateTo('/')">Back to Console</button>
+          <h1 class="page-title">Call Records &amp; Outreach Directory</h1>
+        </div>
       </div>
 
-      <div class="lab-scenarios">
-        <button class="btn btn-primary" onclick="runScenario('3A_HAPPY_PATH')">
-          Test 3A: Happy Path Tentative Accept
-        </button>
-        <button class="btn btn-secondary" style="background: rgba(255,255,255,0.1); color: #ffffff; border-color: rgba(255,255,255,0.2);" onclick="runScenario('3B_DECLINE')">
-          Test 3B: Person Declines Shift
-        </button>
-        <button class="btn btn-secondary" style="background: rgba(255,255,255,0.1); color: #ffffff; border-color: rgba(255,255,255,0.2);" onclick="runScenario('3C_GUARDRAIL_STRESS')">
-          Test 3C: Guardrail Prompt Injection Stress
-        </button>
-        <button class="btn btn-secondary" style="background: rgba(255,255,255,0.1); color: #ffffff; border-color: rgba(255,255,255,0.2);" onclick="runScenario('3D_VOICEMAIL_AMD')">
-          Test 3D: Twilio AMD Voicemail Drop
-        </button>
-        <button class="btn btn-secondary" style="background: rgba(255,255,255,0.1); color: #ffffff; border-color: rgba(255,255,255,0.2);" onclick="runScenario('5_BURST_CANCELLATION')">
-          Test 5: 3-Line Rush Burst and Cancellation
-        </button>
+      <!-- Filters -->
+      <div class="filter-bar">
+        <div class="filter-item">
+          <label for="recordsShiftFilter" class="field-label">Filter by Job ID</label>
+          <select id="recordsShiftFilter" class="field-select" onchange="handleShiftFilterChange()">
+            <option value="">All Jobs</option>
+          </select>
+        </div>
+        <div class="filter-item">
+          <label for="recordsSearchInput" class="field-label">Search Officer Name / Employee ID / Phone</label>
+          <input id="recordsSearchInput" type="text" class="field-input" placeholder="e.g. 200001042 or Manbir" oninput="renderRecordsView()">
+        </div>
+        <button type="button" class="btn btn-outline btn-sm" onclick="clearRecordsFilter()">Clear Filters</button>
       </div>
 
-      <div class="console-output" id="consoleOutput">[SIMULATOR READY] Select any scenario above to observe live state transitions, call transcripts, and dispatcher cards.</div>
-    </section>
+      <!-- Call Records Table -->
+      <section class="surface-card">
+        <div class="section-head">
+          <h2 class="section-heading">Outbound Call Records</h2>
+          <span class="pill pill-neutral tabular" id="callRecordsBadge">0 Records</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Officer Name</th>
+                <th>Employee ID</th>
+                <th>Phone</th>
+                <th>Job ID</th>
+                <th>Attempt #</th>
+                <th>Outcome / Status</th>
+                <th>Timestamp</th>
+                <th>Compliance &amp; Eligibility</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="callsTableBody">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Per-Shift Personnel Outreach Directory -->
+      <section class="surface-card">
+        <div class="section-head">
+          <h2 class="section-heading" id="directoryHeading">Personnel Outreach Directory</h2>
+          <span class="pill pill-neutral tabular" id="directoryCountBadge">0 Officers</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Officer Name</th>
+                <th>Employee ID</th>
+                <th>Phone</th>
+                <th>Region</th>
+                <th>Completed Shifts</th>
+                <th>Compliance &amp; Eligibility</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="personsTableBody">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
   </main>
 
-  <!-- Dark Footer -->
-  <footer>
-    <div>
-      <strong>Guardteck Security Dispatch Desk</strong> &mdash; Autonomous Telephony and Human-in-the-Loop Architecture.
-      <br>MySQL 8.0 &bull; Retell AI (Guardteck Dispatch Bot) &bull; Twilio SIP (us-west-2 Toll-Free) &bull; Microsoft 365 Graph
-    </div>
-    <div class="footer-links">
-      <a href="/health/readiness" target="_blank">Health and Readiness</a>
-      <a href="/api/v1/dashboard/stats" target="_blank">Stats API</a>
-      <a href="/api/v1/dispatch/lines" target="_blank">Lines API</a>
-      <a href="/api/v1/dashboard/approvals" target="_blank">Approvals API</a>
+  <!-- Minimal Footer (Authenticated Only) -->
+  <footer id="appFooter" class="app-footer hidden">
+    <div class="container footer-inner">
+      <span>&copy; <span id="footerYear"></span> GUARDTECK DISPATCH CONSOLE</span>
+      <div class="footer-links">
+        <button type="button" class="footer-link" onclick="navigateTo('/')">Console</button>
+        <button type="button" class="footer-link" onclick="navigateTo('/queue')">Approval Queue</button>
+        <button type="button" class="footer-link" onclick="navigateTo('/records')">Call Records &amp; Directory</button>
+      </div>
     </div>
   </footer>
 
+  <!-- Transcript Inspection Modal -->
+  <div id="transcriptModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="transcriptModalTitle" onclick="handleBackdropClick(event)">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 id="transcriptModalTitle" class="modal-title">Call Transcript</h2>
+        <button type="button" id="transcriptCloseBtn" class="btn btn-outline btn-sm" onclick="closeTranscriptModal()">Close</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-meta" id="transcriptModalMeta"></div>
+        <pre class="transcript-pre" id="transcriptModalBody"></pre>
+      </div>
+    </div>
+  </div>
+
   <script>
-    let activeApprovals = [];
-    let activeShifts = [];
-    let activePersons = [];
-    let activeLines = [];
+    const SESSION_KEY = 'guardteck_dispatch_session';
 
-    async function loadDashboard() {
+    let state = {
+      lines: [],
+      shifts: [],
+      approvals: [],
+      calls: [],
+      persons: [],
+      stats: { pendingApprovals: 0, activeOutboundLines: 0 },
+      queueFilter: 'PENDING',
+      selectedShiftFilter: ''
+    };
+
+    function getSession() {
       try {
-        const statsRes = await fetch('/api/v1/dashboard/stats');
-        if (statsRes.ok) {
-          const stats = await statsRes.json();
-          updateStatsUI(stats);
-        }
-
-        const linesRes = await fetch('/api/v1/dispatch/lines');
-        if (linesRes.ok) {
-          const linesData = await linesRes.json();
-          activeLines = linesData.lines || [];
-          renderLinesUI(activeLines);
-        }
-
-        const apprRes = await fetch('/api/v1/dashboard/approvals');
-        if (apprRes.ok) {
-          activeApprovals = await apprRes.json();
-          renderApprovalsUI(activeApprovals);
-        }
-
-        const shiftsRes = await fetch('/api/v1/dashboard/shifts');
-        if (shiftsRes.ok) {
-          activeShifts = await shiftsRes.json();
-          renderShiftsUI(activeShifts);
-        }
-
-        const personsRes = await fetch('/api/v1/dashboard/persons');
-        if (personsRes.ok) {
-          activePersons = await personsRes.json();
-          renderPersonsUI(activePersons);
-        }
-      } catch (err) {
-        console.error('Failed to load dashboard data', err);
-        logToConsole('[ERROR LOADING DASHBOARD] ' + err.message);
+        const raw = localStorage.getItem(SESSION_KEY);
+        return raw ? JSON.parse(raw) : null;
+      } catch (_err) {
+        return null;
       }
     }
 
-    function updateStatsUI(stats) {
-      if (!stats) return;
-      const maxLines = stats.maxLines || 5;
-      const activeCount = stats.activeOutboundLines || 0;
-
-      const headerLines = document.getElementById('headerLinesBadge');
-      if (headerLines) headerLines.textContent = maxLines + '-Line Toll-Free Pool: ' + activeCount + ' Active';
-
-      const headerSpend = document.getElementById('headerSpendBadge');
-      if (headerSpend && stats.spend) {
-        const cost = Number(stats.spend.totalCostUsd || 0).toFixed(2);
-        const ceiling = Number(stats.spend.ceilingUsd || 25).toFixed(2);
-        headerSpend.textContent = 'Spend: $' + cost + ' / $' + ceiling;
-      }
-
-      const headerDb = document.getElementById('headerDbBadge');
-      if (headerDb) {
-        headerDb.textContent = stats.databaseMode === 'MYSQL_ONLINE' ? 'MySQL 8 Online' : 'Simulation Store';
-      }
-
-      const heroPending = document.getElementById('heroPendingCount');
-      if (heroPending) heroPending.textContent = stats.pendingApprovals ?? 0;
-
-      const apprCount = document.getElementById('approvalCountBadge');
-      if (apprCount) apprCount.textContent = (stats.pendingApprovals ?? 0) + ' Pending Action';
-
-      const pct = Math.min(100, (activeCount / maxLines) * 100);
-      const bar = document.getElementById('concurrencyBar');
-      if (bar) bar.style.width = pct + '%';
-
-      const ratio = document.getElementById('linesRatio');
-      if (ratio) ratio.textContent = activeCount + ' / ' + maxLines + ' Lines Active';
+    function setSession(userObj) {
+      localStorage.setItem(SESSION_KEY, JSON.stringify(userObj));
     }
 
-    function renderLinesUI(lines) {
-      const container = document.getElementById('linesContainer');
-      if (!container) return;
-      container.innerHTML = '';
-
-      (lines || []).forEach(line => {
-        const isActive = line.status !== 'IDLE';
-        const card = document.createElement('div');
-        card.className = 'line-card' + (isActive ? ' active' : '');
-        card.innerHTML = `
-          <div class="line-num">${line.channelIndex < 10 ? '0' + line.channelIndex : line.channelIndex}</div>
-          <div class="line-region">${line.regionServed || 'BC'} &bull; TOLL-FREE</div>
-          <div>
-            <span class="line-status-pill ${isActive ? 'in-progress' : 'idle'}">
-              ${line.status}
-            </span>
-          </div>
-          <div class="line-detail">
-            ${isActive ? '<strong>' + (line.personName || 'Active Call') + '</strong>' : (line.allocatedPhoneNumber || '')}
-          </div>
-        `;
-        container.appendChild(card);
-      });
+    function signOut() {
+      localStorage.removeItem(SESSION_KEY);
+      navigateTo('/login');
     }
 
-    function renderApprovalsUI(approvals) {
-      const container = document.getElementById('approvalsContainer');
-      if (!container) return;
-      container.innerHTML = '';
+    function toggleMsSsoPanel() {
+      const form = document.getElementById('msSsoForm');
+      form.classList.toggle('hidden');
+      if (!form.classList.contains('hidden')) {
+        document.getElementById('msDisplayName').focus();
+      }
+    }
 
-      if (!approvals || approvals.length === 0) {
-        container.innerHTML = '<div style="background: var(--dp-color-ground-muted); padding: 24px; border-radius: var(--dp-radius-button); text-align: center; color: var(--dp-color-ink-secondary);">Zero pending approvals. All shifts assigned or in progress.</div>';
+    function handleMsSsoSubmit(event) {
+      event.preventDefault();
+      const nameInput = document.getElementById('msDisplayName');
+      const emailInput = document.getElementById('msWorkEmail');
+      const errBox = document.getElementById('msError');
+      const name = (nameInput.value || '').trim();
+      const email = (emailInput.value || '').trim();
+
+      if (!name || !email) {
+        errBox.textContent = 'Enter both your Microsoft Display Name and Work Email.';
+        errBox.classList.remove('hidden');
+        return;
+      }
+      errBox.classList.add('hidden');
+      setSession({ name, email, authMethod: 'Microsoft Entra ID' });
+      navigateTo('/');
+    }
+
+    function handleTestLogin(event) {
+      event.preventDefault();
+      const user = (document.getElementById('testUsername').value || '').trim();
+      const pass = (document.getElementById('testPassword').value || '').trim();
+      const errBox = document.getElementById('testLoginError');
+
+      if (user === 'admin' && pass === 'admin') {
+        errBox.classList.add('hidden');
+        setSession({ name: 'Admin (Test)', email: 'admin@guardteck.local', authMethod: 'Test Session' });
+        navigateTo('/');
+      } else {
+        errBox.textContent = 'Invalid test credentials. Use admin / admin.';
+        errBox.classList.remove('hidden');
+      }
+    }
+
+    function navigateTo(targetPath, replaceHistory = false) {
+      const session = getSession();
+      const urlObj = new URL(targetPath, window.location.origin);
+      let path = urlObj.pathname;
+
+      if (!session && path !== '/login') {
+        path = '/login';
+      } else if (session && path === '/login') {
+        path = '/';
+      }
+
+      if (path === '/records') {
+        const shiftParam = urlObj.searchParams.get('shift');
+        if (shiftParam !== null) {
+          state.selectedShiftFilter = shiftParam;
+        }
+      }
+
+      const fullTarget = path + (path === '/records' && state.selectedShiftFilter ? '?shift=' + encodeURIComponent(state.selectedShiftFilter) : '');
+      if (replaceHistory) {
+        window.history.replaceState({}, '', fullTarget);
+      } else {
+        window.history.pushState({}, '', fullTarget);
+      }
+
+      renderRoute(path);
+    }
+
+    window.addEventListener('popstate', () => {
+      const urlObj = new URL(window.location.href);
+      if (urlObj.pathname === '/records') {
+        state.selectedShiftFilter = urlObj.searchParams.get('shift') || '';
+      }
+      renderRoute(urlObj.pathname);
+    });
+
+    function renderRoute(path) {
+      const session = getSession();
+      const header = document.getElementById('appHeader');
+      const main = document.getElementById('appMain');
+      const footer = document.getElementById('appFooter');
+      const viewLogin = document.getElementById('viewLogin');
+      const viewConsole = document.getElementById('viewConsole');
+      const viewQueue = document.getElementById('viewQueue');
+      const viewRecords = document.getElementById('viewRecords');
+
+      if (!session || path === '/login') {
+        header.classList.add('hidden');
+        main.classList.add('hidden');
+        footer.classList.add('hidden');
+        viewLogin.classList.remove('hidden');
         return;
       }
 
-      approvals.forEach(appr => {
-        const isPending = appr.status === 'PENDING';
-        const card = document.createElement('div');
-        card.className = 'approval-card ' + (appr.status ? appr.status.toLowerCase() : 'pending');
+      viewLogin.classList.add('hidden');
+      header.classList.remove('hidden');
+      main.classList.remove('hidden');
+      footer.classList.remove('hidden');
 
-        const personName = appr.person ? appr.person.firstName + ' ' + appr.person.lastName : 'Candidate';
-        const shiftId = appr.shift ? appr.shift.externalId : (appr.shiftId || 'SH-2024');
-        const totalPay = appr.shift ? (Number(appr.shift.payRateHourly) * Number(appr.shift.durationHours)).toFixed(2) : '260.00';
+      document.getElementById('sessionUserName').textContent = session.name;
+      document.getElementById('sessionUserEmail').textContent = session.email;
 
-        card.innerHTML = `
-          <div>
-            <div class="person-header">
-              <span class="person-name">${personName}</span>
-              <span class="person-score">${appr.person ? (appr.person.reliabilityScore * 100).toFixed(0) + '%' : '98%'} Reliability</span>
-            </div>
-            <div class="route-spec">
-              <strong>Shift:</strong> ${shiftId} &bull; ${appr.shift ? appr.shift.pickupLocation : 'Vancouver Harbour Terminal'} to ${appr.shift ? appr.shift.dropoffLocation : 'Burnaby Corporate Campus'}<br>
-              <strong>Rate:</strong> $${appr.shift ? appr.shift.payRateHourly : '32.50'}/hr (Est. Total: $${totalPay}) &bull; ${appr.shift ? appr.shift.durationHours : '8'} Hours
-            </div>
-            <button class="transcript-toggle" onclick="toggleTranscript('${appr.id}')">
-              View Call Transcript
-            </button>
-            <div class="transcript-box" id="transcript_${appr.id}">
-${appr.callLog && appr.callLog.transcript ? appr.callLog.transcript : 'Transcript ready in MS Teams feed.'}
-            </div>
-          </div>
+      viewConsole.classList.add('hidden');
+      viewQueue.classList.add('hidden');
+      viewRecords.classList.add('hidden');
 
-          <div class="ai-summary-box">
-            <strong>Guardteck Dispatch Bot Summary:</strong><br>
-            ${appr.callLog && appr.callLog.summary ? appr.callLog.summary : 'Candidate tentatively accepted shift. Asserted HITL rule and concluded call.'}
-            <div style="margin-top: 6px; font-size: 14px; color: var(--dp-color-ink-secondary);">
-              Status: <strong>${appr.status}</strong> &bull; Window closes: ${appr.expiresAt ? new Date(appr.expiresAt).toLocaleTimeString() : 'N/A'}
-            </div>
-          </div>
+      document.getElementById('navConsole').classList.remove('active');
+      document.getElementById('navRecords').classList.remove('active');
+      document.getElementById('navQueue').classList.remove('active');
 
-          <div class="approval-actions">
-            ${isPending ? `
-              <button class="btn btn-primary btn-sm" onclick="submitApproval('${appr.id}', 'APPROVE', '${appr.shiftId}', '${appr.personId}')">
-                Approve and Book
-              </button>
-              <button class="btn btn-secondary btn-sm" onclick="submitApproval('${appr.id}', 'DECLINE', '${appr.shiftId}', '${appr.personId}')">
-                Decline
-              </button>
-            ` : `
-              <div style="font-weight: 700; color: ${appr.status === 'APPROVED' ? '#00875a' : '#d32f2f'};">
-                ${appr.status === 'APPROVED' ? 'Approved and Booked' : 'Declined'}
-              </div>
-              <div style="font-size: 14px; color: var(--dp-color-ink-secondary);">
-                By ${appr.dispatcherName || 'Dispatcher Sarah Jenkins'}
-              </div>
-            `}
-          </div>
-        `;
-        container.appendChild(card);
-      });
-    }
-
-    function renderShiftsUI(shifts) {
-      const tbody = document.getElementById('shiftsTableBody');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-
-      (shifts || []).forEach(shift => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td><strong>${shift.externalId}</strong></td>
-          <td>${new Date(shift.shiftDate).toLocaleDateString()} (${shift.durationHours} hrs)</td>
-          <td>${shift.pickupLocation} &bull; ${shift.dropoffLocation}</td>
-          <td>${shift.equipmentType}</td>
-          <td><strong>$${Number(shift.payRateHourly).toFixed(2)}</strong>/hr</td>
-          <td>
-            <span class="badge" style="font-size: 14px; padding: 4px 10px;">
-              ${shift.priority === 3 ? 'Critical' : shift.priority === 2 ? 'Urgent' : 'Normal'}
-            </span>
-          </td>
-          <td>
-            <span class="badge ${shift.status === 'ASSIGNED' ? 'badge-accent' : ''}" style="font-size: 14px; padding: 4px 10px;">
-              ${shift.status}
-            </span>
-          </td>
-          <td>
-            ${shift.status === 'OPEN' ? `
-              <button class="btn btn-primary btn-sm" onclick="triggerShiftDispatch('${shift.id}')">
-                Dispatch Calls
-              </button>
-            ` : `
-              <span style="font-size: 14.4px; color: var(--dp-color-ink-secondary);">${shift.status === 'ASSIGNED' ? 'Assigned' : 'In Review'}</span>
-            `}
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    function renderPersonsUI(persons) {
-      const tbody = document.getElementById('personsTableBody');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-
-      (persons || []).forEach(person => {
-        const isDnc = person.dncFlag;
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${person.externalId}</td>
-          <td><strong>${person.firstName} ${person.lastName}</strong></td>
-          <td>${person.region}</td>
-          <td>${person.phone}</td>
-          <td>${(person.reliabilityScore * 100).toFixed(0)}%</td>
-          <td>${person.totalShiftsCompleted} shifts</td>
-          <td>
-            <span class="badge" style="background: ${isDnc ? '#ffebe6' : '#e3fcef'}; color: ${isDnc ? '#de350b' : '#006644'}; font-size: 14px; padding: 4px 10px; border: none;">
-              ${isDnc ? 'Do Not Call' : 'Active'}
-            </span>
-          </td>
-          <td>
-            <button class="btn btn-secondary btn-sm" onclick="toggleDnc('${person.id}')">
-              ${isDnc ? 'Unblock Phone' : 'Set DNC'}
-            </button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    function toggleTranscript(id) {
-      const el = document.getElementById('transcript_' + id);
-      if (el) {
-        el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+      if (path === '/queue') {
+        viewQueue.classList.remove('hidden');
+        document.getElementById('navQueue').classList.add('active');
+        renderQueueView();
+      } else if (path === '/records') {
+        viewRecords.classList.remove('hidden');
+        document.getElementById('navRecords').classList.add('active');
+        syncShiftFilterSelect();
+        renderRecordsView();
+      } else {
+        viewConsole.classList.remove('hidden');
+        document.getElementById('navConsole').classList.add('active');
+        renderConsoleView();
       }
     }
 
-    async function submitApproval(approvalQueueId, action, shiftId, personId) {
+    async function refreshAllData() {
       try {
-        logToConsole('[APPROVAL] Dispatcher submitting ' + action + ' for approval ' + approvalQueueId + '...');
+        const [statsRes, linesRes, apprRes, shiftsRes, callsRes, personsRes] = await Promise.all([
+          fetch('/api/v1/dashboard/stats'),
+          fetch('/api/v1/dispatch/lines'),
+          fetch('/api/v1/dashboard/approvals'),
+          fetch('/api/v1/dashboard/shifts'),
+          fetch('/api/v1/dashboard/calls'),
+          fetch('/api/v1/dashboard/persons')
+        ]);
+
+        if (statsRes.ok) state.stats = await statsRes.json();
+        if (linesRes.ok) {
+          const linePayload = await linesRes.json();
+          state.lines = linePayload.lines || [];
+        }
+        if (apprRes.ok) state.approvals = await apprRes.json();
+        if (shiftsRes.ok) state.shifts = await shiftsRes.json();
+        if (callsRes.ok) state.calls = await callsRes.json();
+        if (personsRes.ok) state.persons = await personsRes.json();
+
+        updateGlobalBadges();
+        const curPath = window.location.pathname;
+        if (curPath === '/queue') renderQueueView();
+        else if (curPath === '/records') {
+          syncShiftFilterSelect();
+          renderRecordsView();
+        } else if (curPath !== '/login') renderConsoleView();
+      } catch (err) {
+        console.error('Data sync failed:', err);
+      }
+    }
+
+    function updateGlobalBadges() {
+      const pendingCount = state.approvals.filter(a => a.status === 'PENDING').length;
+      document.getElementById('headerQueueBadge').textContent = pendingCount;
+      document.getElementById('branchQueueCount').textContent = pendingCount + ' pending shift review' + (pendingCount === 1 ? '' : 's');
+      document.getElementById('branchRecordsCount').textContent = state.calls.length + ' outbound call record' + (state.calls.length === 1 ? '' : 's');
+    }
+
+    function formatDuration(seconds) {
+      if (!seconds || seconds <= 0) return '—';
+      const mins = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      return String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+    }
+
+    function formatShiftStatusPill(status) {
+      if (status === 'ASSIGNED') return '<span class="pill pill-idle">Assigned</span>';
+      if (status === 'PENDING_APPROVAL' || status === 'PENDING_DISPATCHER_APPROVAL') return '<span class="pill pill-orange">Pending Approval</span>';
+      if (status === 'OUTREACH_ACTIVE' || status === 'DISPATCH_IN_PROGRESS') return '<span class="pill pill-blue">Outreach Active</span>';
+      return '<span class="pill pill-neutral">Open</span>';
+    }
+
+    function renderConsoleView() {
+      const busyCount = state.lines.filter(l => l.status === 'Busy').length;
+      document.getElementById('activeLinesSummary').textContent = busyCount + ' Busy / ' + state.lines.length + ' Lines';
+
+      const linesBody = document.getElementById('linesTableBody');
+      linesBody.innerHTML = state.lines.map(line => {
+        const isBusy = line.status === 'Busy';
+        return `
+          <tr>
+            <td><strong>${escapeHtml(line.lineLabel || ('Line 0' + line.channelIndex))}</strong></td>
+            <td>
+              <span class="pill ${isBusy ? 'pill-busy' : 'pill-idle'}">${isBusy ? 'Busy' : 'Idle'}</span>
+            </td>
+            <td class="tabular">${isBusy && line.shiftExternalId ? escapeHtml(line.shiftExternalId) : '—'}</td>
+            <td class="tabular">${isBusy && line.guardExternalId ? escapeHtml(line.guardExternalId) : '—'}</td>
+            <td class="tabular" data-line-duration="${line.channelIndex}">${isBusy ? formatDuration(line.durationSeconds) : '—'}</td>
+            <td>
+              ${isBusy && line.shiftExternalId
+                ? `<button type="button" class="btn btn-outline btn-sm" onclick="openShiftRecords('${escapeAttr(line.shiftExternalId)}')">Outreach</button>`
+                : '<span style="color:var(--text-muted);font-size:14px;">—</span>'}
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      const openCount = state.shifts.filter(s => s.status !== 'ASSIGNED').length;
+      document.getElementById('openShiftsBadge').textContent = openCount + ' Unassigned';
+
+      const shiftsBody = document.getElementById('shiftsTableBody');
+      shiftsBody.innerHTML = state.shifts.map(shift => {
+        const site = shift.siteLocation || shift.pickupLocation || 'Site TBD';
+        const windowStr = shift.timeWindow || (new Date(shift.shiftDate).toLocaleDateString() + ' (' + shift.durationHours + ' hrs)');
+        const canDispatch = shift.status === 'OPEN';
+        return `
+          <tr>
+            <td><strong>${escapeHtml(shift.externalId)}</strong></td>
+            <td>${escapeHtml(site)}</td>
+            <td class="tabular">${escapeHtml(windowStr)}</td>
+            <td class="tabular"><strong>$${Number(shift.payRateHourly).toFixed(2)}</strong>/hr</td>
+            <td>${formatShiftStatusPill(shift.status)}</td>
+            <td>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button type="button" class="btn btn-outline btn-sm" onclick="openShiftRecords('${escapeAttr(shift.externalId)}')">Outreach Records</button>
+                ${canDispatch ? `<button type="button" class="btn btn-brand btn-sm" onclick="triggerShiftDispatch('${escapeAttr(shift.id)}')">Dispatch Call</button>` : ''}
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function openShiftRecords(shiftExternalId) {
+      state.selectedShiftFilter = shiftExternalId;
+      navigateTo('/records?shift=' + encodeURIComponent(shiftExternalId));
+    }
+
+    async function triggerShiftDispatch(shiftId) {
+      try {
+        const res = await fetch('/api/v1/dispatch/trigger', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ shiftId, maxCandidates: 1 })
+        });
+        const data = await res.json();
+        if (data.status === 'INITIATED') {
+          showToast('Outreach call placed on ' + data.lineLabel + ' for ' + data.shiftExternalId + ' (' + data.guardExternalId + ').');
+        } else if (data.status === 'BACKPRESSURE') {
+          showToast('All outbound lines are currently busy.');
+        } else {
+          showToast('No eligible guards currently available.');
+        }
+        await refreshAllData();
+      } catch (err) {
+        showToast('Dispatch error: ' + err.message);
+      }
+    }
+
+    function setQueueFilter(mode) {
+      state.queueFilter = mode;
+      document.getElementById('queueFilterPending').className = 'btn btn-sm ' + (mode === 'PENDING' ? 'btn-brand' : 'btn-outline');
+      document.getElementById('queueFilterAll').className = 'btn btn-sm ' + (mode === 'ALL' ? 'btn-brand' : 'btn-outline');
+      renderQueueView();
+    }
+
+    function renderQueueView() {
+      const container = document.getElementById('queueList');
+      const items = state.queueFilter === 'PENDING'
+        ? state.approvals.filter(a => a.status === 'PENDING')
+        : state.approvals;
+
+      if (items.length === 0) {
+        container.innerHTML = `
+          <div class="surface-card" style="text-align:center;padding:36px;">
+            <p style="font-size:17px;font-weight:600;color:var(--text-primary);">No pending shift confirmations</p>
+            <p style="font-size:15px;color:var(--text-secondary);margin-top:4px;">All tentative guard responses have been reviewed.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = items.map(appr => {
+        const isPending = appr.status === 'PENDING';
+        const guardName = appr.person ? (appr.person.firstName + ' ' + appr.person.lastName) : 'Candidate';
+        const guardExtId = appr.person ? appr.person.externalId : '200000000';
+        const shiftExtId = appr.shift ? appr.shift.externalId : appr.shiftId;
+        const site = appr.shift ? (appr.shift.siteLocation || appr.shift.pickupLocation) : 'Guardteck Site';
+        const timeWin = appr.shift ? (appr.shift.timeWindow || new Date(appr.shift.shiftDate).toLocaleDateString()) : '';
+        const payRate = appr.shift ? Number(appr.shift.payRateHourly).toFixed(2) : '0.00';
+        const summary = appr.callLog && appr.callLog.summary ? appr.callLog.summary : 'Officer confirmed tentative availability.';
+
+        return `
+          <article class="queue-card">
+            <div>
+              <div class="guard-title-row">
+                <span class="guard-name">${escapeHtml(guardName)}</span>
+                <span class="pill pill-neutral tabular">${escapeHtml(guardExtId)}</span>
+              </div>
+              <div class="shift-spec">
+                <span><strong>Job ID:</strong> ${escapeHtml(shiftExtId)} &bull; ${escapeHtml(site)}</span>
+                <span class="tabular"><strong>Window:</strong> ${escapeHtml(timeWin)}</span>
+                <span class="pay-highlight">Pay: $${payRate}/hr</span>
+              </div>
+            </div>
+
+            <div class="summary-box">
+              <div class="summary-label">AI Call Summary</div>
+              <div>${escapeHtml(summary)}</div>
+            </div>
+
+            <div class="queue-actions">
+              ${isPending ? `
+                <button type="button" class="btn btn-orange btn-sm" onclick="submitApproval('${escapeAttr(appr.id)}', 'APPROVE', '${escapeAttr(appr.shiftId)}', '${escapeAttr(appr.personId)}')">Approve</button>
+                <button type="button" class="btn btn-danger-outline btn-sm" onclick="submitApproval('${escapeAttr(appr.id)}', 'REJECT', '${escapeAttr(appr.shiftId)}', '${escapeAttr(appr.personId)}')">Reject</button>
+              ` : `
+                <span class="pill ${appr.status === 'APPROVED' ? 'pill-idle' : 'pill-busy'}" style="justify-content:center;">
+                  ${escapeHtml(appr.status)}
+                </span>
+                <span style="font-size:13px;color:var(--text-muted);text-align:center;">
+                  By ${escapeHtml(appr.dispatcherName || '')}
+                </span>
+              `}
+              <button type="button" class="btn btn-outline btn-sm" onclick="openTranscriptById('${escapeAttr(appr.callLogId)}')">View Transcript</button>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    async function submitApproval(approvalQueueId, action, shiftId, personId) {
+      const session = getSession();
+      const dispatcherName = session ? session.name : 'Authenticated Operator';
+      const dispatcherId = session ? session.email : 'operator@guardteck.com';
+
+      try {
         const res = await fetch('/api/v1/approvals/action', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -1221,89 +1593,222 @@ ${appr.callLog && appr.callLog.transcript ? appr.callLog.transcript : 'Transcrip
             approvalQueueId,
             shiftId,
             personId,
-            dispatcherId: 'dispatcher@guardteck.com',
-            dispatcherName: 'Dispatcher Sarah Jenkins',
-            notes: 'Approved via Guardteck Dispatch Console',
-          }),
+            dispatcherName,
+            dispatcherId
+          })
         });
-
-        const result = await res.json();
-        logToConsole('[APPROVAL ACTION RESULT] ' + action + ':\n' + JSON.stringify(result, null, 2));
-        await loadDashboard();
+        const data = await res.json();
+        showToast('Shift ' + data.status.toLowerCase() + ' by ' + (data.dispatcherName || dispatcherName) + '.');
+        await refreshAllData();
       } catch (err) {
-        logToConsole('[APPROVAL ERROR] ' + err.message);
+        showToast('Action failed: ' + err.message);
       }
     }
 
-    async function triggerShiftDispatch(shiftId) {
-      try {
-        logToConsole('[DISPATCH SURGE] Initiating toll-free call out for shift: ' + shiftId + '...');
-        const res = await fetch('/api/v1/dispatch/trigger', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ shiftId, maxCandidates: 2 }),
-        });
-        const result = await res.json();
-        logToConsole('[DISPATCH SURGE RESULT]\n' + JSON.stringify(result, null, 2));
-        await loadDashboard();
-      } catch (err) {
-        logToConsole('[DISPATCH ERROR] ' + err.message);
-      }
+    function syncShiftFilterSelect() {
+      const select = document.getElementById('recordsShiftFilter');
+      const currentVal = state.selectedShiftFilter || '';
+      const uniqueShifts = Array.from(new Set(state.shifts.map(s => s.externalId)));
+      select.innerHTML = '<option value="">All Jobs</option>' +
+        uniqueShifts.map(ext => `<option value="${escapeAttr(ext)}">${escapeHtml(ext)}</option>`).join('');
+      select.value = currentVal;
     }
 
-    async function triggerImmediateSurge() {
-      const openShift = activeShifts.find(s => s.status === 'OPEN');
-      if (openShift) {
-        await triggerShiftDispatch(openShift.id);
+    function handleShiftFilterChange() {
+      state.selectedShiftFilter = document.getElementById('recordsShiftFilter').value;
+      const target = state.selectedShiftFilter ? '/records?shift=' + encodeURIComponent(state.selectedShiftFilter) : '/records';
+      window.history.replaceState({}, '', target);
+      renderRecordsView();
+    }
+
+    function clearRecordsFilter() {
+      state.selectedShiftFilter = '';
+      document.getElementById('recordsShiftFilter').value = '';
+      document.getElementById('recordsSearchInput').value = '';
+      window.history.replaceState({}, '', '/records');
+      renderRecordsView();
+    }
+
+    function renderComplianceBadges(codes, guardActive) {
+      const list = Array.isArray(codes) && codes.length > 0 ? codes : ['ST'];
+      const items = list.map(code => `<span class="comp-badge">${escapeHtml(code)}</span>`).join('');
+      const dncBadge = guardActive === false ? '<span class="comp-badge inactive">DNC</span>' : '';
+      return `<div class="badge-row">${items}${dncBadge}</div>`;
+    }
+
+    function renderRecordsView() {
+      const shiftFilter = state.selectedShiftFilter || '';
+      const q = (document.getElementById('recordsSearchInput').value || '').trim().toLowerCase();
+
+      const filteredCalls = state.calls.filter(c => {
+        if (shiftFilter && c.shiftExternalId !== shiftFilter) return false;
+        if (q) {
+          const hay = (c.guardName + ' ' + c.guardExternalId + ' ' + c.phone + ' ' + c.shiftExternalId).toLowerCase();
+          if (!hay.includes(q)) return false;
+        }
+        return true;
+      });
+
+      document.getElementById('callRecordsBadge').textContent = filteredCalls.length + ' Record' + (filteredCalls.length === 1 ? '' : 's');
+
+      const callsBody = document.getElementById('callsTableBody');
+      if (filteredCalls.length === 0) {
+        callsBody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--text-secondary);padding:24px;">No matching call records found.</td></tr>';
       } else {
-        logToConsole('[SURGE NOTICE] No open shifts currently unassigned. Running Test 3A to inject a tentative candidate...');
-        await runScenario('3A_HAPPY_PATH');
+        callsBody.innerHTML = filteredCalls.map(c => `
+          <tr>
+            <td><strong>${escapeHtml(c.guardName)}</strong></td>
+            <td class="tabular">${escapeHtml(c.guardExternalId)}</td>
+            <td class="tabular">${escapeHtml(c.phone)}</td>
+            <td class="tabular"><strong>${escapeHtml(c.shiftExternalId)}</strong></td>
+            <td class="tabular">Attempt #${c.attemptNumber || 1}</td>
+            <td><span class="pill ${c.outcome === 'Tentative Accept' ? 'pill-idle' : c.outcome === 'In Progress' ? 'pill-blue' : 'pill-neutral'}">${escapeHtml(c.outcome || c.status)}</span></td>
+            <td class="tabular">${escapeHtml(c.timestamp || '')}</td>
+            <td>${renderComplianceBadges(c.eligibilityCodes, c.guardActive !== false)}</td>
+            <td><button type="button" class="btn btn-outline btn-sm" onclick="openTranscriptById('${escapeAttr(c.id)}')">View Transcript</button></td>
+          </tr>
+        `).join('');
+      }
+
+      document.getElementById('directoryHeading').textContent = shiftFilter
+        ? 'Personnel Outreach Directory (' + shiftFilter + ')'
+        : 'Personnel Outreach Directory';
+
+      let directoryPersons = state.persons;
+      if (shiftFilter) {
+        const contactedIds = new Set(filteredCalls.map(c => c.personId));
+        const shiftContacted = state.persons.filter(p => contactedIds.has(p.id));
+        if (shiftContacted.length > 0) {
+          directoryPersons = shiftContacted;
+        }
+      }
+      if (q) {
+        directoryPersons = directoryPersons.filter(p => {
+          const hay = (p.firstName + ' ' + p.lastName + ' ' + p.externalId + ' ' + p.phone + ' ' + p.region).toLowerCase();
+          return hay.includes(q);
+        });
+      }
+
+      document.getElementById('directoryCountBadge').textContent = directoryPersons.length + ' Officer' + (directoryPersons.length === 1 ? '' : 's');
+
+      const personsBody = document.getElementById('personsTableBody');
+      if (directoryPersons.length === 0) {
+        personsBody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text-secondary);padding:24px;">No matching officers in directory.</td></tr>';
+      } else {
+        personsBody.innerHTML = directoryPersons.map(p => {
+          const isDnc = !!p.dncFlag;
+          const activeFlag = !isDnc;
+          return `
+            <tr>
+              <td><strong>${escapeHtml(p.firstName + ' ' + p.lastName)}</strong></td>
+              <td class="tabular">${escapeHtml(p.externalId)}</td>
+              <td class="tabular">${escapeHtml(p.phone)}</td>
+              <td>${escapeHtml(p.region)}</td>
+              <td class="tabular">${p.totalShiftsCompleted} shifts</td>
+              <td>${renderComplianceBadges(p.eligibilityCodes, activeFlag)}</td>
+              <td>
+                <button type="button" class="btn btn-outline btn-sm" onclick="toggleDnc('${escapeAttr(p.id)}')">
+                  ${isDnc ? 'Clear DNC' : 'Set DNC'}
+                </button>
+              </td>
+            </tr>
+          `;
+        }).join('');
       }
     }
 
     async function toggleDnc(personId) {
       try {
-        logToConsole('[DNC TOGGLE] Updating Do-Not-Call compliance status for person: ' + personId + '...');
-        const res = await fetch('/api/v1/dashboard/persons/' + personId + '/toggle-dnc', { method: 'POST' });
-        const data = await res.json();
-        logToConsole('[DNC STATUS UPDATED]\n' + JSON.stringify(data, null, 2));
-        await loadDashboard();
+        const res = await fetch('/api/v1/dashboard/persons/' + encodeURIComponent(personId) + '/toggle-dnc', { method: 'POST' });
+        const updated = await res.json();
+        showToast(updated.externalId + ' status updated to ' + (updated.dncFlag ? 'Do Not Call' : 'Active') + '.');
+        await refreshAllData();
       } catch (err) {
-        logToConsole('[DNC TOGGLE ERROR] ' + err.message);
+        showToast('Failed to toggle DNC: ' + err.message);
       }
     }
 
-    async function runScenario(scenario) {
-      logToConsole('[SIMULATOR] Launching roadmap test case: ' + scenario + '...');
-      try {
-        const res = await fetch('/api/v1/simulator/run', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ scenario }),
+    function openTranscriptById(callLogId) {
+      const log = state.calls.find(c => c.id === callLogId);
+      if (!log) {
+        showToast('Transcript record not found.');
+        return;
+      }
+
+      const shift = state.shifts.find(s => s.id === log.shiftId || s.externalId === log.shiftExternalId);
+      const payText = shift ? ('$' + Number(shift.payRateHourly).toFixed(2) + '/hr') : '—';
+
+      document.getElementById('transcriptModalTitle').textContent = 'Call Transcript — ' + log.guardName + ' (' + log.guardExternalId + ')';
+      document.getElementById('transcriptModalMeta').innerHTML = `
+        <div><strong>Job ID:</strong> ${escapeHtml(log.shiftExternalId)}</div>
+        <div><strong>Pay Rate:</strong> ${escapeHtml(payText)}</div>
+        <div><strong>Outcome:</strong> ${escapeHtml(log.outcome || log.status)}</div>
+        <div><strong>Timestamp:</strong> ${escapeHtml(log.timestamp || '')}</div>
+      `;
+      document.getElementById('transcriptModalBody').textContent = log.transcript || 'No transcript available.';
+      document.getElementById('transcriptModal').classList.remove('hidden');
+      document.getElementById('transcriptCloseBtn').focus();
+    }
+
+    function closeTranscriptModal() {
+      document.getElementById('transcriptModal').classList.add('hidden');
+    }
+
+    function handleBackdropClick(event) {
+      if (event.target.id === 'transcriptModal') {
+        closeTranscriptModal();
+      }
+    }
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !document.getElementById('transcriptModal').classList.contains('hidden')) {
+        closeTranscriptModal();
+      }
+    });
+
+    function showToast(msg) {
+      document.getElementById('statusToastText').textContent = msg;
+      document.getElementById('statusToast').classList.remove('hidden');
+    }
+
+    function hideToast() {
+      document.getElementById('statusToast').classList.add('hidden');
+    }
+
+    function escapeHtml(val) {
+      return String(val ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function escapeAttr(val) {
+      return escapeHtml(val).replace(/'/g, '&#39;');
+    }
+
+    // Live 1-second timer tick for active busy line durations on Console
+    setInterval(() => {
+      if (window.location.pathname === '/' && getSession()) {
+        state.lines.forEach(line => {
+          if (line.status === 'Busy') {
+            line.durationSeconds = (line.durationSeconds || 0) + 1;
+            const cell = document.querySelector('[data-line-duration="' + line.channelIndex + '"]');
+            if (cell) cell.textContent = formatDuration(line.durationSeconds);
+          }
         });
-        const data = await res.json();
-        logToConsole('[SIMULATOR RESULT - ' + scenario + ']\n' + JSON.stringify(data, null, 2));
-        await loadDashboard();
-      } catch (err) {
-        logToConsole('[SIMULATOR ERROR] ' + err.message);
       }
-    }
+    }, 1000);
 
-    function refreshLines() {
-      loadDashboard();
-      logToConsole('[TELEPHONY POOL] Lines re-scanned and synchronized with 5-line Toll-Free pool.');
+    // Initialize App
+    document.getElementById('footerYear').textContent = new Date().getFullYear();
+    const initialUrl = new URL(window.location.href);
+    if (initialUrl.pathname === '/records') {
+      state.selectedShiftFilter = initialUrl.searchParams.get('shift') || '';
     }
-
-    function logToConsole(msg) {
-      const el = document.getElementById('consoleOutput');
-      if (!el) return;
-      const time = new Date().toLocaleTimeString();
-      el.textContent = '[' + time + '] ' + msg + '\n\n' + el.textContent;
-    }
-
-    // Initialize and poll every 8 seconds
-    loadDashboard();
-    setInterval(loadDashboard, 8000);
+    navigateTo(window.location.pathname + window.location.search, true);
+    refreshAllData();
+    setInterval(refreshAllData, 8000);
   </script>
 </body>
 </html>

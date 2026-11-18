@@ -10,5 +10,5 @@ export function renderDashboardHtml(): string {
   if (fs.existsSync(fallbackPath)) {
     return fs.readFileSync(fallbackPath, "utf-8");
   }
-  return "<!DOCTYPE html><html><body><h1>Guardteck Dispatch Console</h1></body></html>";
+  return "<!DOCTYPE html><html><body><h1>GUARDTECK DISPATCH CONSOLE</h1></body></html>";
 }
