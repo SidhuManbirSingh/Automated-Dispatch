@@ -4,11 +4,11 @@ import { inMemoryStore } from "../lib/store";
 import { DispatchTriggerSchema } from "../schemas";
 
 const TOLL_FREE_POOL = [
-  { channelIndex: 1, regionServed: "VAN", allocatedPhoneNumber: config.TWILIO_TOLLFREE_LINE_1, status: "IDLE" },
-  { channelIndex: 2, regionServed: "SUR", allocatedPhoneNumber: config.TWILIO_TOLLFREE_LINE_2, status: "IDLE" },
-  { channelIndex: 3, regionServed: "VIC", allocatedPhoneNumber: config.TWILIO_TOLLFREE_LINE_3, status: "IDLE" },
-  { channelIndex: 4, regionServed: "KEL", allocatedPhoneNumber: config.TWILIO_TOLLFREE_LINE_4, status: "IDLE" },
-  { channelIndex: 5, regionServed: "OVERFLOW", allocatedPhoneNumber: config.TWILIO_TOLLFREE_LINE_5, status: "IDLE" },
+  { channelIndex: 1, lineLabel: "Line 01", status: "Idle", shiftId: null, shiftExternalId: null, guardExternalId: null, guardName: null, durationSeconds: 0, allocatedPhoneNumber: config.TWILIO_TOLLFREE_LINE_1 },
+  { channelIndex: 2, lineLabel: "Line 02", status: "Idle", shiftId: null, shiftExternalId: null, guardExternalId: null, guardName: null, durationSeconds: 0, allocatedPhoneNumber: config.TWILIO_TOLLFREE_LINE_2 },
+  { channelIndex: 3, lineLabel: "Line 03", status: "Idle", shiftId: null, shiftExternalId: null, guardExternalId: null, guardName: null, durationSeconds: 0, allocatedPhoneNumber: config.TWILIO_TOLLFREE_LINE_3 },
+  { channelIndex: 4, lineLabel: "Line 04", status: "Idle", shiftId: null, shiftExternalId: null, guardExternalId: null, guardName: null, durationSeconds: 0, allocatedPhoneNumber: config.TWILIO_TOLLFREE_LINE_4 },
+  { channelIndex: 5, lineLabel: "Line 05", status: "Idle", shiftId: null, shiftExternalId: null, guardExternalId: null, guardName: null, durationSeconds: 0, allocatedPhoneNumber: config.TWILIO_TOLLFREE_LINE_5 },
 ];
 
 export const dispatchRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
@@ -16,8 +16,6 @@ export const dispatchRoutes: FastifyPluginAsync = async (app: FastifyInstance) =
     return reply.status(200).send({
       totalChannels: 5,
       activeCount: 0,
-      sipRegion: config.TWILIO_SIP_REGION,
-      tollFreePool: true,
       lines: TOLL_FREE_POOL,
     });
   });
@@ -38,20 +36,13 @@ export const dispatchRoutes: FastifyPluginAsync = async (app: FastifyInstance) =
       return reply.status(200).send({ status: "NO_CANDIDATES" });
     }
 
-    shift.status = "DISPATCH_IN_PROGRESS";
+    shift.status = "OUTREACH_ACTIVE";
 
     return reply.status(200).send({
-      shiftId: shift.id,
+      status: "INITIATED",
       shiftExternalId: shift.externalId,
-      candidatesContacted: 1,
-      callsInitiated: [
-        {
-          personName: `${candidate.firstName} ${candidate.lastName}`,
-          phone: candidate.phone,
-          channelIndex: 1,
-          callerId: config.TWILIO_TOLLFREE_LINE_1,
-        },
-      ],
+      guardExternalId: candidate.externalId,
+      guardName: `${candidate.firstName} ${candidate.lastName}`,
     });
   });
 };
