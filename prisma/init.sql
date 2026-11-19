@@ -30,9 +30,42 @@ CREATE TABLE IF NOT EXISTS Person (
   INDEX idx_person_phone (phone)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS Site (
+  id VARCHAR(36) PRIMARY KEY,
+  code VARCHAR(16) NOT NULL UNIQUE,
+  name VARCHAR(128) NOT NULL,
+  region VARCHAR(64) NOT NULL,
+  colorBg VARCHAR(16) NOT NULL,
+  colorText VARCHAR(16) NOT NULL,
+  colorBorder VARCHAR(16) NOT NULL,
+  createdAt DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT IGNORE INTO Site (id, code, name, region, colorBg, colorText, colorBorder) VALUES
+  (UUID(), 'AAA', 'Vancouver Harbour Terminal, Gate B', 'Vancouver', '#e0f2fe', '#0369a1', '#bae6fd'),
+  (UUID(), 'BBB', 'Surrey Civic Plaza, Security Desk', 'Surrey', '#d1fae5', '#065f46', '#a7f3d0'),
+  (UUID(), 'CCC', 'Victoria Inner Harbour Dock', 'Victoria', '#ede9fe', '#5b21b6', '#ddd6fe'),
+  (UUID(), 'DDD', 'Kelowna Regional Health Campus', 'Kelowna', '#fef3c7', '#92400e', '#fde68a'),
+  (UUID(), 'EEE', 'Burnaby Corporate Campus, Tower A', 'Burnaby', '#ffe4e6', '#9f1239', '#fecdd3'),
+  (UUID(), 'FFF', 'New Westminster Transit Concierge', 'New Westminster', '#e2e8f0', '#1e293b', '#cbd5e1');
+
+CREATE TABLE IF NOT EXISTS PersonSiteTraining (
+  id VARCHAR(36) PRIMARY KEY,
+  personId VARCHAR(36) NOT NULL,
+  siteId VARCHAR(36) NOT NULL,
+  isPrimary BOOLEAN NOT NULL DEFAULT TRUE,
+  trainedAt DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  FOREIGN KEY (personId) REFERENCES Person(id) ON DELETE CASCADE,
+  FOREIGN KEY (siteId) REFERENCES Site(id) ON DELETE CASCADE,
+  UNIQUE KEY unq_person_site_training (personId, siteId),
+  INDEX idx_site_training_site (siteId)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS Shift (
   id VARCHAR(36) PRIMARY KEY,
   externalId VARCHAR(64) NOT NULL UNIQUE,
+  siteCode VARCHAR(16) NOT NULL,
+  timeWindow VARCHAR(64) NULL,
   shiftDate DATETIME NOT NULL,
   startTime DATETIME NOT NULL,
   endTime DATETIME NOT NULL,
@@ -49,8 +82,10 @@ CREATE TABLE IF NOT EXISTS Shift (
   version INT NOT NULL DEFAULT 1,
   createdAt DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
   updatedAt DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+  FOREIGN KEY (siteCode) REFERENCES Site(code) ON DELETE RESTRICT,
   INDEX idx_shift_status_date (status, shiftDate),
-  INDEX idx_shift_priority_status (priority, status)
+  INDEX idx_shift_priority_status (priority, status),
+  INDEX idx_shift_site_status (siteCode, status)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS CallLog (

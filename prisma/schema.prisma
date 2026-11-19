@@ -103,14 +103,45 @@ model Person {
   approvals             ApprovalQueue[]
   assignments           ShiftAssignment[]
   eligibilities         PersonEligibility[]
+  siteTrainings         PersonSiteTraining[]
 
   @@index([region, status])
   @@index([phone])
 }
 
+model Site {
+  id                    String               @id @default(uuid())
+  code                  String               @unique // e.g., "AAA", "BBB", "CCC", "DDD", "EEE", "FFF"
+  name                  String
+  region                String
+  colorBg               String               // Color-coded background hex
+  colorText             String               // Color-coded text hex
+  colorBorder           String               // Color-coded border hex
+  createdAt             DateTime             @default(now())
+
+  shifts                Shift[]
+  trainedOfficers       PersonSiteTraining[]
+}
+
+model PersonSiteTraining {
+  id                    String        @id @default(uuid())
+  personId              String
+  siteId                String
+  isPrimary             Boolean       @default(true)
+  trainedAt             DateTime      @default(now())
+
+  person                Person        @relation(fields: [personId], references: [id], onDelete: Cascade)
+  site                  Site          @relation(fields: [siteId], references: [id], onDelete: Cascade)
+
+  @@unique([personId, siteId])
+  @@index([siteId])
+}
+
 model Shift {
   id                    String        @id @default(uuid())
-  externalId            String        @unique
+  externalId            String        @unique // e.g., "AAA-10001"
+  siteCode              String        // e.g., "AAA"
+  timeWindow            String?       // e.g., "0700-1500"
   shiftDate             DateTime
   startTime             DateTime
   endTime               DateTime
@@ -128,13 +159,14 @@ model Shift {
   createdAt             DateTime      @default(now())
   updatedAt             DateTime      @updatedAt
 
+  site                  Site          @relation(fields: [siteCode], references: [code], onDelete: Restrict)
   callLogs              CallLog[]
   approvals             ApprovalQueue[]
   assignments           ShiftAssignment[]
-  eligibilities         PersonEligibility[]
 
   @@index([status, shiftDate])
   @@index([priority, status])
+  @@index([siteCode, status])
 }
 
 model CallLog {
