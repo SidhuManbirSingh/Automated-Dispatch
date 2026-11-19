@@ -11,6 +11,7 @@ export const uiRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
 
   app.get("/", sendApp);
   app.get("/login", sendApp);
+  app.get("/scheduling", sendApp);
   app.get("/queue", sendApp);
   app.get("/records", sendApp);
 };

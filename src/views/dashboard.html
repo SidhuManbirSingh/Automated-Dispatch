@@ -84,7 +84,6 @@
       display: none !important;
     }
 
-    /* Layout Container */
     .container {
       width: 100%;
       max-width: 1200px;
@@ -106,7 +105,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
+      gap: 14px;
       min-height: 72px;
       padding-top: 12px;
       padding-bottom: 12px;
@@ -155,9 +154,9 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 9px 16px;
+      padding: 9px 14px;
       border-radius: var(--radius-control);
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 600;
       cursor: pointer;
       border: 1px solid var(--border-hairline);
@@ -196,13 +195,13 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-width: 24px;
-      height: 22px;
-      padding: 0 7px;
+      min-width: 22px;
+      height: 20px;
+      padding: 0 6px;
       border-radius: 999px;
       background: rgba(32, 31, 32, 0.14);
       color: var(--action-orange-text);
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
       font-variant-numeric: tabular-nums;
     }
@@ -217,7 +216,7 @@
     .user-chip {
       display: inline-flex;
       flex-direction: column;
-      padding: 6px 12px;
+      padding: 5px 11px;
       background: var(--bg-surface);
       border: 1px solid var(--border-hairline);
       border-radius: var(--radius-control);
@@ -225,13 +224,13 @@
     }
 
     .user-name {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
       color: var(--text-primary);
     }
 
     .user-email {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--text-muted);
     }
 
@@ -261,6 +260,7 @@
       cursor: pointer;
       border: 1px solid transparent;
       text-decoration: none;
+      white-space: nowrap;
       transition: background-color var(--transition-ui), border-color var(--transition-ui), transform var(--transition-ui);
     }
 
@@ -270,7 +270,7 @@
 
     .btn-sm {
       padding: 7px 12px;
-      font-size: 14px;
+      font-size: 13.5px;
       border-radius: 10px;
     }
 
@@ -454,7 +454,7 @@
     }
 
     .page-title {
-      font-size: 32px;
+      font-size: 30px;
       font-weight: 600;
       letter-spacing: -0.02em;
       line-height: 1.2;
@@ -463,7 +463,7 @@
 
     .branch-bar {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 16px;
     }
 
@@ -471,11 +471,11 @@
       background: var(--bg-surface);
       border: 1px solid var(--border-hairline);
       border-radius: var(--radius-surface);
-      padding: 20px 22px;
+      padding: 18px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
+      gap: 12px;
       cursor: pointer;
       text-align: left;
       box-shadow: var(--shadow-card);
@@ -502,14 +502,70 @@
     }
 
     .branch-label {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 600;
       color: var(--text-primary);
     }
 
     .branch-sub {
-      font-size: 14px;
+      font-size: 13.5px;
       color: var(--text-secondary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Color-Coded Site Badges & Strip */
+    .site-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 9px;
+      border-radius: 7px;
+      font-size: 12.5px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      border: 1px solid transparent;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .site-strip {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+    }
+
+    .site-chip-card {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 12px 14px;
+      border-radius: var(--radius-control);
+      border: 1px solid var(--border-hairline);
+      background: var(--bg-ground);
+      cursor: pointer;
+      text-align: left;
+      transition: border-color var(--transition-ui), box-shadow var(--transition-ui);
+    }
+
+    .site-chip-card:hover {
+      background: var(--bg-surface);
+    }
+
+    .site-chip-card.active {
+      box-shadow: 0 0 0 2px var(--brand-blue);
+      border-color: var(--brand-blue);
+    }
+
+    .site-chip-name {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+
+    .site-chip-stats {
+      font-size: 12px;
+      color: var(--text-muted);
       font-variant-numeric: tabular-nums;
     }
 
@@ -554,8 +610,8 @@
 
     th {
       background: var(--bg-surface);
-      padding: 12px 16px;
-      font-size: 13px;
+      padding: 12px 14px;
+      font-size: 12.5px;
       font-weight: 600;
       color: var(--text-secondary);
       text-transform: uppercase;
@@ -565,8 +621,8 @@
     }
 
     td {
-      padding: 14px 16px;
-      font-size: 15px;
+      padding: 13px 14px;
+      font-size: 14.5px;
       color: var(--text-primary);
       border-bottom: 1px solid var(--border-hairline);
       vertical-align: middle;
@@ -587,7 +643,7 @@
       gap: 6px;
       padding: 4px 10px;
       border-radius: 8px;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 600;
       white-space: nowrap;
       border: 1px solid transparent;
@@ -626,7 +682,7 @@
     .badge-row {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       flex-wrap: wrap;
     }
 
@@ -684,7 +740,7 @@
     }
 
     .shift-spec {
-      font-size: 15px;
+      font-size: 14.5px;
       color: var(--text-secondary);
       display: flex;
       flex-direction: column;
@@ -692,7 +748,7 @@
     }
 
     .pay-highlight {
-      font-size: 17px;
+      font-size: 16.5px;
       font-weight: 700;
       color: var(--brand-blue);
       font-variant-numeric: tabular-nums;
@@ -704,7 +760,7 @@
       border: 1px solid var(--border-hairline);
       border-radius: var(--radius-control);
       padding: 14px 16px;
-      font-size: 15px;
+      font-size: 14.5px;
       color: var(--text-primary);
     }
 
@@ -724,7 +780,7 @@
       min-width: 156px;
     }
 
-    /* Filter Bar (/records & /queue) */
+    /* Filter Bar */
     .filter-bar {
       display: flex;
       align-items: flex-end;
@@ -740,7 +796,7 @@
       display: flex;
       flex-direction: column;
       gap: 6px;
-      min-width: 210px;
+      min-width: 190px;
       flex: 1;
     }
 
@@ -765,7 +821,7 @@
       gap: 12px;
     }
 
-    /* Transcript Modal Drawer */
+    /* Modals */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -779,14 +835,14 @@
 
     .modal-dialog {
       width: 100%;
-      max-width: 680px;
+      max-width: 720px;
       background: var(--bg-ground);
       border: 1px solid var(--border-hairline);
       border-radius: var(--radius-surface);
       box-shadow: var(--shadow-modal);
       display: flex;
       flex-direction: column;
-      max-height: 85vh;
+      max-height: 88vh;
       overflow: hidden;
     }
 
@@ -836,6 +892,18 @@
       white-space: pre-wrap;
     }
 
+    .preset-grid {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .hours-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
     /* Minimal Footer */
     .app-footer {
       border-top: 1px solid var(--border-hairline);
@@ -876,6 +944,15 @@
       text-decoration: underline;
     }
 
+    @media (max-width: 1024px) {
+      .site-strip {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .branch-bar {
+        grid-template-columns: 1fr;
+      }
+    }
+
     @media (max-width: 900px) {
       .queue-card {
         grid-template-columns: 1fr;
@@ -883,9 +960,6 @@
       .queue-actions {
         flex-direction: row;
         flex-wrap: wrap;
-      }
-      .branch-bar {
-        grid-template-columns: 1fr;
       }
     }
 
@@ -900,12 +974,18 @@
       .surface-card {
         padding: 16px;
       }
+      .site-strip {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .hours-grid {
+        grid-template-columns: 1fr;
+      }
       .modal-meta {
         grid-template-columns: 1fr;
       }
       th, td {
-        padding: 10px 12px;
-        font-size: 14px;
+        padding: 10px 11px;
+        font-size: 13.5px;
       }
     }
   </style>
@@ -926,6 +1006,7 @@
 
       <nav class="nav-group" aria-label="Primary Navigation">
         <button type="button" id="navConsole" class="nav-btn" onclick="navigateTo('/')">Console</button>
+        <button type="button" id="navScheduling" class="nav-btn" onclick="navigateTo('/scheduling')">Scheduling</button>
         <button type="button" id="navRecords" class="nav-btn" onclick="navigateTo('/records')">Call Records &amp; Directory</button>
         <button type="button" id="navQueue" class="nav-btn queue-alert" onclick="navigateTo('/queue')">
           <span>Approval Queue</span>
@@ -957,7 +1038,6 @@
         </div>
       </div>
 
-      <!-- Microsoft Entra ID SSO -->
       <button type="button" class="btn btn-brand sso-btn" onclick="toggleMsSsoPanel()">
         <svg width="18" height="18" viewBox="0 0 21 21" aria-hidden="true">
           <rect x="1" y="1" width="9" height="9" fill="#f25022"/>
@@ -986,7 +1066,6 @@
 
       <div class="divider">or</div>
 
-      <!-- Test Login Form -->
       <form id="testLoginForm" class="test-login-box" onsubmit="handleTestLogin(event)">
         <div class="test-login-head">
           <span style="font-size:15px;font-weight:600;">Local Test Login</span>
@@ -1009,7 +1088,7 @@
     </div>
   </section>
 
-  <!-- Main Workspace Container (Authenticated Pages) -->
+  <!-- Main Workspace Container -->
   <main id="appMain" class="app-main container hidden">
     <div id="statusToast" class="toast-banner hidden" role="status" aria-live="polite">
       <span id="statusToastText"></span>
@@ -1023,8 +1102,16 @@
         <button type="button" class="btn btn-outline btn-sm" onclick="refreshAllData()">Refresh Data</button>
       </div>
 
-      <!-- Quick Branch Navigation Bar -->
+      <!-- Quick Branch Cards -->
       <div class="branch-bar">
+        <button type="button" class="branch-card" onclick="navigateTo('/scheduling')">
+          <div class="branch-meta">
+            <span class="branch-label">Scheduling</span>
+            <span class="branch-sub" id="branchSchedulingCount">0 open shifts ready</span>
+          </div>
+          <span class="btn btn-brand btn-sm">Open Shifts</span>
+        </button>
+
         <button type="button" class="branch-card priority" onclick="navigateTo('/queue')">
           <div class="branch-meta">
             <span class="branch-label">Approval Queue</span>
@@ -1035,10 +1122,10 @@
 
         <button type="button" class="branch-card" onclick="navigateTo('/records')">
           <div class="branch-meta">
-            <span class="branch-label">Call Records &amp; Outreach Directory</span>
+            <span class="branch-label">Call Records &amp; Directory</span>
             <span class="branch-sub" id="branchRecordsCount">0 outbound records logged</span>
           </div>
-          <span class="btn btn-brand btn-sm">View Directory</span>
+          <span class="btn btn-outline btn-sm">View Records</span>
         </button>
       </div>
 
@@ -1046,7 +1133,7 @@
       <section class="surface-card">
         <div class="section-head">
           <h2 class="section-heading">Outbound Line Status</h2>
-          <span class="pill pill-neutral tabular" id="activeLinesSummary">0 Busy / 5 Total</span>
+          <span class="pill pill-neutral tabular" id="activeLinesSummary">0 Busy / 5 Lines</span>
         </div>
         <div class="table-wrap">
           <table>
@@ -1054,6 +1141,7 @@
               <tr>
                 <th>Line</th>
                 <th>State</th>
+                <th>Site</th>
                 <th>Active Job ID</th>
                 <th>Employee ID</th>
                 <th>Duration</th>
@@ -1066,34 +1154,58 @@
           </table>
         </div>
       </section>
+    </div>
 
-      <!-- Open Shifts Table -->
+    <!-- View 2: Scheduling Tab (/scheduling) — ONLY OPEN SHIFTS + SITE-TRAINED DISPATCH -->
+    <div id="viewScheduling" class="page-view hidden">
+      <div class="page-title-row">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+          <button type="button" class="btn btn-outline btn-sm" onclick="navigateTo('/')">Back to Console</button>
+          <h1 class="page-title">Shift Scheduling</h1>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button type="button" class="btn btn-outline btn-sm" onclick="selectSchedulingSite('')">Show All Open Sites</button>
+          <button type="button" class="btn btn-outline btn-sm" onclick="refreshAllData()">Refresh</button>
+        </div>
+      </div>
+
+      <!-- Color-Coded Site Schema Selector -->
+      <div id="schedulingSiteStrip" class="site-strip" aria-label="Color-coded site selector">
+        <!-- Populated dynamically -->
+      </div>
+
+      <!-- Open Shifts Only Table -->
       <section class="surface-card">
         <div class="section-head">
-          <h2 class="section-heading">Open Shifts</h2>
-          <span class="pill pill-neutral tabular" id="openShiftsBadge">0 Open</span>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            <h2 class="section-heading" id="schedulingOpenHeading">Open Shifts</h2>
+            <span id="schedulingActiveSiteBadge"></span>
+          </div>
+          <span class="pill pill-neutral tabular" id="schedulingOpenCountBadge">0 Open Shifts</span>
         </div>
+
         <div class="table-wrap">
           <table>
             <thead>
               <tr>
+                <th>Site</th>
                 <th>Job ID</th>
                 <th>Site / Client Location</th>
-                <th>Date &amp; Time Window</th>
+                <th>Offered Hours (24h)</th>
                 <th>Pay Rate</th>
-                <th>Coverage Status</th>
-                <th>Actions</th>
+                <th>Eligibility</th>
+                <th>Site Roster &amp; Dispatch</th>
               </tr>
             </thead>
-            <tbody id="shiftsTableBody">
-              <!-- Populated dynamically -->
+            <tbody id="schedulingShiftsBody">
+              <!-- Populated dynamically: OPEN shifts only -->
             </tbody>
           </table>
         </div>
       </section>
     </div>
 
-    <!-- View 2: Approval Queue Page (/queue) -->
+    <!-- View 3: Approval Queue Page (/queue) -->
     <div id="viewQueue" class="page-view hidden">
       <div class="page-title-row">
         <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
@@ -1111,7 +1223,7 @@
       </div>
     </div>
 
-    <!-- View 3: Call Records & Outreach Directory Page (/records) -->
+    <!-- View 4: Call Records & Outreach Directory Page (/records) -->
     <div id="viewRecords" class="page-view hidden">
       <div class="page-title-row">
         <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
@@ -1120,11 +1232,20 @@
         </div>
       </div>
 
+      <!-- Color-coded Site Quick Filter Strip -->
+      <div id="recordsSitePills" class="filter-pills"></div>
+
       <!-- Filters -->
       <div class="filter-bar">
         <div class="filter-item">
+          <label for="recordsSiteFilter" class="field-label">Filter by Site</label>
+          <select id="recordsSiteFilter" class="field-select" onchange="handleRecordsFilterChange()">
+            <option value="">All Sites</option>
+          </select>
+        </div>
+        <div class="filter-item">
           <label for="recordsShiftFilter" class="field-label">Filter by Job ID</label>
-          <select id="recordsShiftFilter" class="field-select" onchange="handleShiftFilterChange()">
+          <select id="recordsShiftFilter" class="field-select" onchange="handleRecordsFilterChange()">
             <option value="">All Jobs</option>
           </select>
         </div>
@@ -1145,6 +1266,7 @@
           <table>
             <thead>
               <tr>
+                <th>Site</th>
                 <th>Officer Name</th>
                 <th>Employee ID</th>
                 <th>Phone</th>
@@ -1163,7 +1285,7 @@
         </div>
       </section>
 
-      <!-- Per-Shift Personnel Outreach Directory -->
+      <!-- Personnel Outreach Directory -->
       <section class="surface-card">
         <div class="section-head">
           <h2 class="section-heading" id="directoryHeading">Personnel Outreach Directory</h2>
@@ -1176,7 +1298,7 @@
                 <th>Officer Name</th>
                 <th>Employee ID</th>
                 <th>Phone</th>
-                <th>Region</th>
+                <th>Sites Trained</th>
                 <th>Completed Shifts</th>
                 <th>Compliance &amp; Eligibility</th>
                 <th>Action</th>
@@ -1197,18 +1319,19 @@
       <span>&copy; <span id="footerYear"></span> GUARDTECK DISPATCH CONSOLE</span>
       <div class="footer-links">
         <button type="button" class="footer-link" onclick="navigateTo('/')">Console</button>
+        <button type="button" class="footer-link" onclick="navigateTo('/scheduling')">Scheduling</button>
         <button type="button" class="footer-link" onclick="navigateTo('/queue')">Approval Queue</button>
         <button type="button" class="footer-link" onclick="navigateTo('/records')">Call Records &amp; Directory</button>
       </div>
     </div>
   </footer>
 
-  <!-- Transcript Inspection Modal -->
-  <div id="transcriptModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="transcriptModalTitle" onclick="handleBackdropClick(event)">
+  <!-- Modal 1: Transcript Inspection Modal -->
+  <div id="transcriptModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="transcriptModalTitle" onclick="handleBackdropClick(event, 'transcriptModal')">
     <div class="modal-dialog">
       <div class="modal-header">
         <h2 id="transcriptModalTitle" class="modal-title">Call Transcript</h2>
-        <button type="button" id="transcriptCloseBtn" class="btn btn-outline btn-sm" onclick="closeTranscriptModal()">Close</button>
+        <button type="button" id="transcriptCloseBtn" class="btn btn-outline btn-sm" onclick="closeModal('transcriptModal')">Close</button>
       </div>
       <div class="modal-body">
         <div class="modal-meta" id="transcriptModalMeta"></div>
@@ -1217,19 +1340,130 @@
     </div>
   </div>
 
+  <!-- Modal 2: Edit Offered Shift Hours Modal -->
+  <div id="editHoursModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="editHoursTitle" onclick="handleBackdropClick(event, 'editHoursModal')">
+    <div class="modal-dialog" style="max-width: 560px;">
+      <div class="modal-header">
+        <h2 id="editHoursTitle" class="modal-title">Edit Offered Shift Hours</h2>
+        <button type="button" class="btn btn-outline btn-sm" onclick="closeModal('editHoursModal')">Close</button>
+      </div>
+      <form class="modal-body" onsubmit="saveShiftHours(event)">
+        <div id="editHoursMeta" style="font-size:14.5px;color:var(--text-secondary);"></div>
+
+        <div class="field-group">
+          <span class="field-label">Quick 8-Hour Shift Blocks</span>
+          <div class="preset-grid">
+            <button type="button" class="btn btn-outline btn-sm" onclick="applyHourPreset('0000', '0800', 8)">0000-0800</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="applyHourPreset('0600', '1400', 8)">0600-1400</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="applyHourPreset('0700', '1500', 8)">0700-1500</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="applyHourPreset('0800', '1600', 8)">0800-1600</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="applyHourPreset('1500', '2300', 8)">1500-2300</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="applyHourPreset('1600', '0000', 8)">1600-0000</button>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="editShiftDate" class="field-label">Date (YYYY-MM-DD)</label>
+          <input id="editShiftDate" type="date" class="field-input" required>
+        </div>
+
+        <div class="hours-grid">
+          <div class="field-group">
+            <label for="editStartHour" class="field-label">Start (HHMM)</label>
+            <input id="editStartHour" type="text" maxlength="4" pattern="[0-9]{4}" class="field-input tabular" placeholder="0700" oninput="recalcDuration()" required>
+          </div>
+          <div class="field-group">
+            <label for="editEndHour" class="field-label">End (HHMM)</label>
+            <input id="editEndHour" type="text" maxlength="4" pattern="[0-9]{4}" class="field-input tabular" placeholder="1500" oninput="recalcDuration()" required>
+          </div>
+          <div class="field-group">
+            <label for="editDurationHours" class="field-label">Duration (hrs)</label>
+            <input id="editDurationHours" type="number" step="0.5" min="1" max="24" class="field-input tabular" required>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:6px;">
+          <button type="button" class="btn btn-outline" onclick="closeModal('editHoursModal')">Cancel</button>
+          <button type="submit" class="btn btn-brand">Save Hours</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 3: Site Trained Officers Modal -->
+  <div id="siteOfficersModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="siteOfficersTitle" onclick="handleBackdropClick(event, 'siteOfficersModal')">
+    <div class="modal-dialog" style="max-width: 780px;">
+      <div class="modal-header">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <h2 id="siteOfficersTitle" class="modal-title">Site Trained Officers</h2>
+          <span id="siteOfficersBadge"></span>
+        </div>
+        <button type="button" class="btn btn-outline btn-sm" onclick="closeModal('siteOfficersModal')">Close</button>
+      </div>
+      <div class="modal-body">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+          <span id="siteOfficersSubtitle" style="font-size:14.5px;color:var(--text-secondary);"></span>
+          <button type="button" id="siteDispatchAllBtn" class="btn btn-orange btn-sm hidden" onclick="dispatchFromSiteModal()">Dispatch Call to All Trained Officers</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Employee ID</th>
+                <th>Officer Name</th>
+                <th>Phone</th>
+                <th>Eligibility</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="siteOfficersTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
     const SESSION_KEY = 'guardteck_dispatch_session';
 
+    const FALLBACK_SITE_COLORS = {
+      AAA: { code: 'AAA', name: 'Vancouver Harbour Terminal, Gate B', colorBg: '#e0f2fe', colorText: '#0369a1', colorBorder: '#bae6fd' },
+      BBB: { code: 'BBB', name: 'Surrey Civic Plaza, Security Desk', colorBg: '#d1fae5', colorText: '#065f46', colorBorder: '#a7f3d0' },
+      CCC: { code: 'CCC', name: 'Victoria Inner Harbour Dock', colorBg: '#ede9fe', colorText: '#5b21b6', colorBorder: '#ddd6fe' },
+      DDD: { code: 'DDD', name: 'Kelowna Regional Health Campus', colorBg: '#fef3c7', colorText: '#92400e', colorBorder: '#fde68a' },
+      EEE: { code: 'EEE', name: 'Burnaby Corporate Campus, Tower A', colorBg: '#ffe4e6', colorText: '#9f1239', colorBorder: '#fecdd3' },
+      FFF: { code: 'FFF', name: 'New Westminster Transit Concierge', colorBg: '#e2e8f0', colorText: '#1e293b', colorBorder: '#cbd5e1' }
+    };
+
     let state = {
+      sites: [],
       lines: [],
       shifts: [],
       approvals: [],
       calls: [],
       persons: [],
-      stats: { pendingApprovals: 0, activeOutboundLines: 0 },
+      stats: { pendingApprovals: 0, activeOutboundLines: 0, openShiftsCount: 0 },
       queueFilter: 'PENDING',
-      selectedShiftFilter: ''
+      selectedSchedulingSite: '',
+      selectedSiteFilter: '',
+      selectedShiftFilter: '',
+      editingShiftId: null,
+      modalDispatchShiftId: null
     };
+
+    function getSiteMeta(code) {
+      if (!code) return null;
+      const found = state.sites.find(s => s.code === code);
+      return found || FALLBACK_SITE_COLORS[code] || { code, name: code, colorBg: '#f3f4f6', colorText: '#1f2937', colorBorder: '#d1d5db' };
+    }
+
+    function renderSiteBadge(code, showName = false) {
+      if (!code) return '<span style="color:var(--text-muted);">—</span>';
+      const meta = getSiteMeta(code);
+      const label = showName ? (meta.code + ' — ' + meta.name) : meta.code;
+      return `<span class="site-badge" style="background:${meta.colorBg};color:${meta.colorText};border-color:${meta.colorBorder};">${escapeHtml(label)}</span>`;
+    }
 
     function getSession() {
       try {
@@ -1259,11 +1493,9 @@
 
     function handleMsSsoSubmit(event) {
       event.preventDefault();
-      const nameInput = document.getElementById('msDisplayName');
-      const emailInput = document.getElementById('msWorkEmail');
+      const name = (document.getElementById('msDisplayName').value || '').trim();
+      const email = (document.getElementById('msWorkEmail').value || '').trim();
       const errBox = document.getElementById('msError');
-      const name = (nameInput.value || '').trim();
-      const email = (emailInput.value || '').trim();
 
       if (!name || !email) {
         errBox.textContent = 'Enter both your Microsoft Display Name and Work Email.';
@@ -1304,12 +1536,26 @@
 
       if (path === '/records') {
         const shiftParam = urlObj.searchParams.get('shift');
-        if (shiftParam !== null) {
-          state.selectedShiftFilter = shiftParam;
-        }
+        const siteParam = urlObj.searchParams.get('site');
+        if (shiftParam !== null) state.selectedShiftFilter = shiftParam;
+        if (siteParam !== null) state.selectedSiteFilter = siteParam;
+      }
+      if (path === '/scheduling') {
+        const siteParam = urlObj.searchParams.get('site');
+        if (siteParam !== null) state.selectedSchedulingSite = siteParam;
       }
 
-      const fullTarget = path + (path === '/records' && state.selectedShiftFilter ? '?shift=' + encodeURIComponent(state.selectedShiftFilter) : '');
+      let fullTarget = path;
+      if (path === '/records') {
+        const params = new URLSearchParams();
+        if (state.selectedSiteFilter) params.set('site', state.selectedSiteFilter);
+        if (state.selectedShiftFilter) params.set('shift', state.selectedShiftFilter);
+        const qs = params.toString();
+        if (qs) fullTarget += '?' + qs;
+      } else if (path === '/scheduling' && state.selectedSchedulingSite) {
+        fullTarget += '?site=' + encodeURIComponent(state.selectedSchedulingSite);
+      }
+
       if (replaceHistory) {
         window.history.replaceState({}, '', fullTarget);
       } else {
@@ -1323,6 +1569,9 @@
       const urlObj = new URL(window.location.href);
       if (urlObj.pathname === '/records') {
         state.selectedShiftFilter = urlObj.searchParams.get('shift') || '';
+        state.selectedSiteFilter = urlObj.searchParams.get('site') || '';
+      } else if (urlObj.pathname === '/scheduling') {
+        state.selectedSchedulingSite = urlObj.searchParams.get('site') || '';
       }
       renderRoute(urlObj.pathname);
     });
@@ -1334,6 +1583,7 @@
       const footer = document.getElementById('appFooter');
       const viewLogin = document.getElementById('viewLogin');
       const viewConsole = document.getElementById('viewConsole');
+      const viewScheduling = document.getElementById('viewScheduling');
       const viewQueue = document.getElementById('viewQueue');
       const viewRecords = document.getElementById('viewRecords');
 
@@ -1354,21 +1604,27 @@
       document.getElementById('sessionUserEmail').textContent = session.email;
 
       viewConsole.classList.add('hidden');
+      viewScheduling.classList.add('hidden');
       viewQueue.classList.add('hidden');
       viewRecords.classList.add('hidden');
 
       document.getElementById('navConsole').classList.remove('active');
+      document.getElementById('navScheduling').classList.remove('active');
       document.getElementById('navRecords').classList.remove('active');
       document.getElementById('navQueue').classList.remove('active');
 
-      if (path === '/queue') {
+      if (path === '/scheduling') {
+        viewScheduling.classList.remove('hidden');
+        document.getElementById('navScheduling').classList.add('active');
+        renderSchedulingView();
+      } else if (path === '/queue') {
         viewQueue.classList.remove('hidden');
         document.getElementById('navQueue').classList.add('active');
         renderQueueView();
       } else if (path === '/records') {
         viewRecords.classList.remove('hidden');
         document.getElementById('navRecords').classList.add('active');
-        syncShiftFilterSelect();
+        syncRecordsFilterSelects();
         renderRecordsView();
       } else {
         viewConsole.classList.remove('hidden');
@@ -1379,8 +1635,9 @@
 
     async function refreshAllData() {
       try {
-        const [statsRes, linesRes, apprRes, shiftsRes, callsRes, personsRes] = await Promise.all([
+        const [statsRes, sitesRes, linesRes, apprRes, shiftsRes, callsRes, personsRes] = await Promise.all([
           fetch('/api/v1/dashboard/stats'),
+          fetch('/api/v1/dispatch/sites'),
           fetch('/api/v1/dispatch/lines'),
           fetch('/api/v1/dashboard/approvals'),
           fetch('/api/v1/dashboard/shifts'),
@@ -1389,6 +1646,7 @@
         ]);
 
         if (statsRes.ok) state.stats = await statsRes.json();
+        if (sitesRes.ok) state.sites = await sitesRes.json();
         if (linesRes.ok) {
           const linePayload = await linesRes.json();
           state.lines = linePayload.lines || [];
@@ -1400,9 +1658,10 @@
 
         updateGlobalBadges();
         const curPath = window.location.pathname;
-        if (curPath === '/queue') renderQueueView();
+        if (curPath === '/scheduling') renderSchedulingView();
+        else if (curPath === '/queue') renderQueueView();
         else if (curPath === '/records') {
-          syncShiftFilterSelect();
+          syncRecordsFilterSelects();
           renderRecordsView();
         } else if (curPath !== '/login') renderConsoleView();
       } catch (err) {
@@ -1412,9 +1671,11 @@
 
     function updateGlobalBadges() {
       const pendingCount = state.approvals.filter(a => a.status === 'PENDING').length;
+      const openCount = state.shifts.filter(s => s.status === 'OPEN').length;
       document.getElementById('headerQueueBadge').textContent = pendingCount;
-      document.getElementById('branchQueueCount').textContent = pendingCount + ' pending shift review' + (pendingCount === 1 ? '' : 's');
-      document.getElementById('branchRecordsCount').textContent = state.calls.length + ' outbound call record' + (state.calls.length === 1 ? '' : 's');
+      document.getElementById('branchSchedulingCount').textContent = openCount + ' open shift' + (openCount === 1 ? '' : 's') + ' ready';
+      document.getElementById('branchQueueCount').textContent = pendingCount + ' pending review' + (pendingCount === 1 ? '' : 's');
+      document.getElementById('branchRecordsCount').textContent = state.calls.length + ' call record' + (state.calls.length === 1 ? '' : 's');
     }
 
     function formatDuration(seconds) {
@@ -1424,13 +1685,6 @@
       return String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
     }
 
-    function formatShiftStatusPill(status) {
-      if (status === 'ASSIGNED') return '<span class="pill pill-idle">Assigned</span>';
-      if (status === 'PENDING_APPROVAL' || status === 'PENDING_DISPATCHER_APPROVAL') return '<span class="pill pill-orange">Pending Approval</span>';
-      if (status === 'OUTREACH_ACTIVE' || status === 'DISPATCH_IN_PROGRESS') return '<span class="pill pill-blue">Outreach Active</span>';
-      return '<span class="pill pill-neutral">Open</span>';
-    }
-
     function renderConsoleView() {
       const busyCount = state.lines.filter(l => l.status === 'Busy').length;
       document.getElementById('activeLinesSummary').textContent = busyCount + ' Busy / ' + state.lines.length + ' Lines';
@@ -1438,43 +1692,88 @@
       const linesBody = document.getElementById('linesTableBody');
       linesBody.innerHTML = state.lines.map(line => {
         const isBusy = line.status === 'Busy';
+        const siteCode = line.siteCode || (line.shiftExternalId ? line.shiftExternalId.split('-')[0] : null);
         return `
           <tr>
             <td><strong>${escapeHtml(line.lineLabel || ('Line 0' + line.channelIndex))}</strong></td>
-            <td>
-              <span class="pill ${isBusy ? 'pill-busy' : 'pill-idle'}">${isBusy ? 'Busy' : 'Idle'}</span>
-            </td>
+            <td><span class="pill ${isBusy ? 'pill-busy' : 'pill-idle'}">${isBusy ? 'Busy' : 'Idle'}</span></td>
+            <td>${isBusy ? renderSiteBadge(siteCode) : '—'}</td>
             <td class="tabular">${isBusy && line.shiftExternalId ? escapeHtml(line.shiftExternalId) : '—'}</td>
             <td class="tabular">${isBusy && line.guardExternalId ? escapeHtml(line.guardExternalId) : '—'}</td>
             <td class="tabular" data-line-duration="${line.channelIndex}">${isBusy ? formatDuration(line.durationSeconds) : '—'}</td>
             <td>
               ${isBusy && line.shiftExternalId
-                ? `<button type="button" class="btn btn-outline btn-sm" onclick="openShiftRecords('${escapeAttr(line.shiftExternalId)}')">Outreach</button>`
+                ? `<button type="button" class="btn btn-outline btn-sm" onclick="openShiftRecords('${escapeAttr(line.shiftExternalId)}', '${escapeAttr(siteCode || '')}')">Outreach</button>`
                 : '<span style="color:var(--text-muted);font-size:14px;">—</span>'}
             </td>
           </tr>
         `;
       }).join('');
+    }
 
-      const openCount = state.shifts.filter(s => s.status !== 'ASSIGNED').length;
-      document.getElementById('openShiftsBadge').textContent = openCount + ' Unassigned';
+    /* Scheduling View (/scheduling) */
+    function selectSchedulingSite(code) {
+      state.selectedSchedulingSite = (state.selectedSchedulingSite === code && code !== '') ? '' : code;
+      const target = state.selectedSchedulingSite ? '/scheduling?site=' + encodeURIComponent(state.selectedSchedulingSite) : '/scheduling';
+      window.history.replaceState({}, '', target);
+      renderSchedulingView();
+    }
 
-      const shiftsBody = document.getElementById('shiftsTableBody');
-      shiftsBody.innerHTML = state.shifts.map(shift => {
-        const site = shift.siteLocation || shift.pickupLocation || 'Site TBD';
-        const windowStr = shift.timeWindow || (new Date(shift.shiftDate).toLocaleDateString() + ' (' + shift.durationHours + ' hrs)');
-        const canDispatch = shift.status === 'OPEN';
+    function renderSchedulingView() {
+      const siteStrip = document.getElementById('schedulingSiteStrip');
+      const sitesList = state.sites.length ? state.sites : Object.values(FALLBACK_SITE_COLORS);
+
+      siteStrip.innerHTML = sitesList.map(site => {
+        const isSelected = state.selectedSchedulingSite === site.code;
+        const openForSite = state.shifts.filter(s => s.siteCode === site.code && s.status === 'OPEN').length;
+        const trainedForSite = site.trainedOfficerCount ?? state.persons.filter(p => (p.trainedSites || []).includes(site.code) && !p.dncFlag).length;
+        return `
+          <div class="site-chip-card ${isSelected ? 'active' : ''}" role="button" tabindex="0" onclick="selectSchedulingSite('${escapeAttr(site.code)}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectSchedulingSite('${escapeAttr(site.code)}');}">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;">
+              ${renderSiteBadge(site.code)}
+              <span style="font-size:12px;font-weight:700;color:var(--brand-blue);text-decoration:underline;" onclick="event.stopPropagation();openSiteOfficersModal('${escapeAttr(site.code)}', null)">${trainedForSite} Officers</span>
+            </div>
+            <div class="site-chip-name">${escapeHtml(site.name)}</div>
+            <div class="site-chip-stats">${openForSite} Open Shift${openForSite === 1 ? '' : 's'}</div>
+          </div>
+        `;
+      }).join('');
+
+      const activeSite = state.selectedSchedulingSite;
+      const openShifts = state.shifts.filter(s => s.status === 'OPEN' && (!activeSite || s.siteCode === activeSite));
+
+      document.getElementById('schedulingOpenHeading').textContent = activeSite
+        ? 'Open Shifts — Site ' + activeSite
+        : 'Open Shifts';
+      document.getElementById('schedulingActiveSiteBadge').innerHTML = activeSite ? renderSiteBadge(activeSite) : '';
+      document.getElementById('schedulingOpenCountBadge').textContent = openShifts.length + ' Open Shift' + (openShifts.length === 1 ? '' : 's');
+
+      const tbody = document.getElementById('schedulingShiftsBody');
+      if (openShifts.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text-secondary);padding:24px;">No open shifts match the selected site.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = openShifts.map(shift => {
+        const sCode = shift.siteCode || shift.externalId.split('-')[0];
+        const trainedCount = state.persons.filter(p => (p.trainedSites || []).includes(sCode) && !p.dncFlag).length;
+        const eligCodes = shift.requiredEligibility || ['ST'];
         return `
           <tr>
-            <td><strong>${escapeHtml(shift.externalId)}</strong></td>
-            <td>${escapeHtml(site)}</td>
-            <td class="tabular">${escapeHtml(windowStr)}</td>
+            <td>${renderSiteBadge(sCode)}</td>
+            <td class="tabular"><strong>${escapeHtml(shift.externalId)}</strong></td>
+            <td>${escapeHtml(shift.siteLocation || '')}</td>
+            <td class="tabular">
+              <div><strong>${escapeHtml(shift.startHour && shift.endHour ? (shift.startHour + '-' + shift.endHour) : shift.timeWindow)}</strong></div>
+              <div style="font-size:12.5px;color:var(--text-muted);">${escapeHtml(shift.dateLabel || '')} &bull; ${Number(shift.durationHours).toFixed(1)} hrs</div>
+            </td>
             <td class="tabular"><strong>$${Number(shift.payRateHourly).toFixed(2)}</strong>/hr</td>
-            <td>${formatShiftStatusPill(shift.status)}</td>
+            <td>${renderComplianceBadges(eligCodes, true)}</td>
             <td>
-              <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                <button type="button" class="btn btn-outline btn-sm" onclick="openShiftRecords('${escapeAttr(shift.externalId)}')">Outreach Records</button>
-                ${canDispatch ? `<button type="button" class="btn btn-brand btn-sm" onclick="triggerShiftDispatch('${escapeAttr(shift.id)}')">Dispatch Call</button>` : ''}
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <button type="button" class="btn btn-outline btn-sm" onclick="openEditHoursModal('${escapeAttr(shift.id)}')">Edit Hours</button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="openSiteOfficersModal('${escapeAttr(sCode)}', '${escapeAttr(shift.id)}')">Site Officers (${trainedCount})</button>
+                <button type="button" class="btn btn-orange btn-sm" onclick="triggerShiftDispatch('${escapeAttr(shift.id)}')">Dispatch Call</button>
               </div>
             </td>
           </tr>
@@ -1482,9 +1781,97 @@
       }).join('');
     }
 
-    function openShiftRecords(shiftExternalId) {
-      state.selectedShiftFilter = shiftExternalId;
-      navigateTo('/records?shift=' + encodeURIComponent(shiftExternalId));
+    function openEditHoursModal(shiftId) {
+      const shift = state.shifts.find(s => s.id === shiftId);
+      if (!shift) return;
+      state.editingShiftId = shift.id;
+      document.getElementById('editHoursTitle').textContent = 'Edit Offered Hours — ' + shift.externalId;
+      document.getElementById('editHoursMeta').innerHTML = renderSiteBadge(shift.siteCode, true);
+      document.getElementById('editShiftDate').value = shift.dateLabel || new Date().toISOString().slice(0, 10);
+      document.getElementById('editStartHour').value = shift.startHour || '0700';
+      document.getElementById('editEndHour').value = shift.endHour || '1500';
+      document.getElementById('editDurationHours').value = shift.durationHours || 8;
+      document.getElementById('editHoursModal').classList.remove('hidden');
+      document.getElementById('editStartHour').focus();
+    }
+
+    function applyHourPreset(startH, endH, dur) {
+      document.getElementById('editStartHour').value = startH;
+      document.getElementById('editEndHour').value = endH;
+      document.getElementById('editDurationHours').value = dur;
+    }
+
+    function recalcDuration() {
+      const s = (document.getElementById('editStartHour').value || '').trim();
+      const e = (document.getElementById('editEndHour').value || '').trim();
+      if (/^\d{4}$/.test(s) && /^\d{4}$/.test(e)) {
+        const sm = parseInt(s.slice(0, 2), 10) * 60 + parseInt(s.slice(2, 4), 10);
+        let em = parseInt(e.slice(0, 2), 10) * 60 + parseInt(e.slice(2, 4), 10);
+        if (em <= sm) em += 24 * 60;
+        document.getElementById('editDurationHours').value = ((em - sm) / 60).toFixed(1);
+      }
+    }
+
+    async function saveShiftHours(event) {
+      event.preventDefault();
+      if (!state.editingShiftId) return;
+      const dateLabel = document.getElementById('editShiftDate').value;
+      const startHour = document.getElementById('editStartHour').value.trim();
+      const endHour = document.getElementById('editEndHour').value.trim();
+      const durationHours = parseFloat(document.getElementById('editDurationHours').value);
+
+      try {
+        const res = await fetch('/api/v1/dashboard/shifts/' + encodeURIComponent(state.editingShiftId) + '/hours', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ dateLabel, startHour, endHour, durationHours })
+        });
+        const updated = await res.json();
+        closeModal('editHoursModal');
+        showToast('Updated offered hours for ' + updated.externalId + ': ' + updated.timeWindow + ' (' + updated.durationHours + ' hrs).');
+        await refreshAllData();
+      } catch (err) {
+        showToast('Failed to update hours: ' + err.message);
+      }
+    }
+
+    async function openSiteOfficersModal(siteCode, shiftId) {
+      const meta = getSiteMeta(siteCode);
+      const trained = state.persons.filter(p => (p.trainedSites || []).includes(siteCode));
+      state.modalDispatchShiftId = shiftId;
+
+      document.getElementById('siteOfficersTitle').textContent = 'Trained Personnel Roster';
+      document.getElementById('siteOfficersBadge').innerHTML = renderSiteBadge(siteCode, true);
+      document.getElementById('siteOfficersSubtitle').textContent = trained.length + ' officers trained to work at Site ' + siteCode + '.';
+
+      const dispatchBtn = document.getElementById('siteDispatchAllBtn');
+      if (shiftId) {
+        const shift = state.shifts.find(s => s.id === shiftId);
+        dispatchBtn.textContent = 'Dispatch Call to All ' + trained.filter(p => !p.dncFlag).length + ' Officers (' + (shift ? shift.externalId : '') + ')';
+        dispatchBtn.classList.remove('hidden');
+      } else {
+        dispatchBtn.classList.add('hidden');
+      }
+
+      document.getElementById('siteOfficersTableBody').innerHTML = trained.map((p, idx) => `
+        <tr>
+          <td class="tabular">${idx + 1}</td>
+          <td class="tabular"><strong>${escapeHtml(p.externalId)}</strong></td>
+          <td>${escapeHtml(p.firstName + ' ' + p.lastName)}</td>
+          <td class="tabular">${escapeHtml(p.phone)}</td>
+          <td>${renderComplianceBadges(p.eligibilityCodes, !p.dncFlag)}</td>
+          <td><span class="pill ${p.dncFlag ? 'pill-busy' : 'pill-idle'}">${p.dncFlag ? 'DNC' : 'Active'}</span></td>
+        </tr>
+      `).join('');
+
+      document.getElementById('siteOfficersModal').classList.remove('hidden');
+    }
+
+    async function dispatchFromSiteModal() {
+      if (!state.modalDispatchShiftId) return;
+      const shiftId = state.modalDispatchShiftId;
+      closeModal('siteOfficersModal');
+      await triggerShiftDispatch(shiftId);
     }
 
     async function triggerShiftDispatch(shiftId) {
@@ -1492,15 +1879,17 @@
         const res = await fetch('/api/v1/dispatch/trigger', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ shiftId, maxCandidates: 1 })
+          body: JSON.stringify({ shiftId, maxCandidates: 25 })
         });
         const data = await res.json();
         if (data.status === 'INITIATED') {
-          showToast('Outreach call placed on ' + data.lineLabel + ' for ' + data.shiftExternalId + ' (' + data.guardExternalId + ').');
-        } else if (data.status === 'BACKPRESSURE') {
-          showToast('All outbound lines are currently busy.');
+          showToast(
+            'Triggered calls to all ' + data.totalTrainedContacted + ' Site ' + data.siteCode +
+            ' trained officers for ' + data.shiftExternalId + ' (' + data.timeWindow + '). ' +
+            data.activeLinesAssigned.length + ' active now, ' + data.queuedCount + ' queued.'
+          );
         } else {
-          showToast('No eligible guards currently available.');
+          showToast(data.message || 'No eligible site-trained officers available.');
         }
         await refreshAllData();
       } catch (err) {
@@ -1508,6 +1897,16 @@
       }
     }
 
+    function openShiftRecords(shiftExternalId, siteCode) {
+      state.selectedShiftFilter = shiftExternalId || '';
+      state.selectedSiteFilter = siteCode || (shiftExternalId ? shiftExternalId.split('-')[0] : '');
+      const params = new URLSearchParams();
+      if (state.selectedSiteFilter) params.set('site', state.selectedSiteFilter);
+      if (state.selectedShiftFilter) params.set('shift', state.selectedShiftFilter);
+      navigateTo('/records?' + params.toString());
+    }
+
+    /* Approval Queue View (/queue) */
     function setQueueFilter(mode) {
       state.queueFilter = mode;
       document.getElementById('queueFilterPending').className = 'btn btn-sm ' + (mode === 'PENDING' ? 'btn-brand' : 'btn-outline');
@@ -1525,7 +1924,7 @@
         container.innerHTML = `
           <div class="surface-card" style="text-align:center;padding:36px;">
             <p style="font-size:17px;font-weight:600;color:var(--text-primary);">No pending shift confirmations</p>
-            <p style="font-size:15px;color:var(--text-secondary);margin-top:4px;">All tentative guard responses have been reviewed.</p>
+            <p style="font-size:15px;color:var(--text-secondary);margin-top:4px;">All tentative officer responses have been reviewed.</p>
           </div>
         `;
         return;
@@ -1533,11 +1932,12 @@
 
       container.innerHTML = items.map(appr => {
         const isPending = appr.status === 'PENDING';
-        const guardName = appr.person ? (appr.person.firstName + ' ' + appr.person.lastName) : 'Candidate';
+        const guardName = appr.person ? (appr.person.firstName + ' ' + appr.person.lastName) : 'Officer';
         const guardExtId = appr.person ? appr.person.externalId : '200000000';
         const shiftExtId = appr.shift ? appr.shift.externalId : appr.shiftId;
+        const sCode = appr.shift ? appr.shift.siteCode : shiftExtId.split('-')[0];
         const site = appr.shift ? (appr.shift.siteLocation || appr.shift.pickupLocation) : 'Guardteck Site';
-        const timeWin = appr.shift ? (appr.shift.timeWindow || new Date(appr.shift.shiftDate).toLocaleDateString()) : '';
+        const timeWin = appr.shift ? appr.shift.timeWindow : '';
         const payRate = appr.shift ? Number(appr.shift.payRateHourly).toFixed(2) : '0.00';
         const summary = appr.callLog && appr.callLog.summary ? appr.callLog.summary : 'Officer confirmed tentative availability.';
 
@@ -1545,12 +1945,13 @@
           <article class="queue-card">
             <div>
               <div class="guard-title-row">
+                ${renderSiteBadge(sCode)}
                 <span class="guard-name">${escapeHtml(guardName)}</span>
                 <span class="pill pill-neutral tabular">${escapeHtml(guardExtId)}</span>
               </div>
               <div class="shift-spec">
                 <span><strong>Job ID:</strong> ${escapeHtml(shiftExtId)} &bull; ${escapeHtml(site)}</span>
-                <span class="tabular"><strong>Window:</strong> ${escapeHtml(timeWin)}</span>
+                <span class="tabular"><strong>Offered Hours:</strong> ${escapeHtml(timeWin)}</span>
                 <span class="pay-highlight">Pay: $${payRate}/hr</span>
               </div>
             </div>
@@ -1588,41 +1989,64 @@
         const res = await fetch('/api/v1/approvals/action', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            action,
-            approvalQueueId,
-            shiftId,
-            personId,
-            dispatcherName,
-            dispatcherId
-          })
+          body: JSON.stringify({ action, approvalQueueId, shiftId, personId, dispatcherName, dispatcherId })
         });
         const data = await res.json();
-        showToast('Shift ' + data.status.toLowerCase() + ' by ' + (data.dispatcherName || dispatcherName) + '.');
+        showToast('Job ' + data.status.toLowerCase() + ' by ' + (data.dispatcherName || dispatcherName) + '.');
         await refreshAllData();
       } catch (err) {
         showToast('Action failed: ' + err.message);
       }
     }
 
-    function syncShiftFilterSelect() {
-      const select = document.getElementById('recordsShiftFilter');
-      const currentVal = state.selectedShiftFilter || '';
-      const uniqueShifts = Array.from(new Set(state.shifts.map(s => s.externalId)));
-      select.innerHTML = '<option value="">All Jobs</option>' +
-        uniqueShifts.map(ext => `<option value="${escapeAttr(ext)}">${escapeHtml(ext)}</option>`).join('');
-      select.value = currentVal;
+    /* Call Records & Directory View (/records) */
+    function syncRecordsFilterSelects() {
+      const siteSelect = document.getElementById('recordsSiteFilter');
+      const sitesList = state.sites.length ? state.sites : Object.values(FALLBACK_SITE_COLORS);
+      siteSelect.innerHTML = '<option value="">All Sites</option>' +
+        sitesList.map(s => `<option value="${escapeAttr(s.code)}">${escapeHtml(s.code + ' — ' + s.name)}</option>`).join('');
+      siteSelect.value = state.selectedSiteFilter || '';
+
+      const shiftSelect = document.getElementById('recordsShiftFilter');
+      const filteredShifts = state.selectedSiteFilter
+        ? state.shifts.filter(s => s.siteCode === state.selectedSiteFilter)
+        : state.shifts;
+      const uniqueJobs = Array.from(new Set(filteredShifts.map(s => s.externalId)));
+      shiftSelect.innerHTML = '<option value="">All Jobs</option>' +
+        uniqueJobs.map(ext => `<option value="${escapeAttr(ext)}">${escapeHtml(ext)}</option>`).join('');
+      shiftSelect.value = state.selectedShiftFilter || '';
     }
 
-    function handleShiftFilterChange() {
-      state.selectedShiftFilter = document.getElementById('recordsShiftFilter').value;
-      const target = state.selectedShiftFilter ? '/records?shift=' + encodeURIComponent(state.selectedShiftFilter) : '/records';
-      window.history.replaceState({}, '', target);
+    function selectRecordsSitePill(code) {
+      state.selectedSiteFilter = (state.selectedSiteFilter === code && code !== '') ? '' : code;
+      if (state.selectedSiteFilter && state.selectedShiftFilter && !state.selectedShiftFilter.startsWith(state.selectedSiteFilter)) {
+        state.selectedShiftFilter = '';
+      }
+      syncRecordsFilterSelects();
+      updateRecordsUrl();
       renderRecordsView();
     }
 
+    function handleRecordsFilterChange() {
+      state.selectedSiteFilter = document.getElementById('recordsSiteFilter').value;
+      state.selectedShiftFilter = document.getElementById('recordsShiftFilter').value;
+      syncRecordsFilterSelects();
+      updateRecordsUrl();
+      renderRecordsView();
+    }
+
+    function updateRecordsUrl() {
+      const params = new URLSearchParams();
+      if (state.selectedSiteFilter) params.set('site', state.selectedSiteFilter);
+      if (state.selectedShiftFilter) params.set('shift', state.selectedShiftFilter);
+      const qs = params.toString();
+      window.history.replaceState({}, '', '/records' + (qs ? '?' + qs : ''));
+    }
+
     function clearRecordsFilter() {
+      state.selectedSiteFilter = '';
       state.selectedShiftFilter = '';
+      document.getElementById('recordsSiteFilter').value = '';
       document.getElementById('recordsShiftFilter').value = '';
       document.getElementById('recordsSearchInput').value = '';
       window.history.replaceState({}, '', '/records');
@@ -1637,10 +2061,26 @@
     }
 
     function renderRecordsView() {
+      const sitesList = state.sites.length ? state.sites : Object.values(FALLBACK_SITE_COLORS);
+      const pillsBar = document.getElementById('recordsSitePills');
+      pillsBar.innerHTML = `
+        <button type="button" class="btn btn-sm ${state.selectedSiteFilter === '' ? 'btn-brand' : 'btn-outline'}" onclick="selectRecordsSitePill('')">All Sites</button>
+      ` + sitesList.map(s => {
+        const active = state.selectedSiteFilter === s.code;
+        return `
+          <button type="button" class="site-badge" style="cursor:pointer;padding:7px 12px;background:${s.colorBg};color:${s.colorText};border-color:${s.colorBorder};${active ? 'box-shadow:0 0 0 2px var(--brand-blue);' : ''}" onclick="selectRecordsSitePill('${escapeAttr(s.code)}')">
+            ${escapeHtml(s.code)} (${s.region})
+          </button>
+        `;
+      }).join('');
+
+      const siteFilter = state.selectedSiteFilter || '';
       const shiftFilter = state.selectedShiftFilter || '';
       const q = (document.getElementById('recordsSearchInput').value || '').trim().toLowerCase();
 
       const filteredCalls = state.calls.filter(c => {
+        const cSite = c.siteCode || (c.shiftExternalId ? c.shiftExternalId.split('-')[0] : '');
+        if (siteFilter && cSite !== siteFilter) return false;
         if (shiftFilter && c.shiftExternalId !== shiftFilter) return false;
         if (q) {
           const hay = (c.guardName + ' ' + c.guardExternalId + ' ' + c.phone + ' ' + c.shiftExternalId).toLowerCase();
@@ -1653,38 +2093,43 @@
 
       const callsBody = document.getElementById('callsTableBody');
       if (filteredCalls.length === 0) {
-        callsBody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--text-secondary);padding:24px;">No matching call records found.</td></tr>';
+        callsBody.innerHTML = '<tr><td colspan="10" style="text-align:center;color:var(--text-secondary);padding:24px;">No matching call records found.</td></tr>';
       } else {
-        callsBody.innerHTML = filteredCalls.map(c => `
-          <tr>
-            <td><strong>${escapeHtml(c.guardName)}</strong></td>
-            <td class="tabular">${escapeHtml(c.guardExternalId)}</td>
-            <td class="tabular">${escapeHtml(c.phone)}</td>
-            <td class="tabular"><strong>${escapeHtml(c.shiftExternalId)}</strong></td>
-            <td class="tabular">Attempt #${c.attemptNumber || 1}</td>
-            <td><span class="pill ${c.outcome === 'Tentative Accept' ? 'pill-idle' : c.outcome === 'In Progress' ? 'pill-blue' : 'pill-neutral'}">${escapeHtml(c.outcome || c.status)}</span></td>
-            <td class="tabular">${escapeHtml(c.timestamp || '')}</td>
-            <td>${renderComplianceBadges(c.eligibilityCodes, c.guardActive !== false)}</td>
-            <td><button type="button" class="btn btn-outline btn-sm" onclick="openTranscriptById('${escapeAttr(c.id)}')">View Transcript</button></td>
-          </tr>
-        `).join('');
+        callsBody.innerHTML = filteredCalls.map(c => {
+          const cSite = c.siteCode || (c.shiftExternalId ? c.shiftExternalId.split('-')[0] : '');
+          const pillCls = c.outcome === 'Tentative Accept' ? 'pill-idle' : c.outcome === 'In Progress' ? 'pill-blue' : c.outcome === 'Queued' ? 'pill-orange' : 'pill-neutral';
+          return `
+            <tr>
+              <td>${renderSiteBadge(cSite)}</td>
+              <td><strong>${escapeHtml(c.guardName)}</strong></td>
+              <td class="tabular">${escapeHtml(c.guardExternalId)}</td>
+              <td class="tabular">${escapeHtml(c.phone)}</td>
+              <td class="tabular"><strong>${escapeHtml(c.shiftExternalId)}</strong></td>
+              <td class="tabular">Attempt #${c.attemptNumber || 1}</td>
+              <td><span class="pill ${pillCls}">${escapeHtml(c.outcome || c.status)}</span></td>
+              <td class="tabular">${escapeHtml(c.timestamp || '')}</td>
+              <td>${renderComplianceBadges(c.eligibilityCodes, c.guardActive !== false)}</td>
+              <td><button type="button" class="btn btn-outline btn-sm" onclick="openTranscriptById('${escapeAttr(c.id)}')">View Transcript</button></td>
+            </tr>
+          `;
+        }).join('');
       }
 
-      document.getElementById('directoryHeading').textContent = shiftFilter
-        ? 'Personnel Outreach Directory (' + shiftFilter + ')'
-        : 'Personnel Outreach Directory';
+      document.getElementById('directoryHeading').textContent = siteFilter
+        ? 'Site ' + siteFilter + ' Trained Officers Directory'
+        : (shiftFilter ? 'Personnel Outreach Directory (' + shiftFilter + ')' : 'Personnel Outreach Directory');
 
       let directoryPersons = state.persons;
-      if (shiftFilter) {
-        const contactedIds = new Set(filteredCalls.map(c => c.personId));
-        const shiftContacted = state.persons.filter(p => contactedIds.has(p.id));
-        if (shiftContacted.length > 0) {
-          directoryPersons = shiftContacted;
-        }
+      if (siteFilter) {
+        directoryPersons = directoryPersons.filter(p => (p.trainedSites || []).includes(siteFilter));
+      } else if (shiftFilter) {
+        const sCode = shiftFilter.split('-')[0];
+        directoryPersons = directoryPersons.filter(p => (p.trainedSites || []).includes(sCode));
       }
+
       if (q) {
         directoryPersons = directoryPersons.filter(p => {
-          const hay = (p.firstName + ' ' + p.lastName + ' ' + p.externalId + ' ' + p.phone + ' ' + p.region).toLowerCase();
+          const hay = (p.firstName + ' ' + p.lastName + ' ' + p.externalId + ' ' + p.phone + ' ' + (p.trainedSites || []).join(' ')).toLowerCase();
           return hay.includes(q);
         });
       }
@@ -1697,15 +2142,15 @@
       } else {
         personsBody.innerHTML = directoryPersons.map(p => {
           const isDnc = !!p.dncFlag;
-          const activeFlag = !isDnc;
+          const siteBadges = (p.trainedSites || []).map(sc => renderSiteBadge(sc)).join(' ');
           return `
             <tr>
               <td><strong>${escapeHtml(p.firstName + ' ' + p.lastName)}</strong></td>
               <td class="tabular">${escapeHtml(p.externalId)}</td>
               <td class="tabular">${escapeHtml(p.phone)}</td>
-              <td>${escapeHtml(p.region)}</td>
+              <td><div class="badge-row">${siteBadges}</div></td>
               <td class="tabular">${p.totalShiftsCompleted} shifts</td>
-              <td>${renderComplianceBadges(p.eligibilityCodes, activeFlag)}</td>
+              <td>${renderComplianceBadges(p.eligibilityCodes, !isDnc)}</td>
               <td>
                 <button type="button" class="btn btn-outline btn-sm" onclick="toggleDnc('${escapeAttr(p.id)}')">
                   ${isDnc ? 'Clear DNC' : 'Set DNC'}
@@ -1737,32 +2182,35 @@
 
       const shift = state.shifts.find(s => s.id === log.shiftId || s.externalId === log.shiftExternalId);
       const payText = shift ? ('$' + Number(shift.payRateHourly).toFixed(2) + '/hr') : '—';
+      const sCode = log.siteCode || (log.shiftExternalId ? log.shiftExternalId.split('-')[0] : '');
 
       document.getElementById('transcriptModalTitle').textContent = 'Call Transcript — ' + log.guardName + ' (' + log.guardExternalId + ')';
       document.getElementById('transcriptModalMeta').innerHTML = `
+        <div><strong>Site:</strong> ${renderSiteBadge(sCode)}</div>
         <div><strong>Job ID:</strong> ${escapeHtml(log.shiftExternalId)}</div>
         <div><strong>Pay Rate:</strong> ${escapeHtml(payText)}</div>
         <div><strong>Outcome:</strong> ${escapeHtml(log.outcome || log.status)}</div>
-        <div><strong>Timestamp:</strong> ${escapeHtml(log.timestamp || '')}</div>
       `;
       document.getElementById('transcriptModalBody').textContent = log.transcript || 'No transcript available.';
       document.getElementById('transcriptModal').classList.remove('hidden');
       document.getElementById('transcriptCloseBtn').focus();
     }
 
-    function closeTranscriptModal() {
-      document.getElementById('transcriptModal').classList.add('hidden');
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.add('hidden');
     }
 
-    function handleBackdropClick(event) {
-      if (event.target.id === 'transcriptModal') {
-        closeTranscriptModal();
+    function handleBackdropClick(event, modalId) {
+      if (event.target.id === modalId) {
+        closeModal(modalId);
       }
     }
 
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && !document.getElementById('transcriptModal').classList.contains('hidden')) {
-        closeTranscriptModal();
+      if (event.key === 'Escape') {
+        closeModal('transcriptModal');
+        closeModal('editHoursModal');
+        closeModal('siteOfficersModal');
       }
     });
 
@@ -1805,6 +2253,9 @@
     const initialUrl = new URL(window.location.href);
     if (initialUrl.pathname === '/records') {
       state.selectedShiftFilter = initialUrl.searchParams.get('shift') || '';
+      state.selectedSiteFilter = initialUrl.searchParams.get('site') || '';
+    } else if (initialUrl.pathname === '/scheduling') {
+      state.selectedSchedulingSite = initialUrl.searchParams.get('site') || '';
     }
     navigateTo(window.location.pathname + window.location.search, true);
     refreshAllData();
