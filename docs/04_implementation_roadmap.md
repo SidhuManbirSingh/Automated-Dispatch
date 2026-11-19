@@ -8,8 +8,8 @@
 
 | Phase | Milestone | Focus Areas | Primary Deliverables | Status |
 | :--- | :--- | :--- | :--- | :--- |
-| **Phase 1** | **Architectural Blueprint & Scaffolding** | Specifications, MySQL schemas, project tooling, health probes | Reference specs, Prisma schema, Fastify foundation, config schemas | **In Progress** |
-| **Phase 2** | **Local Sandbox & Persistence** | MySQL 8.0, Prisma migrations, mock data, public ingress | Containerized DB, seed data (25 persons, 50 shifts), n8n workflow | Planned |
+| **Phase 1** | **Architectural Blueprint & Scaffolding** | Specifications, MySQL schemas, project tooling, health probes | Reference specs, Prisma schema, Fastify foundation, config schemas | **Completed** |
+| **Phase 2** | **Local Sandbox & Persistence** | MySQL 8.0, Prisma migrations, seed data, n8n workflow, ingress | Containerized DB, auto-seeded data (6 sites, 121 officers, 50 shifts), n8n workflow | **Completed** |
 | **Phase 3** | **Voice Agent & Telephony** | Retell AI, Twilio SIP (`us-west-2` BC Canada), guardrails | Prompt engineering, 5-line toll-free pool, AMD detection | Planned |
 | **Phase 4** | **HITL & Microsoft 365** | Webhooks, Teams Adaptive Cards, Graph API | Dispatcher review queue, 1-click booking, Outlook calendar sync | Planned |
 | **Phase 5** | **Concurrency & Scale** | 5-line pool, 1 CPS pacing, race cancellation | Semaphore pool, cost guard ($25/day cap), mid-burst cancellation | Planned |

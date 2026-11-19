@@ -2,6 +2,7 @@ import { buildApp } from "./app";
 import { config } from "./config";
 import { logger } from "./lib/logger";
 import { checkDatabaseConnection } from "./lib/prisma";
+import { ensureDatabaseSchemaAndSeed } from "./lib/seed-db";
 
 async function main() {
   const app = buildApp();
@@ -9,6 +10,11 @@ async function main() {
   const dbConnected = await checkDatabaseConnection();
   if (dbConnected) {
     logger.info("MySQL Database connected successfully via Prisma ORM");
+    try {
+      await ensureDatabaseSchemaAndSeed();
+    } catch (err) {
+      logger.error({ err }, "Failed during MySQL schema verification/seeding; continuing with in-memory store fallback");
+    }
   } else {
     logger.info("Running in resilient standalone mode (In-Memory simulation store active)");
   }

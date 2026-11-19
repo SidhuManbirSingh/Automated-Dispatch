@@ -1,0 +1,212 @@
+{
+  "name": "Guardteck Dispatch Webhook Orchestrator (Phase 2)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "retell-call-events",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "webhook-listener-1",
+      "name": "Inbound Retell Webhook Listener",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        240,
+        300
+      ],
+      "webhookId": "guardteck-retell-call-events"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.call_analysis.custom_analysis_data.outcome_code }}",
+                    "rightValue": "TENTATIVE_ACCEPT",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "TENTATIVE_ACCEPT"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.call_analysis.custom_analysis_data.outcome_code }}",
+                    "rightValue": "DECLINE",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "DECLINE"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.call_analysis.custom_analysis_data.outcome_code }}",
+                    "rightValue": "DNC_REQUEST",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "DNC_REQUEST"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "id": "outcome-switch-2",
+      "name": "Classify Call Outcome",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        480,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT id, externalId, siteCode, timeWindow, status FROM Shift WHERE externalId = ? LIMIT 1;",
+        "options": {
+          "queryReplacement": "={{ $json.body.retell_llm_dynamic_variables.shift_id }}"
+        }
+      },
+      "id": "mysql-lookup-3",
+      "name": "Query MySQL Shift Record",
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.4,
+      "position": [
+        740,
+        220
+      ],
+      "notes": "Connect to mysql:3306 / automated_dispatch (dispatch_user)"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://app:3000/webhook/retell-call-complete",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.body) }}",
+        "options": {}
+      },
+      "id": "forward-fastify-4",
+      "name": "Forward to Guardteck Fastify Console",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        980,
+        300
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Inbound Retell Webhook Listener": {
+      "main": [
+        [
+          {
+            "node": "Classify Call Outcome",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classify Call Outcome": {
+      "main": [
+        [
+          {
+            "node": "Query MySQL Shift Record",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Forward to Guardteck Fastify Console",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Forward to Guardteck Fastify Console",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Forward to Guardteck Fastify Console",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Query MySQL Shift Record": {
+      "main": [
+        [
+          {
+            "node": "Forward to Guardteck Fastify Console",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": [
+    "guardteck",
+    "phase-2",
+    "dispatch"
+  ]
+}

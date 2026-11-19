@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   mysql:
     image: mysql:8.0
@@ -31,6 +29,7 @@ services:
       NODE_ENV: production
       PORT: 3000
       HOST: 0.0.0.0
+      TZ: America/Vancouver
       DATABASE_URL: mysql://dispatch_user:dispatch_secure_pass@mysql:3306/automated_dispatch
     ports:
       - "3000:3000"
@@ -45,15 +44,19 @@ services:
     ports:
       - "5678:5678"
     environment:
+      - TZ=America/Vancouver
+      - GENERIC_TIMEZONE=America/Vancouver
       - N8N_BASIC_AUTH_ACTIVE=false
-      - DB_TYPE=mysqldb
-      - DB_MYSQL_DATABASE=automated_dispatch
-      - DB_MYSQL_HOST=mysql
-      - DB_MYSQL_PORT=3306
-      - DB_MYSQL_USER=dispatch_user
-      - DB_MYSQL_PASSWORD=dispatch_secure_pass
+      - N8N_SECURE_COOKIE=false
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=automated_dispatch
+      - MYSQL_USER=dispatch_user
+      - MYSQL_PASSWORD=dispatch_secure_pass
+      - DISPATCH_APP_URL=http://app:3000
     volumes:
       - n8n_data:/home/node/.n8n
+      - ./n8n:/home/node/.n8n/workflows:ro
     depends_on:
       mysql:
         condition: service_healthy
